@@ -28,573 +28,416 @@ options(digits = 4)
 ```
 
 # dplyr
-.pull-left4[
-What is dplyr?
+.pull-left3[
 
 dplyr is a package for managing dataframes.
 
 Anytime you want to slice, dice, aggregate, or manipulate a dataframe, there is almost certainly a way to do it in dplyr.
-]
 
-
-.pull-right4[
-
-### dplyr CheatSheet
-```{r, echo = FALSE, out.width="700px"}
-knitr::include_graphics("https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf")
+```{r, echo = FALSE, out.width = "50%", fig.align = 'center'}
+knitr::include_graphics("images/dplyr_hex.png")
 ```
+
+
+
 ]
 
 
----
-#CheatSheet
+.pull-right3[
 
+### Questions you can answer with dplyr
+
+> *Can you calculate the mean survival times for each treatment separated by gender and time?*
+
+> *I need to know the mean birth rate only for countries in Africa from 1980 to 1980.*
+
+> *What percent of female patients had adverse events to drug X during weeks 5 through 10?*
+
+]
+---
+
+# dplyr CheatSheet!
 https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf
 
-```{r, echo = FALSE}
-knitr::include_graphics("https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf")
+```{r, echo = FALSE, out.width="600", fig.align = 'center'}
+knitr::include_graphics("images/data_wrangling_ss.png")
 ```
 
 
 
 
 ---
-
-# Programming language
-
-From [Wikipedia](https://en.wikipedia.org/wiki/Statistical_model) (emphasis added):
-
-> A programming language is a **formal language** that specifies a set of instructions that can be used to produce various kinds of output. Programming languages generally consist of **instructions for a computer**. Programming languages can be used to create programs that **implement specific algorithms**.
-
-.pull-left4[
-### Algorithm
-1. Load data
-2. Extract variables
-3. Run analysis
-4. Print result
-]
-
-.pull-right4[
-### Implementation in R
-```{r, results='hide'}
-data <- read.table('my_data.txt')
-variables <- data[,c('group','variable')]
-analysis <- lm(variable ~ group, data = variables)
-summary(analysis)
-```
-]
-
----
-
-# R uses
-
-R focuses **statistical computing and graphics** and is not a full programming language:
-
----
-
-class: small
-
-# Some Example Data
-
-Data from Revelle, Wilt and Rosenthal (2009). `?sat.act`:
-> Items were collected as part of the SAPA project (http://sapa-project.org) to develop online measures of ability (Revelle, Wilt and Rosenthal, 2009). The score means are higher than national norms suggesting both self selection for people taking on line personality and ability tests and a self reporting bias in scores.
-
-```{r, message=FALSE}
-require(psych)
-data(sat.act)
-sat.act$gender <- factor(sat.act$gender, 1:2, labels = c("male", "female"))
-sat.act$education <- factor(sat.act$education)
-summary(sat.act) # alternatively: psych::describe(sat.act)
-sat.act <- na.omit(sat.act)
-```
-
----
-# Some Example Data
-
-
-```{r, fig.height=4, dev='svg'}
-par(mfrow=c(1,2))
-plot(sat.act$SATV, sat.act$ACT)
-plot(sat.act$SATQ, sat.act$ACT)
-```
-
----
-# Linear Regression Model
-
-- $\bf{y}$ = vector of ACT scores of length $n$ (*dependent variable*)
-- $\bf{x_{\mbox{SATV}}}$ = vector of SATV scores of length $n$ (*independent variable* or *covariate*)
-
-$$y_i = \beta_0x_{0,i}+\beta_{\mbox{SATV}}x_{\mbox{SATV},i}+\epsilon_i, \ \ i = 1, ..., n, \\
-\bf{\epsilon} \sim \mathcal{N}(0, \sigma^2_{\epsilon}),$$
-where $\bf{x_0}$ is a vector of 1s of length $n$.
-
-- Errors $\bf{\epsilon}$ are assumed to come from a normal distribution (i.e., uncorrelated).
-
-- $\beta_0$ and  $\beta_{\mbox{SATV}}$ are scalars (i.e., of length 1) and called *regression coefficients* or *parameters* ( $\sigma^2_{\epsilon}$ is also a parameter). $\beta_0$ is also known as the *intercept*.
-
-******
-
-In matrix form this model can be expressed as:
-$$\bf{y} = \bf{X}\bf{\beta}+\bf{\epsilon}$$
-
----
-class: small
-
-# Linear Model in R
-
-.pull-left2[
-```{r}
-m1 <- lm(ACT ~ SATQ, sat.act)
-summary(m1)
-```
-
-]
-.pull-right2[
-```{r}
-coef(m1)
-```
-
-```{r, fig.height=3.7, fig.width=4, dev='svg'}
-plot(sat.act$SATV, sat.act$ACT)
-abline(m1)
-```
-]
----
-class: small
-
-# Linear Model in R (Centered)
-
-.pull-left2[
-```{r}
-sat.act$SATQ_c <- sat.act$SATQ - mean(sat.act$SATQ, na.rm = TRUE)
-sat.act$SATV_c <- sat.act$SATV - mean(sat.act$SATV)
-m2 <- lm(ACT ~ SATQ_c, sat.act)
-summary(m2)
-```
-
-]
-.pull-right2[
-```{r}
-coef(m2)
-```
-
-```{r, fig.height=3.7, fig.width=4, dev='svg'}
-plot(sat.act$SATV_c, sat.act$ACT)
-abline(m2)
-```
-]
----
-
-class: inline-grey
-# Formula Interface for Statistical Models: `~`
-
-Allows symbolic specification of statistical model, e.g. linear models: `lm(ACT ~ SATQ, sat.act)`
-
-Everything to the left of `~` is the dependent variable:
-```r
-y ~ x # univariate model
-cbind(y1, y2, y3) ~ x # multivariate model
-~ x # one sided formula
-```
-
-Independent variables are to the right of the `~`:
-
-| Formula | &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; | Interpretation  |
-| ------------------------|---|----------------------------------|
-| `~ x` or `~1+x`         || Intercept and main effect of `x` | 
-| ` ~ x-1` or `~0 + x`    || Only main effect of `x` and no intercept (questionable) |
-| `~ x+y`                 || Main effects of `x` and `y`|
-| `~ x:y`                 || Interaction between `x` and `y` (and no main effect) |
-| `~ x*y` or `~ x+y+x:y`  || Main effects and interaction between `x` and `y` |
-
----
-class: small
-
-# How many Parameters in each Model?
-
-```{r, eval=FALSE}
-lm(ACT ~ SATQ_c + SATV_c, sat.act)   # a
-lm(ACT ~ SATQ_c : SATV_c, sat.act)   # b
-lm(ACT ~ 0 + SATQ_c:SATV_c, sat.act) # c
-lm(ACT ~ SATQ_c*SATV_c, sat.act)     # d
-lm(ACT ~ 0+SATQ_c*SATV_c, sat.act)   # e
-```
-
---
-.pull-left[
-```{r}
-coef(lm(ACT ~ SATQ_c + SATV_c, sat.act))   # a
-coef(lm(ACT ~ SATQ_c : SATV_c, sat.act))   # b
-coef(lm(ACT ~ 0 + SATQ_c:SATV_c, sat.act)) # c
-```
-
-
-]
-
-.pull-right[
-```{r}
-coef(lm(ACT ~ SATQ_c*SATV_c, sat.act))     # d
-coef(lm(ACT ~ 0+SATQ_c*SATV_c, sat.act))   # e
-```
-
-]
-
-```{r, eval=FALSE, include=FALSE}
-summary(lm(ACT ~ SATQ + SATV, sat.act))   # a
-summary(lm(ACT ~ SATQ : SATV, sat.act))   # b
-summary(lm(ACT ~ 0 + SATQ:SATV, sat.act)) # c
-summary(lm(ACT ~ SATQ*SATV, sat.act))     # d
-summary(lm(ACT ~ 0+SATQ*SATV, sat.act))   # e
-```
-
-
----
-class: center, middle, inverse
-
-# Categorical Covariates
-
----
-class: small
-# Categorical Covariates
-
-`R` modeling functions behave differently for numerical and categorical covariates. 
-
-It is important to always know of what type variables are. Use `str()` on a `data.frame` to obtain information regarding the structure, including variable types: 
-
-```{r}
-str(sat.act)
-```
-
-- Numerical covariates are `int` or `num`.
-- Categorical covariates are `Factor` (or `character`).
-
-**Make sure all categorical variables are factors before adding them to a statistical model!**
-
----
-class: small
-
-# Models with Categorical Covariates
-
-We might be interested in testing whether ACT differs between men and women. 
-.pull-left2[
-```{r}
-m3 <- lm(ACT ~ gender, sat.act)
-summary(m3)
-```
-
-]
---
-
-```{r, include=FALSE}
-op <- options(width = 40)
-require(dplyr)
-```
-
-.pull-right2[
-```{r}
-mean(sat.act$ACT)
-sat.act %>% group_by(gender) %>%
-  summarise(m = mean(ACT))
-```
-
-```{r}
-sat.act %>% group_by(gender) %>%
-  summarise(m = mean(ACT)) %>%
-  {.$m[2] - .$m[1]}
-```
-]
-
-```{r, include=FALSE}
-options(op)
-```
-
----
-class: small
-
-# R and Categorical Covariates
-`model.matrix()` transforms categorical covariates into numerical variables that can be used for fitting using a specific contrast function (see `?contr.sum`).
-
-.pull-left[
-```{r}
-model.matrix(ACT ~ gender, sat.act[1:5,])
-```
-]
-
----
-class: small
-# R and Categorical Covariates
-
-`model.matrix()` transforms categorical covariates into numerical variables that can be used for fitting using a specific contrast function (see `?contr.sum`).
-
-.pull-left[
-```{r}
-model.matrix(ACT ~ gender, sat.act[1:5,])
-```
-
-```{r}
-afex::set_sum_contrasts()
-```
-
-]
-
-.pull-right[
-```{r}
-model.matrix(ACT ~ gender, sat.act[1:5,])
-```
-]
-
----
-class: small
-
-# Models with Categorical Covariates II 
-
-Same model as before, but with sum/effects contrasts.
-
-.pull-left2[
-```{r}
-m4 <- lm(ACT ~ gender, sat.act)
-summary(m4)
-```
-
-]
-
-```{r, include=FALSE}
-op <- options(width = 40)
-```
-
-.pull-right2[
-```{r}
-mean(sat.act$ACT)
-sat.act %>% group_by(gender) %>%
-  summarise(m = mean(ACT))
-sat.act %>% group_by(gender) %>%
-  summarise(m = mean(ACT)) %>% 
-  summarise(mean(m))
-
-```
-
-]
-
-```{r, include=FALSE}
-options(op)
-```
-
----
-class: small
-# Models with Categorical Covariates and Interactions
-
-```{r}
-afex::set_default_contrasts() # or set_treatment_contrasts()
-```
-
-
-```{r, include=FALSE}
-op <- options(width = 70)
-```
-
-.pull-left2[
-```{r}
-m5 <- lm(ACT ~ gender*education, sat.act)
-coef(m5)
-```
-
-]
-
-.pull-right2[
-```{r}
-sat.act %>% 
-  group_by(gender,education) %>%
-  summarise(mean(ACT))
-```
-]
-
-```{r, include=FALSE}
-options(op)
-```
-
----
-class: small
-# Models with Categorical Covariates and Interactions II
-
-```{r}
-afex::set_sum_contrasts() # or set_effects_contrasts() or set_deviation_contrasts()
-```
-
-
-```{r, include=FALSE}
-op <- options(width = 70)
-```
-
-.pull-left2[
-```{r}
-m6 <- lm(ACT ~ gender*education, sat.act)
-coef(m6)
-```
-
-]
-
-.pull-right2[
-```{r}
-sat.act %>% 
-  group_by(gender,education) %>%
-  summarise(m = mean(ACT)) %>% 
-  ungroup() %>% 
-  summarise(mean(m))
-```
-]
-
-```{r, include=FALSE}
-options(op)
-```
-
----
-# Categorical Covariates and Model Matrices
 
 .pull-left3[
-```{r, eval=FALSE}
-lm(ACT ~ SATQ + SATV, sat.act)   # a: 3
-lm(ACT ~ SATQ : SATV, sat.act)   # b: 2
-lm(ACT ~ 0 + SATQ:SATV, sat.act) # c: 1
-lm(ACT ~ SATQ*SATV, sat.act)     # d: 4
-lm(ACT ~ 0+SATQ*SATV, sat.act)   # e: 3
+# dplyr
 
-lm(ACT ~ SATQ, sat.act)          # f: 2
-lm(ACT ~ 0 + SATQ, sat.act)      # g: 1
+dplyr is a combination of 3 things:
+
+1. **`objects`** like dataframes
+2. **`verbs`** that **do** things to objects.
+3. **`pipes`** `%>%` that string together objects and verbs
+
+<br>
+
+
+```{r, echo = FALSE, out.width = "70%", fig.align = 'center'}
+knitr::include_graphics("images/pipe.jpg")
 ```
+
 
 ]
 
---
+
 .pull-right3[
-```{r, eval=FALSE}
-lm(ACT ~ gender, sat.act)                  # a
-lm(ACT ~ 0+gender, sat.act)                # b
-lm(ACT ~ gender+education, sat.act)        # c
-lm(ACT ~ 0+gender+education, sat.act)      # d
-lm(ACT ~ gender:education, sat.act)        # e
-lm(ACT ~ 0+gender:education, sat.act)      # f
-lm(ACT ~ gender*education, sat.act)        # g
-lm(ACT ~ 0+gender*education, sat.act)      # h
-lm(ACT ~ gender+gender:education, sat.act) # i
-```
 
-```{r}
-levels(sat.act$gender)
-levels(sat.act$education)
+<br>
+<br>
+<br>
+
+```{r, echo = FALSE, out.width = "70%", fig.align = 'center'}
+knitr::include_graphics("images/sequential.png")
 ```
 
 
-]
+dplyr is meant to be sequential and work like language
 
+> Take data X, then do Y, then do Z...
 
----
-class: small
-
-# Beware of Formulas with Categorical Variables
-
-
-```{r}
-coef(lm(ACT ~ gender, sat.act))                  # a: 2
-coef(lm(ACT ~ 0+gender, sat.act))                # b: 2
-coef(lm(ACT ~ gender+education, sat.act))        # c: 7
-coef(lm(ACT ~ 0+gender+education, sat.act))      # d: 7
-```
-
----
-class: small
-
-
-```{r}
-coef(lm(ACT ~ gender:education, sat.act))        # e: 13
-coef(lm(ACT ~ 0+gender:education, sat.act))      # f: 12
-```
+Here's the basic structure of `dplyr` in action
 
 ```{r, eval = FALSE}
-coef(lm(ACT ~ gender*education, sat.act))        # g: 12
-coef(lm(ACT ~ 0+gender*education, sat.act))      # h: 12
-coef(lm(ACT ~ gender+gender:education, sat.act)) # i: 12
-```
-
-
-
----
-class: inline-grey
-# Interim Summary
-
-- The `R` `formula` interface allows symbolic specification of statistical models.
-  - `+` = main effects
-  - `:` = interaction
-  - `*` = main effects plus interaction
-  - `0+`/`-1` = no intercept
-
-- Categorical variables are transformed into numerical variables using contrast functions (via `model.matrix()`; see Cohen et al., 2002)
-  - If models include interactions, orthogonal contrasts (e.g., `contr.sum`) in which the intercept corresponds to the (unweighted) grand mean should be used: `afex::set_sum_contrasts()`
-  - Dummy/treatment contrasts (`R` default) lead to simple effects for lower order effects.
-  - **Coding only affects interpretation of parameters/tests not overall model fit.**
-
-- For models with only numerical covariates, suppressing intercept works as expected.
-- For models with categorical covariates, suppressing intercept or other lower-order effects often leads to very surprising results (and should generally be avoided).
-
----
-class: center, middle, inverse
-
-# Tests of Terms/Effects
-
----
-class: small
-
-```{r, include=FALSE}
-op <- options(width = 70)
-```
-
-.pull-left2[
-```{r, message=FALSE}
-afex::set_sum_contrasts()
-m6 <- lm(ACT ~ gender*education, sat.act)
-summary(m6)
+data %>%           # Start with data, and THEN
+     VERB1 %>%     # Do VERB1, (and THEN)
+     VERB2 %>% ... # Do VERB2, (and THEN)
 ```
 
 ]
 
-.pull-right2[
+
+
+---
+
+.pull-left4[
+# dplyr
+
+
+### Question:
+
+> From the ChickWeight dataframe, calculate the mean weight and time for each diet
+
+]
+
+
+.pull-right4[
+
+### Answer:
+```{r, message = FALSE, warning = FALSE}
+library(dplyr)
+
+x <- ChickWeight %>%  # Start with ChickWeight
+  group_by(Diet) %>%  # Group by Diet
+  summarise(          # Get ready to summarise....
+    weight.mean = mean(weight), # Mean weight
+    time.mean = mean(Time),     # Mean time
+    N = n()                     # Number of cases
+  )
+  
+
+x
+```
+
+]
+
+
+
+
+---
+
+
+# Common dplyr verbs
+
+| verb| action| example |
+|:---|:----|:----------------|
+|     `filter()`|    Select rows based on some criteria| `filter(age > 40 & sex == "m")`|
+|     `arrange()`|    Sort rows| `arrange(date, group)`|
+|     `select()`|    Select columns (and ignore all others)| `select(age, sex)`|
+|     `rename()`|    Rename columns| `rename(DATE_MONTHS_X24, date`)|
+|     `mutate()`|    Add new columns| `mutate(height.m = height.cm / 100)`|
+|     `group_by(), summarise()`|   Group data and then calculate summary statistics|`group_by(treatment) %>% summarise(...)` |
+
+
+
+
+
+---
+
+#### Ex: Chick 1
+
+*Add a column called `weight_d_time` that is weight divided by time*
+
+```{r, message = FALSE, warning = FALSE}
+library(dplyr)
+
+x <- ChickWeight %>%          # Start with the ChickWeight data
+      mutate(                 # Create new columns...
+            weight_d_time = weight / Time
+            )
+
+head(x)   # Print the result
+```
+
+
+
+---
+
+#### Ex: Chick 2
+
+*Add a column called `weight_d_time` that is weight divided by time AND `time_d` that is time in days*
+
+```{r, message = FALSE, warning = FALSE}
+x <- ChickWeight %>%          # Start with the ChickWeight data
+      mutate(                 # Create new columns...
+            weight_d_time = weight / Time,  # weight_d_time is weight divided by Time
+            time_d = Time * 7               # time_d is Time times 7
+            )
+
+head(x)   # Print the result
+```
+
+
+
+
+
+---
+
+#### Ex: Chick 3
+
+*For each Diet, calculate the mean weight*
+
+```{r, message = FALSE, warning = FALSE}
+library(dplyr)
+
+ChickWeight %>%           # Start with the ChickWeight data
+  group_by(Diet) %>%      # Group the data by Diet
+  summarise(              # Now summarise....
+    weight.mean = mean(weight) # Mean weight
+  )
+```
+
+
+
+
+
+---
+
+#### Ex: Chick 4
+
+*For each time period less than 10, calculate the mean weight*
+
+```{r, message = FALSE, warning = FALSE}
+library(dplyr)
+
+ChickWeight %>%                # Start with the ChickWeight data
+  filter(Time < 10) %>%        # Only Time periods less than 10
+  group_by(Time) %>%           # Group the data by Diet
+  summarise(                   # Now summarise....
+    weight.mean = mean(weight) # Mean weight
+  )
+```
+
+
+
+
+
+---
+
+#### Ex: Chick 5:
+
+*For each Diet, calculate the mean weight, maximum time, and the number of chicks on each diet*:
+
+```{r, message = FALSE, warning = FALSE}
+library(dplyr)
+
+ChickWeight %>%           # Start with the ChickWeight data
+  group_by(Diet) %>%      # Group the data by Diet
+  summarise(              # Now summarise....
+    weight.mean = mean(weight), # Mean weight
+    time.max = max(Time),       # Max time
+    N = n()                     # Number of observations
+  )
+```
+
+
+
+
+---
+
+
+# Other dplyr verbs
+
+
+| verb| action| example |
+|:---|:----|:----------------|
+|     `sample_n()`|    Select a random sample of n rows| `sample_n(10)`|
+|     `sample_frac()`|    Select a random fraction of rows| `sample_frac(.20)`|
+|     `first(), last()`|    Give the first (or last) observation| `first(), last()`|
+
+
+
+---
+
+#### Ex: Chick 6:
+
+*Give me a random sample of 10 rows from the ChickWeight dataframe, but only show me the values for Chick and weight*
+
 ```{r}
-sat.act %>% 
-  group_by(gender, education) %>%
-  summarise(m = mean(ACT)) %>% 
-  ungroup() %>% 
-  summarise(mean(m))
+# Give me a random sample of 10 rows, but only show me columns Chick and weight
+
+ChickWeight %>% 
+  select(Chick, weight) %>%
+  sample_n(10)
+```
+
+
+---
+.pull-left3[
+
+#dplyr
+
+dplyr operations (almost) always return a dataframe which you can assign to a new object:
+
+
+> *Create a dataframe with the average weight for each time period and nothing else!!*
+
+]
+
+.pull-right3[
+
+```{r}
+# Create a new object called time_agg
+
+time_agg <- ChickWeight %>%
+  group_by(Time) %>%
+  summarise(
+    weight.mean = mean(weight)
+  )
+
+head(time_agg)
+```
+
+
+]
+
+
+---
+
+.pull-left3[
+
+#dplyr summary
+
+dplyr is great for elegantly performing sequential operations on data.
+
+The 'pipe' operator `%>%` helps you string multiple *objects* (like dataframes) and *verbs* (summarise, order, aggregate...) together.
+
+
+```{r, echo = FALSE, out.width = "50%", fig.align = 'center'}
+knitr::include_graphics("images/dplyr_hex.png")
+```
+
+
+]
+
+
+
+
+.pull-right3[
+
+<br>
+<br>
+
+Basic structure of dplyr commands:
+
+```{r, eval = FALSE}
+data %>%    # Start with data, AND THEN...
+  VERB1 %>% # Do VERB1, AND THEN...
+  VERB2 %>% # Do VERB2, AND THEN...
+  VERB3 %>% # Do VERB3, AND THEN...
+  group_by(x, y) %>%  # Group by variables x, y
+    summarise(
+      VAR_A_New = fun(X),
+      VAR_B_New = fun(Y)
+    )
+  )
+```
+
+]
+
+---
+
+
+.pull-left3[
+#tidyr
+
+`tidyr` is a package for 'tidying' data.
+
+'tidying' data means getting it into a different format (usually moving data between rows and columns)
+
+
+```{r, echo = FALSE, out.width = "70%", fig.align = 'center'}
+knitr::include_graphics("images/tidyr_hex.png")
 ```
 ]
 
-```{r, include=FALSE}
-options(op)
-```
 
----
+.pull-right3[
 
-# `car::Anova()` is the Solution
+<br>
+<br>
 
-```{r, message=FALSE}
-require(car) # Companion to Applied Regression (Fox & Weisberg, 2011)
-Anova(m6, type = 3)
-```
---
+### Questions you can answer with tidyr
 
-- Type II and III tests equivalent for balanced designs (i.e., equal group sizes) and highest-order effect.
-- Type III tests require orthogonal contrasts (e.g.,`contr.sum`); recommended:
-  - For experimental designs in which imbalance is completely random and not structural,
-  - Complete cross-over interactions (i.e., main effects in presence of interaction) possible.
-- Type II are more appropriate if imbalance is structural (i.e., observational data; maybe here).
+> Right now there are different rows for each patient, I need every patient's data to be in a single row.
+
+> Can you restructure the data so data in different columns are shown in a single column?
+
+]
 
 
 
 ---
-### References Statistical Modeling:
-- John Fox and Sanford Weisberg (2011). *An R Companion to Applied Regression, Second Edition.* Thousand Oaks CA: Sage. URL: http://socserv.socsci.mcmaster.ca/jfox/Books/Companion
-- Russell V. Lenth (2016). Least-Squares Means: The R Package lsmeans. *Journal of Statistical
-  Software*, 69(1), 1-33. https://doi.org/10.18637/jss.v069.i01
-- Cohen, J., Cohen, P., West, S. G., & Aiken, L. S. (2002). *Applied Multiple Regression/Correlation Analysis for the Behavioral Sciences.* New York: Routledge Academic.
 
-### References Example Data:
-- Revelle, William, Wilt, Joshua, and Rosenthal, Allen (2009) Personality and Cognition: The Personality-Cognition Link. In Gruszka, Alexandra and Matthews, Gerald and Szymura, Blazej (Eds.) _Handbook of Individual Differences in Cognition: Attention, Memory and Executive Control_, Springer.
-- Skovgaard-Olsen, N., Singmann, H., & Klauer, K. C. (2016). The relevance effect and conditionals. *Cognition*, 150, 26-36. https://doi.org/10.1016/j.cognition.2015.12.017
+
+
+#tidyr
+
+There are two important functions in `tidyr`, `gather()` and `spread()`:
+
+.pull-left3[
+
+`gather()`: Move data from *columns* into many *rows*
+
+
+```{r, echo = FALSE, out.width = "80%", fig.align = 'center'}
+knitr::include_graphics("images/gather_ss.png")
+```
+]
+
+
+.pull-right3[
+
+`spread()`: Move data from several *rows* into columns
+
+```{r, echo = FALSE, out.width = "80%", fig.align = 'center'}
+knitr::include_graphics("images/spread_ss.png")
+```
+
+]
+
+
+
+
+
+
+
+
+
