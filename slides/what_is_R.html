@@ -38,24 +38,30 @@ From [Wikipedia](https://en.wikipedia.org/wiki/Statistical_model) (emphasis adde
 
 &gt; A programming language is a **formal language** that specifies a set of instructions that can be used to produce various kinds of output. Programming languages generally consist of **instructions for a computer**. Programming languages can be used to create programs that **implement specific algorithms**.
 
-
 .pull-left4[
 ### Algorithm
-Load data
-Extract variables
-Run analysis
-Print result
+1. Load data
+2. Extract variables
+3. Run analysis
+4. Print result
 ]
+
 .pull-right4[
 ### Implementation in R
 
 ```r
-data = read.table('my_data.txt')
-variables = data[,c('group','variable')]
-analysis = lm(variable ~ group, data = variables)
+data &lt;- read.table('my_data.txt')
+variables &lt;- data[,c('group','variable')]
+analysis &lt;- lm(variable ~ group, data = variables)
 summary(analysis)
 ```
 ]
+
+---
+
+# R uses
+
+R focuses **statistical computing and graphics** and is not a full programming language:
 
 ---
 
@@ -101,7 +107,7 @@ plot(sat.act$SATV, sat.act$ACT)
 plot(sat.act$SATQ, sat.act$ACT)
 ```
 
-![](what_is_R_files/figure-html/unnamed-chunk-4-1.svg)&lt;!-- --&gt;
+![](what_is_R_files/figure-html/unnamed-chunk-3-1.svg)&lt;!-- --&gt;
 
 ---
 # Linear Regression Model
@@ -173,7 +179,7 @@ plot(sat.act$SATV, sat.act$ACT)
 abline(m1)
 ```
 
-![](what_is_R_files/figure-html/unnamed-chunk-7-1.svg)&lt;!-- --&gt;
+![](what_is_R_files/figure-html/unnamed-chunk-6-1.svg)&lt;!-- --&gt;
 ]
 ---
 class: small
@@ -228,7 +234,7 @@ plot(sat.act$SATV_c, sat.act$ACT)
 abline(m2)
 ```
 
-![](what_is_R_files/figure-html/unnamed-chunk-10-1.svg)&lt;!-- --&gt;
+![](what_is_R_files/figure-html/unnamed-chunk-9-1.svg)&lt;!-- --&gt;
 ]
 ---
 
@@ -418,7 +424,7 @@ sat.act %&gt;% group_by(gender) %&gt;%
 ```
 
 ```
-## # A tibble: 2 × 2
+## # A tibble: 2 x 2
 ##   gender     m
 ##   &lt;fctr&gt; &lt;dbl&gt;
 ## 1   male 28.82
@@ -579,7 +585,7 @@ sat.act %&gt;% group_by(gender) %&gt;%
 ```
 
 ```
-## # A tibble: 2 × 2
+## # A tibble: 2 x 2
 ##   gender     m
 ##   &lt;fctr&gt; &lt;dbl&gt;
 ## 1   male 28.82
@@ -593,7 +599,7 @@ sat.act %&gt;% group_by(gender) %&gt;%
 ```
 
 ```
-## # A tibble: 1 × 1
+## # A tibble: 1 x 1
 ##   `mean(m)`
 ##       &lt;dbl&gt;
 ## 1     28.61
@@ -652,20 +658,19 @@ sat.act %&gt;%
 ```
 
 ```
-## Source: local data frame [12 x 3]
-## Groups: gender [?]
-## 
+## # A tibble: 12 x 3
+## # Groups:   gender [?]
 ##    gender education `mean(ACT)`
 ##    &lt;fctr&gt;    &lt;fctr&gt;       &lt;dbl&gt;
-## 1    male         0       29.04
-## 2    male         1       26.58
-## 3    male         2       26.65
-## 4    male         3       28.67
-## 5    male         4       28.94
-## 6    male         5       30.83
-## 7  female         0       26.07
-## 8  female         1       27.83
-## 9  female         2       27.20
+##  1   male         0       29.04
+##  2   male         1       26.58
+##  3   male         2       26.65
+##  4   male         3       28.67
+##  5   male         4       28.94
+##  6   male         5       30.83
+##  7 female         0       26.07
+##  8 female         1       27.83
+##  9 female         2       27.20
 ## 10 female         3       28.16
 ## 11 female         4       29.37
 ## 12 female         5       29.12
@@ -721,7 +726,7 @@ sat.act %&gt;%
 ```
 
 ```
-## # A tibble: 1 × 1
+## # A tibble: 1 x 1
 ##   `mean(m)`
 ##       &lt;dbl&gt;
 ## 1     28.21
@@ -949,7 +954,7 @@ sat.act %&gt;%
 ```
 
 ```
-## # A tibble: 1 × 1
+## # A tibble: 1 x 1
 ##   `mean(m)`
 ##       &lt;dbl&gt;
 ## 1     28.21

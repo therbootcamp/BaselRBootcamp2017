@@ -43,25 +43,29 @@ From [Wikipedia](https://en.wikipedia.org/wiki/Statistical_model) (emphasis adde
 
 > A programming language is a **formal language** that specifies a set of instructions that can be used to produce various kinds of output. Programming languages generally consist of **instructions for a computer**. Programming languages can be used to create programs that **implement specific algorithms**.
 
-
 .pull-left4[
 ### Algorithm
-```{block}
-Load data
-Extract variables
-Run analysis
-Print result
-```
+1. Load data
+2. Extract variables
+3. Run analysis
+4. Print result
 ]
+
 .pull-right4[
 ### Implementation in R
 ```{r, results='hide'}
-data = read.table('my_data.txt')
-variables = data[,c('group','variable')]
-analysis = lm(variable ~ group, data = variables)
+data <- read.table('my_data.txt')
+variables <- data[,c('group','variable')]
+analysis <- lm(variable ~ group, data = variables)
 summary(analysis)
 ```
 ]
+
+---
+
+# R uses
+
+R focuses **statistical computing and graphics** and is not a full programming language:
 
 ---
 
