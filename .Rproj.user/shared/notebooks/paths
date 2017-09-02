@@ -1,6 +1,17 @@
 /Library/Frameworks/R.framework/Versions/3.4/Resources/library/ShinyPsych/shiny-examples/BART/app.R="60888A63"
 /Library/Frameworks/R.framework/Versions/3.4/Resources/library/ShinyPsych/shiny-examples/DfE/app.R="D65AABB"
+<<<<<<< HEAD
 /Users/dwulff/Dropbox (2.0)/Work/Software/BaselRBootcamp2017/slides/D1S1_WhatIsR/what_is_R.Rmd="C64C7602"
 /Users/dwulff/Dropbox (2.0)/Work/Software/BaselRBootcamp2017/slides/D2S1_Wrangling/dplyr.Rmd="8E9CCB4"
 /Users/dwulff/Dropbox (2.0)/Work/Software/BaselRBootcamp2017/slides/what_is_R.Rmd="3F78AA66"
 /Users/dwulff/Dropbox (2.0)/Work/Software/BaselRBootcamp2017/test/testVignettes.R="453E2C04"
+=======
+/Users/nphillips/Dropbox/BaselRBootcamp2017/.gitignore="F65BCCBC"
+/Users/nphillips/Dropbox/BaselRBootcamp2017/R/zzz.R="C918903F"
+/Users/nphillips/Dropbox/BaselRBootcamp2017/slides/D1S1_WhatIsR/what_is_R.Rmd="9AF54A7D"
+/Users/nphillips/Dropbox/BaselRBootcamp2017/slides/D2S1_Wrangling/dplyr.Rmd="902D7FE2"
+/Users/nphillips/Dropbox/BaselRBootcamp2017/slides/what_is_R.Rmd="860BA57"
+/Users/nphillips/Dropbox/BaselRBootcamp2017/vignettes/dplyr.Rmd="ECA5028D"
+/Users/nphillips/Dropbox/BaselRBootcamp2017/vignettes/dplyr_practical.Rmd="631DF98E"
+/Users/nphillips/Dropbox/BaselRBootcamp2017/vignettes/guide.Rmd="D723A115"
+>>>>>>> f3100e9af52070c583d4594df5c522c2853abab7

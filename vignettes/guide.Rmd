@@ -1,0 +1,31 @@
+---
+title: "BaselRBootcamp, September 2017"
+author: "Nathaniel D. Phillips, Dirk U. Wulff"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{FFTrees package overview}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Welcome to the BaselRBootcamp!
+
+### Practicals
+
+Here is a complete list of the vignettes
+
+| | Link| Description |
+|--:|:------------------------------|:-------------------------------------------------|
+|     1|    [dplyr](dplyr_practical.html)| A complete example of using FFTrees to model heart disease diagnosis     |
+
+
+### Datasets
+
+To
+
+| | Name| Description | Package | Rows | Columns |
+|--:|:------------------------------|:--------------------------------------|:----|:---|:----|
+| 1| ACTG175| AIDS Clinical Trials Group Study 175|speff2trial|2139|27
+| 2| xxx | xxxx | xxx | xxx |
+
