@@ -1,0 +1,35 @@
+---
+title: "BaselR Bootcamp"
+author: "Nathaniel D. Phillips, Dirk U. Wulff"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{BaselRBootcamp2017 Guide}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+## BaselRBootcamp 2017
+
+Links
+
+- [Main BaselRBootcamp Page](https://therbootcamp.github.io/)
+- [BaselRBootcamp GitHub](https://github.com/therbootcamp/BaselRBootcamp2017)
+
+### Tutorials
+
+Here is a complete list of the vignettes
+
+| | Tutorial Link| Description |
+|--:|:------------------------------|:-------------------------------------------------|
+|     1|    [Heart Disease Tutorial](what_is_R.html)| A very basic introduction to R     |
+|     2 |   Coming Soon| Coming SOon|
+
+
+
+
+## About us
+
+- [Dr. Dirk U. Wulff](http://dirkwulff.org)
+- [Dr. Nathaniel D. Phillips](http://ndphillips.github.io)
