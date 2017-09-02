@@ -63,12 +63,11 @@ summary(analysis)
 
 ---
 
-# R as a programming language
+# R is purpose specific
 
-R has been build **statistical computing and graphics**. It is not a full programming language:
+R has been build for **statistical computing and graphics** and that is basically it:
 
 .pull-left4[
-
 ### Use R for...
 1. Loading and handling data
 2. Run statistical analyses
@@ -88,7 +87,7 @@ R has been build **statistical computing and graphics**. It is not a full progra
 
 # R is widely used
 
-R grows in popularity. Today, R is one of the most popular languages for data science and overall:
+R steadily grows in popularity. Today, R is one of the most popular languages for data science and overall. In terms of the number of data science jobs, R beats SAS and Matlab, and is on par with Python:
 <br><br><br>
 ```{r, out.height = "400px", echo = F, fig.align='center'}
 knitr::include_graphics("https://i0.wp.com/r4stats.com/wp-content/uploads/2017/02/Fig-1a-IndeedJobs-2017.png")
@@ -97,6 +96,76 @@ knitr::include_graphics("https://i0.wp.com/r4stats.com/wp-content/uploads/2017/0
 
 ---
 
+# R has strengths and weaknesses
+
+R has been implemented in **C, Fortran, and R**. This means that R can be fast and efficient, however, often it is not. R's strengths rather lie in its flexibility and cutting-edge development. 
+
+.pull-left5[
+### Strengths
+1. Extensibility ([CRAN](https://cran.r-project.org/), packages)
+2. User base (e.g., [stackoverflow](https://stackoverflow.com/))
+3. [Tidyverse](https://www.tidyverse.org/) (`dplyr`, `ggplot`, etc.)
+4. [RStudio](https://www.rstudio.com/)
+]
+
+.pull-right5[
+### Weaknesses
+1. Slow and wordy
+2. Limited (no iterators, pointers, etc.)
+
+$\rightarrow$ [Rcpp](http://www.rcpp.org/), [rPython](http://rpython.r-forge.r-project.org/)
+]
+
+---
+
+# The omnipotent **tidyverse**
+
+Modern R contains a collection of high-performance, easy-to-use packages (libraries) for data handling know as the [tidyverse](https://www.tidyverse.org/). The tidyverse includes:
+1. `ggplot2` -- creating graphics.
+2. `dplyr` -- data manipulation.
+3. `tidyr` -- tidying data.
+4. `readr` -- read wild data.
+5. `purrr` -- functional programming.
+6. `tibble` -- modern data frame.
+<br><br>
+
+```{r, out.height = "200px", echo = F}
+knitr::include_graphics("http://d33wubrfki0l68.cloudfront.net/0ab849ed51b0b866ef6895c253d3899f4926d397/dbf0f/images/hex-ggplot2.png")
+knitr::include_graphics("http://d33wubrfki0l68.cloudfront.net/071952491ec4a6a532a3f70ecfa2507af4d341f9/c167c/images/hex-dplyr.png")
+knitr::include_graphics("http://d33wubrfki0l68.cloudfront.net/5f8c22ec53a1ac61684f3e8d59c623d09227d6b9/b15de/images/hex-tidyr.png")
+knitr::include_graphics("http://d33wubrfki0l68.cloudfront.net/66d3133b4a19949d0b9ddb95fc48da074b69fb07/7dfb6/images/hex-readr.png")
+knitr::include_graphics("http://d33wubrfki0l68.cloudfront.net/9221ddead578362bd17bafae5b85935334984429/37a68/images/hex-purrr.png")
+knitr::include_graphics("http://d33wubrfki0l68.cloudfront.net/f55c43407ae8944b985e2547fe868e5e2b3f9621/720bb/images/hex-tibble.png")
+```
+
+---
+
+# RStudio: R's favorite working place  
+
+Next to many useful packages, R users greatly benefit from R's integrated development environment [RStudio](https://www.rstudio.com/). Rstudio is a graphical user interface that allows you to (a) edit code, (b) run code, (c) access files and progress, and (d) create plots. In addition RStudio helps you with version control via [Github](https://github.com/), to write reports using [markdown](http://rmarkdown.rstudio.com/authoring_basics.html) and [knitr](https://yihui.name/knitr/), and with integrating C++ into R.<br><br>  
+
+
+```{r, out.width = "800px", echo = F, fig.align='center'}
+knitr::include_graphics("rstudio_plus.png")
+```
+
+---
+
+# RStudio's structure
+
+Next ...<br><br>  
+
+
+```{r, out.width = "800px", echo = F, fig.align='center'}
+knitr::include_graphics("rstudio_workings.png")
+```
+
+
+
+
+
+
+---
 
 class: small
 
