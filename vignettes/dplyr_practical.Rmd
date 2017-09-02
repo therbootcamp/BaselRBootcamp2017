@@ -1,0 +1,14 @@
+---
+title: "Data wranging with dplyr Practical"
+author: "TheRBootcamp"
+output: html_document
+---
+
+
+1. First, load the `dplyr` package with `library()`
+
+```{r, message = FALSE, warning = FALSE}
+library(dplyr)
+```
+
+

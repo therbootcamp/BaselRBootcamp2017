@@ -11,15 +11,14 @@ vignette: >
 
 ## Welcome to the BaselRBootcamp!
 
-### Vignettes
+### Practicals
 
 Here is a complete list of the vignettes
 
-| | Vignette Link| Description |
+| | Link| Description |
 |--:|:------------------------------|:-------------------------------------------------|
-|     1|    [Heart Disease Tutorial](FFTrees_heart.html)| A complete example of using FFTrees to model heart disease diagnosis     |
-|      |    [Accuracy statistics](AccuracyStatistics.html)| Definitions of accuracy statistics used throughout the package|
-|     2|    [Creating FFTs with FFTrees()](FFTrees_function.html) |Description of  the main function `FFTrees()`|
+|     1|    [dplyr](dplyr_practical.html)| A complete example of using FFTrees to model heart disease diagnosis     |
+
 
 ### Datasets
 
