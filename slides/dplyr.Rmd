@@ -1,5 +1,5 @@
 ---
-title: "Data Wranging with dplyr"
+title: "Data Wranging with dplyr and tidyr"
 subtitle: ""
 author: "The R Bootcamp<br/>Twitter: <a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
 date: "June 2017"
@@ -28,11 +28,34 @@ options(digits = 4)
 ```
 
 # dplyr
-
+.pull-left4[
 What is dplyr?
 
-- dplyr is a package for managing dataframes.
-- 
+dplyr is a package for managing dataframes.
+
+Anytime you want to slice, dice, aggregate, or manipulate a dataframe, there is almost certainly a way to do it in dplyr.
+]
+
+
+.pull-right4[
+
+### dplyr CheatSheet
+```{r, echo = FALSE, out.width="700px"}
+knitr::include_graphics("https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf")
+```
+]
+
+
+---
+#CheatSheet
+
+https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf
+
+```{r, echo = FALSE}
+knitr::include_graphics("https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf")
+```
+
+
 
 
 ---

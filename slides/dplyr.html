@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Data Wranging with dplyr</title>
+    <title>Data Wranging with dplyr and tidyr</title>
     <meta charset="utf-8">
     <meta name="author" content="The R Bootcamp Twitter: @therbootcamp" />
     <link href="libs/remark-css/example.css" rel="stylesheet" />
@@ -11,7 +11,7 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Data Wranging with dplyr
+# Data Wranging with dplyr and tidyr
 ### The R Bootcamp<br/>Twitter: <a href='https://twitter.com/therbootcamp'><span class="citation">@therbootcamp</span></a>
 ### June 2017
 
@@ -23,11 +23,30 @@ class: center, middle, inverse, title-slide
 
 
 # dplyr
-
+.pull-left4[
 What is dplyr?
 
-- dplyr is a package for managing dataframes.
-- 
+dplyr is a package for managing dataframes.
+
+Anytime you want to slice, dice, aggregate, or manipulate a dataframe, there is almost certainly a way to do it in dplyr.
+]
+
+
+.pull-right4[
+
+### dplyr CheatSheet
+&lt;embed src="https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf" width="700px" type="application/pdf" /&gt;
+]
+
+
+---
+#CheatSheet
+
+https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf
+
+![](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)&lt;!-- --&gt;
+
+
 
 
 ---
@@ -107,7 +126,7 @@ plot(sat.act$SATV, sat.act$ACT)
 plot(sat.act$SATQ, sat.act$ACT)
 ```
 
-![](dplyr_files/figure-html/unnamed-chunk-3-1.svg)&lt;!-- --&gt;
+![](dplyr_files/figure-html/unnamed-chunk-5-1.svg)&lt;!-- --&gt;
 
 ---
 # Linear Regression Model
@@ -179,7 +198,7 @@ plot(sat.act$SATV, sat.act$ACT)
 abline(m1)
 ```
 
-![](dplyr_files/figure-html/unnamed-chunk-6-1.svg)&lt;!-- --&gt;
+![](dplyr_files/figure-html/unnamed-chunk-8-1.svg)&lt;!-- --&gt;
 ]
 ---
 class: small
@@ -234,7 +253,7 @@ plot(sat.act$SATV_c, sat.act$ACT)
 abline(m2)
 ```
 
-![](dplyr_files/figure-html/unnamed-chunk-9-1.svg)&lt;!-- --&gt;
+![](dplyr_files/figure-html/unnamed-chunk-11-1.svg)&lt;!-- --&gt;
 ]
 ---
 
