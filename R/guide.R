@@ -6,6 +6,6 @@
 
 bootcamp.guide <- function() {
 
-  vignette("guide", package = "BaselRBootcamp")
+  vignette("guide", package = "BaselRBootcamp2017")
 
 }
