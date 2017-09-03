@@ -4,11 +4,99 @@ author: "TheRBootcamp"
 output: html_document
 ---
 
+```{r, echo = FALSE}
+knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = FALSE)
+```
+
 
 1. First, load the `dplyr` package with `library()`
 
-```{r, message = FALSE, warning = FALSE}
+```{r, message = FALSE, warning = FALSE, echo = TRUE}
 library(dplyr)
 ```
 
+
+2. For this practical, we'll use the `ACTG175` dataframe from the `speff2trial` package, load the package with the `library()` function 
+
+```{r, message = FALSE, echo = TRUE}
+library(speff2trial)
+```
+
+3. First thing's first, take a look at the first few rows of the data with the `head()` function. (It should look like this:)
+
+```{r}
+head(ACTG175)
+```
+
+### `mutate()`
+
+4. Using the `mutate()` function, add a new column to the dataframe called `age_months` that shows each patient's age in months instead of years.
+
+```{r}
+ACTG175 <- ACTG175 %>% mutate(
+  age_months = age * 12
+)
+```
+
+5. The column `karnof` shows each patient's [Karnofsky score](http://emedicine.medscape.com/article/2172510-overview) on a scale from 0 to 100, create a new variable called `karnof_b` that shows the score on a scale from 0 to 1 (hint: just divide the original column by 100)
+
+```{r}
+ACTG175 <- ACTG175 %>% 
+  mutate(
+         karnof_b = karnof / 100
+        )
+```
+
+6. Now, do the previous two questions in one chunk of code. That is, using one call to `mutate()` create both `age_months` and `karnof_b`
+
+```{r}
+ACTG175 <- ACTG175 %>% 
+ mutate(
+    age_months = age * 12,
+    karnof_b = karnof / 100
+    )
+```
+
+7. A physician wants to see a new score called the `sparrow` which is equal to the Karnofsky score divided by a person's age plus the person's weight in kg. Add each participant's sparrow score as a new column called `sparrow` (Hint: Just take `karnof / age + wtkg)
+
+```{r}
+ACTG175 <- ACTG175 %>% 
+ mutate(
+    sparrow = karnof / age + wtkg
+    )
+```
+
+### `arrange()`
+
+8. Arrange the `ACTG175` data by age. After, look at the first few rows of the data with `head()` to make sure it worked.
+
+```{r}
+ACTG175 <- ACTG175 %>% 
+ arrange(age)
+```
+
+9. You can sort the rows of dataframes with multiple columns by including many arguments to `arrange()`. Now sort the data by `karnof` and then age (`age`)
+
+```{r}
+ACTG175 <- ACTG175 %>% 
+ arrange(karnof, age)
+```
+
+**Tip!**
+
+To sort the rows of a dataframe in descending order, just include the function `dec()`. For example, here's how I could sort the ChickWeight dataframe by descending order of Time, and then ascending order of Diet 
+
+```{r, eval = FALSE, echo = TRUE}
+# Sort in descending order of Time, and then ascending order of Diet
+ChickWeight <- ChickWeight %>% 
+               arrange(desc(Time), Diet)
+```
+
+
+10. Now, sort the `ACTG175` in ascending order of age (`age`), and then descending order of their sparrow score (`sparrow`), then ascending order of weight (`wtkg`):
+
+```{r}
+ACTG175 <- ACTG175 %>% 
+ arrange(age, desc(sparrow), wtkg)
+```
 
