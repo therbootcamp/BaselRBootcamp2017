@@ -1,13 +1,70 @@
 ---
-title: "Data wranging with dplyr Practical"
+title: "Data wrangling with dplyr"
 author: "TheRBootcamp"
 output: html_document
 ---
 
 ```{r, echo = FALSE}
-knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = FALSE)
+knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = FALSE, eval = FALSE)
 ```
 
+### Overview
+
+In this practical you'll practice "data wrangling" with the `dplyr` package. Data wrangling refers to modifying and summarizing data. For example, sorting, adding columns, recoding values, 
+
+If you don't have it already, you can access the dplyr cheatsheet here [https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf). This has a nice overview of all the major functions in dplyr.
+
+### Examples
+
+```{r, eval = FALSE, echo = TRUE}
+# -----------------------------------------------
+# Examples of using dplyr on the ChickWeight data
+# ------------------------------------------------
+
+library(dplyr)         # Load dplyr
+
+chick <- ChickWeight   # Save a copy of the ChickWeight data as chick
+
+# Add columns with mutate()
+
+chick <- chick %>%
+  mutate(
+    weight.kg = weight / 1000,  # Add new column of weight in kilograms
+    time.week = Time / 7        # Add time.week as time in weeks
+  )
+
+# Sort rows with arrange()
+
+chick <- chick %>%
+  arrange(Diet, weight)   # sort rows by Diet and then weight
+
+
+# Recode variables with case_when()
+
+chick <- chick %>%
+  mutate(
+    diet.name = case_when(
+      Diet == 1 ~ "vegetables",
+      Diet == 2 ~ "fruit",
+      Diet == 3 ~ "candy",
+      Diet == 4 ~ "meat"
+      
+    )
+  )
+
+# Grouped statistics with group_by() and summarise()
+
+chick %>% 
+  group_by(Diet) %>%
+  summarise(
+    weight.mean = mean(weight),
+    weight.max = max(weight),
+    time.mean = mean(Time)
+  )
+```
+
+
+### Tasks
 
 1. First, load the `dplyr` package with `library()`
 
@@ -16,51 +73,59 @@ library(dplyr)
 ```
 
 
-2. For this practical, we'll use the `ACTG175` dataframe from the `speff2trial` package, load the package with the `library()` function 
+2. For this practical, we'll use the `trialact` dataframe from the `speff2trial` package, load the package with the `library()` function 
 
-```{r, message = FALSE, echo = TRUE}
+```{r, message = FALSE, echo = TRUE, eval = TRUE}
 library(speff2trial)
 ```
 
-3. First thing's first, take a look at the first few rows of the data with the `head()` function. (It should look like this:)
 
-```{r}
-head(ACTG175)
+3. Now save a copy of the data as `trialact`
+
+```{r, echo = TRUE, eval = TRUE}
+trialact <- ACTG175
+```
+
+
+4. First thing's first, take a look at the first few rows of the data with the `head()` function. (It should look like this:)
+
+```{r, eval = TRUE}
+head(trialact)
 ```
 
 ### `mutate()`
 
-4. Using the `mutate()` function, add a new column to the dataframe called `age_months` that shows each patient's age in months instead of years.
+5. Using the `mutate()` function, add a new column to the dataframe called `age_months` that shows each patient's age in months instead of years.
 
 ```{r}
-ACTG175 <- ACTG175 %>% mutate(
+trialact <- trialact %>% mutate(
   age_months = age * 12
 )
 ```
 
-5. The column `karnof` shows each patient's [Karnofsky score](http://emedicine.medscape.com/article/2172510-overview) on a scale from 0 to 100, create a new variable called `karnof_b` that shows the score on a scale from 0 to 1 (hint: just divide the original column by 100)
+6. The column `karnof` shows each patient's [Karnofsky score](http://emedicine.medscape.com/article/2172510-overview) on a scale from 0 to 100, create a new variable called `karnof_b` that shows the score on a scale from 0 to 1 (hint: just divide the original column by 100)
 
 ```{r}
-ACTG175 <- ACTG175 %>% 
+trialact <- trialact %>% 
   mutate(
          karnof_b = karnof / 100
         )
 ```
 
-6. Now, do the previous two questions in one chunk of code. That is, using one call to `mutate()` create both `age_months` and `karnof_b`
+7. Now, do the previous two questions in one chunk of code. That is, using one call to `mutate()` create both `age_months` and `karnof_b`
 
 ```{r}
-ACTG175 <- ACTG175 %>% 
+trialact <- trialact %>% 
  mutate(
     age_months = age * 12,
     karnof_b = karnof / 100
     )
 ```
 
-7. A physician wants to see a new score called the `sparrow` which is equal to the Karnofsky score divided by a person's age plus the person's weight in kg. Add each participant's sparrow score as a new column called `sparrow` (Hint: Just take `karnof / age + wtkg)
+8. A physician wants to see a new score called the `sparrow` which is equal to the Karnofsky score divided by a person's age plus the person's weight in kg. Add each participant's sparrow score as a new column called `sparrow` (Hint: Just take `karnof / age + wtkg)
 
 ```{r}
-ACTG175 <- ACTG175 %>% 
+trialact <- trialact %>% 
  mutate(
     sparrow = karnof / age + wtkg
     )
@@ -68,17 +133,17 @@ ACTG175 <- ACTG175 %>%
 
 ### `arrange()`
 
-8. Arrange the `ACTG175` data by age. After, look at the first few rows of the data with `head()` to make sure it worked.
+9. Arrange the `trialact` data by age. After, look at the first few rows of the data with `head()` to make sure it worked.
 
 ```{r}
-ACTG175 <- ACTG175 %>% 
+trialact <- trialact %>% 
  arrange(age)
 ```
 
-9. You can sort the rows of dataframes with multiple columns by including many arguments to `arrange()`. Now sort the data by `karnof` and then age (`age`)
+10. You can sort the rows of dataframes with multiple columns by including many arguments to `arrange()`. Now sort the data by `karnof` and then age (`age`)
 
 ```{r}
-ACTG175 <- ACTG175 %>% 
+trialact <- trialact %>% 
  arrange(karnof, age)
 ```
 
@@ -93,10 +158,130 @@ ChickWeight <- ChickWeight %>%
 ```
 
 
-10. Now, sort the `ACTG175` in ascending order of age (`age`), and then descending order of their sparrow score (`sparrow`), then ascending order of weight (`wtkg`):
+11. Now, sort the `trialact` in ascending order of age (`age`), and then descending order of their sparrow score (`sparrow`), then ascending order of weight (`wtkg`):
 
 ```{r}
-ACTG175 <- ACTG175 %>% 
+trialact <- trialact %>% 
  arrange(age, desc(sparrow), wtkg)
 ```
+
+
+### `case_when()`
+
+Create a new column `gender.char` that shows gender as a string. Hint: The column `gender` codes 0 as female, and 1 as male
+
+```{r}
+trialact <- trialact %>%
+  mutate(
+  gender.char = case_when(
+    gender == 0 ~ "female",
+    gender == 1 ~ "male"
+  )
+  )
+```
+
+
+Create a new column `over50` that is 1 when patients are older than 50, and 0 when they are younger than or equal to 50
+
+```{r}
+trialact <- trialact %>%
+  mutate(
+  over50 = case_when(
+    age > 50 ~ 1,
+    age <= 50 ~ 0
+  )
+  )
+```
+
+
+Now, repeat the previous two questions, but do them both in the same call to `mutate()`. That is, in one block of code, create `gender.char` and `over50`
+
+```{r}
+trialact <- trialact %>%
+  mutate(
+    gender.char = case_when(
+    gender == 0 ~ "female",
+    gender == 1 ~ "male"),
+  over50 = case_when(
+    age > 50 ~ 1,
+    age <= 50 ~ 0)
+  )
+```
+
+
+### `group_by()` and `summarise()`
+
+```{r, echo = TRUE, eval = FALSE}
+# Grouped aggregation with the ChickWeight Dataset
+ChickWeight %>% 
+  group_by(Diet) %>% 
+  summarise(
+  weight.mean = mean(weight),
+  time.median = median(Time),
+  n = n()
+)
+```
+
+
+
+Now let's do some grouped aggregation!
+
+13. For each arm, calculate the mean participant age
+
+```{r, eval = FALSE}
+trialact %>% 
+  group_by(arms) %>%
+  summarise(
+    age.mean = mean(age)
+  )
+```
+
+14. For each arm, calculate the mean participant age *and* the median Karnofsky score
+
+```{r}
+trialact %>% 
+  group_by(arms) %>%
+  summarise(
+    age.mean = mean(age),
+    karnof.median = median(karnof)
+  )
+```
+
+16. Separately for male and female patients, calculate the percent who have a history of intraveneous drug use (hint: to calculate a percent of a binary variable with 0s and 1s, just calculate the mean)
+
+```{r}
+trialact %>%
+  group_by(gender) %>%
+  summarise(
+    drug.percent = mean(drugs)
+  )
+```
+
+17. Separately for male and female patients (`gender`), calculate the percent who have a history of intraveneous drug use (`drugs`), and the percent of patients who  (Hint: to calculate a percent of a binary variable with 0s and 1s, just calculate the mean)
+
+```{r}
+trialact %>%
+  group_by(gender) %>%
+  summarise(
+    drug.percent = mean(drugs)
+  )
+```
+
+
+Separately for all combinations of gender and race, calculate the mean age and mean CD4 T cell count at baseline (`cd40`) (Hint: group by `gender` and `race`)
+
+```{r}
+trialact %>%
+  group_by(gender, race) %>%
+  summarise(
+    age.mean = mean(age),
+    cd40.mean = mean(cd40)
+  )
+```
+
+### Challenges
+
+
+
+
 
