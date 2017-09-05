@@ -15,8 +15,18 @@ Bootcamp_package_installation <- function() {
 
     if((package.i %in% installed.packages) == FALSE) {
 
-      install.packages(package.i)
-      message(paste("Installing", package.i, "..."))
+      if(package.i == "Rcpp"){
+        test = try(install.packages(package.i))
+        if(is.null(test)){
+          message(paste("Installing", package.i, "..."))
+          } else {
+          message(paste("Error: could not install psackage Rcpp"))
+          }
+      } else {
+        install.packages(package.i)
+        message(paste("Installing", package.i, "..."))
+      }
+
 
     } else {message(paste(package.i, "already installed!"))}
 
@@ -27,4 +37,3 @@ Bootcamp_package_installation <- function() {
 
 Bootcamp_package_installation()
 
-source("https://raw.githubusercontent.com/therbootcamp/BaselRBootcamp2017/master/R/BootcampPackageInstallation.R")
