@@ -1,8 +1,13 @@
 ---
-title: "Machine Learning"
+title: "Practical: Machine Learning"
 author: "BaselRBootcamp 2017"
 output: html_document
 ---
+
+```{r, echo = FALSE, fig.align = 'center'}
+knitr::include_graphics("images/machinelearningcartoon.png")
+```
+
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = FALSE, eval = FALSE)
@@ -15,344 +20,430 @@ Here a link to the lecture slides for this session: LINK
 
 ### Overview
 
-In this practical you'll conduct machine learning analyses. Here are the main functions and packages you'll be using:
+In this practical you'll conduct machine learning analyses on a dataset on heart disease. You will see how well many different machine learning models can predict new data. By the end of this practical you will know how to:
+
+1. Create separate training and test data
+2. Fit a model to data
+3. Make predictions from a model
+4. Compare models in how well they canpredict new data.
+
+### Key Functions and packages
+
+Here are the main functions and packages you'll be using. For more information about the specific models, click on the link in *Additional Details*.
 
 | Algorithm| Function| Package | Additional Details |
 |:------|:--------|:----|:----|
-|     Regression|    `lm()`| Base R| https://bookdown.org/ndphillips/YaRrr/regression.html#the-linear-model|
-|     Regularized regression|    `glmnet()`| `glmnet` |https://web.stanford.edu/~hastie/glmnet/glmnet_alpha.html |
+|     Regression|    `glm()`| Base R| https://bookdown.org/ndphillips/YaRrr/regression.html#the-linear-model|
+|     Support Vector Machines|    `svm()`| `e1071` |https://web.stanford.edu/~hastie/glmnet/glmnet_alpha.html |
 |     Decision Trees|    `rpart()`| `rpart` | https://statweb.stanford.edu/~lpekelis/talks/13_datafest_cart_talk.pdf|
-|     Fast and Frugal Decision Trees|   `FFTrees()`| `FFTrees` |https://cran.r-project.org/web/packages/FFTrees/vignettes/FFTrees_function.html |
 | Random Forests | `randomForest()` | `randomForest` | http://www.blopig.com/blog/2017/04/a-very-basic-introduction-to-random-forests-using-r/|
 
 
+```{r, echo = TRUE}
+# Install all packages necessary for the practical
+#  Only necessary if you don't already have them
+
+install.packages(c("e1071", "rpart", "randomForest", "tidyverse", "yarrr", "FFTrees"))
+```
+
 
 ### Examples
+
+The following examples will take you through all steps of the machine learning process, from creating training and test data, to fitting models, to making predictions.
 
 ```{r, eval = FALSE, echo = TRUE}
 # -----------------------------------------------
 # Examples of hypothesis tests on the ChickWeight data
 # ------------------------------------------------
 
-library(dplyr)         # Load dplyr
+# -----------------------
+# Part A:
+# Load libraries
+# -----------------------
 
-chick <- ChickWeight   # Save a copy of the ChickWeight data as chick
+library(e1071)          # for svm()
+library(randomForest)   # for randomForest()
+library(rpart)          # for rpart()
+library(yarrr)          # for pirateplot()
+library(tidyverse)      # for datawrangling and ggplot2
+library(FFTrees)        # for the heartdisease data
 
-# -----
-# 1-sample hypothesis test
-# -----
+# -----------------------
+# Part B:
+# Create heart a dataset containing all data
+# -----------------------
 
-# Q: Is the mean weight of chickens different from 110?
+heart <- heartdisease   # Save a copy of the heartdisease data as heart
 
-t.test(x = ChickWeight$weight,     # The data
-       alternative = "two.sided",  # Two-sided test
-       mu = 110)                   # The null hyopthesis
+for(i in 1:ncol(heart)) {  # Convert character columns and diagnosis to factor
+  
+  if(class(heart[,i]) == "character" | names(heart)[i] == "diagnosis") {
+    
+    heart[,i] <- factor(heart[,i])}
+  
+}
 
-# -----
-# 2-sample hypothesis test
-# -----
+# -----------------------
+# Part C: Create separate training and test data 
+#  heart_train, heart_test
+# -----------------------
 
-# Q: Is there a difference in weights from Diet 1 and Diet 2?
+set.seed(100)   # To fix the randomization
+train_samples <- sample(nrow(heart), size = 125)
+test_samples <- setdiff(1:nrow(heart), train_samples)
 
-t.test(formula = weight ~ Diet,    # DV ~ IV
-       alternative = "two.sided",  # Two-sided test
-       data = ChickWeight,         # The data
-       subset = Diet %in% c(1, 2)) # Groups to compare
+heart_train <- heart[train_samples, ]
+heart_test <- heart[test_samples, ]
 
-# -----
-# Correlation test
-# ------
+# ------------------------------
+# Part I: Create models from training data
+# ------------------------------
 
-# Q: Is there a correlation between Time and weight?
+glm_model <- glm(formula = chol ~ ., data = heart_train)
+svm_model <- svm(formula = chol ~ ., data = heart_train)
+rpart_model <- rpart(formula = chol ~ ., data = heart_train)
+randomforest_model <- randomForest(formula = chol ~ ., data = heart_train)
 
-cor.test(formula = ~ weight + Time,
-         data = ChickWeight)
+# ------------------------------
+# Part II: Calculate fits for each model for heart_train
+#  predict(model, heart_train)
+# ------------------------------
 
-# A: Yes. t = 0.84, t(576) = 36.7, p < .001
+glm_fit <- predict(glm_model, heart_train)
+svm_fit <- predict(svm_model, heart_train)
+rpart_fit <- predict(rpart_model, heart_train)
+randomforest_fit <- predict(randomforest_model, heart_train)
 
-# -----
-# Chi-Square test
-# ------
+# Calculate fitting absolute errors and put in a dataframe
 
-# Q: Are there more observations from chicks on one diet versus another?
+fit_mae_df <- data_frame(index = 1:nrow(heart_train),
+                         glm = abs(glm_fit - heart_train$chol),
+                         svm = abs(svm_fit - heart_train$chol),
+                         rpart = abs(rpart_fit - heart_train$chol),
+                         randomforest = abs(randomforest_fit - heart_train$chol))
 
-chisq.test(x = table(ChickWeight$Diet))  # Input is a table of values
+# ------------------------------
+# Part III: Plot fitting results
+# ------------------------------
 
-# A: Yes, some diets are observed more than others. X2(3) = 52.6, p < .001
+# Create a second reshaped dataframe for ggplot
 
-# -----
-# ANOVA
-# -----
+fit_mae_df2 <- fit_mae_df %>% 
+  gather(model, mae, -index)
 
-# Q: Is there an overall effect of diet on weight?
+# Create violin plot with ggplot
 
-Diet_aov <- aov(formula = weight ~ factor(Diet),   # Run the anova
-                data = ChickWeight)
+ggplot(fit_mae_df2, 
+       aes(model, mae)) + 
+       geom_boxplot(aes(fill = factor(model))) +
+       labs(title = "Cholestorol Fitting Performance", 
+            y = "Mean Absolute Error (MAE)")
 
-summary(Diet_aov)       # Look at summary for overall test results
-TukeyHSD(Diet_aov)      # Conduct post-hoc tests
+# Or a pirateplot with yarrr
+yarrr::pirateplot(data = as.data.frame(fit_mae_df[,2:5]), 
+                  main = "Cholesterol Fitting Accuracy")
 
-# A: Yes, there is an overall effect of diet on weight, F(3, 574) = 10.81, p < .001
-# Furthermore, we find significant differences between diets 1-3, and diets 1-4 at the 0.05 level.
+# ------------------------------
+# Part IV: Calculate predictions for each model for heart_test
+# predict(model, heart_test)
+# ------------------------------
+
+# Calculate predictions for each model for heart_test
+
+glm_pred <- predict(glm_model, heart_test)
+svm_pred <- predict(svm_model, heart_test)
+rpart_pred <- predict(rpart_model, heart_test)
+randomforest_pred <- predict(randomforest_model, heart_test)
+
+# Calculate prediction ae (mean absolute error)
+
+truth_test <- heart_test$chol
+
+glm_pred_ae <- abs(glm_pred - truth_test)
+svm_pred_ae <- abs(svm_pred - truth_test)
+rpart_pred_ae <- abs(rpart_pred - truth_test)
+randomforest_pred_ae <- abs(randomforest_pred - truth_test)
+
+pred_mae_df <- data_frame(index = 1:nrow(heart_test),
+                          glm = glm_pred_ae,
+                          svm = svm_pred_ae,
+                          rpart = rpart_pred_ae,
+                          randomforest = randomforest_pred_ae)
+
+# ------------------------------
+# Part V: Plot prediction results
+# ------------------------------
+
+# Create a second reshaped dataframe for ggplot
+pred_mae_df2 <- pred_mae_df %>% 
+              gather(model, mae, -index)
+
+# Create violin plot
+
+ggplot(pred_mae_df2, 
+       aes(model, mae)) + 
+       geom_boxplot(aes(fill = factor(model))) +
+       labs(title = "Cholestorol Prediction Performance", 
+            y = "Mean Absolute Error (MAE)")
+
+
+# Or a pirateplot
+yarrr::pirateplot(data = as.data.frame(pred_mae_df[,2:5]), 
+                  main = "Cholesterol Prediction Accuracy")
 
 ```
 
 
 ## Tasks
 
-### Gettting started
+- Note, most of this practical will be copying and pasting code from the Examples and only making small changes.
+- Try running pieces of the code line by line and understand what it's doing.
 
-A. For this practical, we'll use the `trialact` dataframe from the `speff2trial` package, load the package with the `library()` function 
+#### Gettting started
 
-```{r, message = FALSE, echo = TRUE, eval = TRUE}
-library(speff2trial)
+A. For this practical, we'll use the `heartdisease` dataframe from the `FFTrees` package, load the package with the `library()` function. We'll also use the `e1071`, `randomForest`, `rpart`, `ggplot2`, and `yarrr` pacakges. 
+
+```{r, message = FALSE, echo = TRUE, eval = TRUE, warning = FALSE}
+# Load libraries
+
+library(e1071)          # for svm()
+library(randomForest)   # for randomForest()
+library(rpart)          # for rpart()
+library(yarrr)          # for pirateplot()
+library(tidyverse)      # for datawrangling and ggplot2
+library(FFTrees)        # for the heartdisease data
 ```
 
 
-B. Now save a copy of the data as `trialact`
+B. Now save a copy of the data as `heart`
 
 ```{r, echo = TRUE, eval = TRUE}
-trialact <- ACTG175
+heart <- heartdisease
 ```
 
 
-C. First thing's first, take a look at the first few rows of the data with the `head()` function. (It should look like this:)
+C. Take a look at the data by running `head()` and `View()`
 
-```{r, eval = TRUE}
-head(trialact)
+```{r, echo = TRUE}
+head(heart)
+View(heart)
 ```
 
+#### Create training and test data
 
-### T tests with t.test()
+1. Following Part B and Part C, create separate dataframes `heart_train` for model training and `heart_test`
 
-1. Conduct a one-sample t-test comparing the age of the patients versus a null hypothesis of 40 years.
+   - You can just copy parts B and C directly into your code, you don't need to change anything.
 
-```{r}
-t.test(x = trialact$age,
-       alternative = "two.sided",
-       mu = 40)
-```
-
-2. Now, compare the mean age to a null hypothesis of 35 years
-
-```{r}
-t.test(x = trialact$age,
-       alternative = "two.sided",
-       mu = 35)
-```
-
-3. Conduct a two-sample t-test comparing the age of men versus women
-
-  - Women are coded as 0 in `gender`, and men are coded as 1. 
-  - Be sure to use the formula notation `formula = age ~ gender`
-
-```{r}
-t.test(formula = age ~ gender,
-       data = trialact,
-       alternative = "two.sided")
-```
+```{r, echo = FALSE}
+# -----------------------
+# Part B:
+# Create heart
+# -----------------------
 
 
-4. Conduct a two-sample t-test comparing the number of days until the first occurence of a major negative event (`days`) between those with a history of intravenous drug use (`drugs`) and those without a history of intraveneous drug use
+# Save a copy of the ChickWeight data as chick
+heart <- heartdisease  
 
-
-```{r}
-t.test(formula = days ~ drugs,
-       data = trialact)
-```
-
-
-
-### Correlation test with cor.test()
-
-5. Conduct a correlation test between weight (`wtkg`) and age (`age`)?
-
-```{r}
-cor.test(formula = ~ age + wtkg,
-         data = trialact)
-```
-
-6. Conduct a correlation test between CD4 T cell count at baseline (`cd40`) and CD4 T cell count at 20 weeks (`cd420`)
-
-```{r}
-cor.test(formula = ~ cd40 + cd420,
-         data = trialact)
-```
-
-7. Is there a relationship between CD4 T cell count at baseline (`cd40`) and the number of days until the first occurence of major negative event (`days`)?
-
-```{r}
-cor.test(formula = ~ cd40 + days,
-         data = trialact)
-```
-
-8. Only considering men, is there a correlation between CD4 T cell count at baseline (`cd40`)and CD8 T cell count at baseline (`cd80`)?
-
-  - Include the argument `subset = gender == 0` to restrict the analysis to men
+# Some of the columns need to be converted to factors
+for(i in 1:ncol(heart)) {
+  
+  if(class(heart[,i]) == "character" | names(heart[i]) == "diagnosis") {
     
-```{r}
-cor.test(formula = ~ cd40 + cd80,
-         data = trialact,
-         subset = gender == 0)
+   heart[,i] <- factor(heart[,i])}
+  
+}
+
+# -----------------------
+# Part C: Create training and test data 
+#  heart_train, heart_test
+# -----------------------
+
+# Determine which samples are for training and which are for testing
+
+set.seed(100)   # To fix the randomization
+train_samples <- sample(nrow(heart), size = 125)
+test_samples <- setdiff(1:nrow(heart), train_samples)
+
+# Create training and test data
+heart_train <- heart[train_samples, ]
+heart_test <- heart[test_samples, ]
 ```
 
-9. Now, repeat the previous test, but only for women
 
-```{r}
-cor.test(formula = ~ cd40 + cd80,
-         data = trialact,
-         subset = gender == 1)
+#### Train models on trestbps
+
+2. Now let's do some model training! In our analyses, we will try to predict each patient's value of `trestbps` -- their resting blood pressure, as a function of all other variables in the data.
+
+
+3. Following Part I, create four new objects `glm_trestbps_train`, `svm_trestbps_train`, `rpart_trestbps_train`, and `randomforest_trestbps_train` predicting `trestbps`
+
+   - All you need to do is change what is being predicted in the formula
+
+
+```{r, echo = FALSE}
+# ------------------------------
+# Part I: Create models from training data
+# ------------------------------
+
+glm_model <- glm(formula = trestbps ~ ., data = heart_train)
+svm_model <- svm(formula = trestbps ~ ., data = heart_train)
+rpart_model <- rpart(formula = trestbps ~ ., data = heart_train)
+randomforest_model <- randomForest(formula = trestbps ~ ., data = heart_train)
 ```
 
-### Chi-square test with chisq.test()
+#### Calculate fits for training data
 
-10. Do men and women (`gender`) have different distributions of race (`race`)? That is, is the percentage of women who are white differ from the percentage of men who are white?
+4. Following Part II, calculate fits for each model with `predict(model, heart_train)`, then create `fit_mae_df` containing the absolute fitting errors for each model
 
-  - Be sure to create a table of gender and race values with `table(trialact$gender, trialact$race)`
-
-```{r}
-chisq.test(table(trialact$gender, trialact$race))
-```
-
-11. Is there a relationship between a history of intravenous drug use (`drugs`) and hemophilia (`hemo`)?
+   - The code will be almost identical to what is in the Example. All you need to do is change the value of `truth_train` to the correct column in `heart_train`
 
 ```{r}
-chisq.test(table(trialact$hemo, trialact$drugs))
+# ------------------------------
+# Part II: Calculate fits for each model for heart_train
+#  predict(model, heart_train)
+# ------------------------------
+
+glm_fit <- predict(glm_model, heart_train)
+svm_fit <- predict(svm_model, heart_train)
+rpart_fit <- predict(rpart_model, heart_train)
+randomforest_fit <- predict(randomforest_model, heart_train)
+
+# Calculate fitting absolute errors and put in a dataframe
+
+truth_train <- heart_train$trestbps
+
+fit_mae_df <- data_frame(index = 1:nrow(heart_train),
+                         glm = abs(glm_fit - truth_train),
+                         svm = abs(svm_fit - truth_train),
+                         rpart = abs(rpart_fit - truth_train),
+                         randomforest = abs(randomforest_fit - truth_train))
 ```
 
-12. Is there a relationship between homosexual activity (`homo`) and gender (`gender`)
+5. Following Part III, plot the training results
+
+   - Don't forget to change the labels to reflect that we are predicting trestbps, not cholesterol!
+
 
 ```{r}
-chisq.test(table(trialact$homo, trialact$gender))
+# ------------------------------
+# Part III: Plot Training results
+# ------------------------------
+
+# Create a second reshaped dataframe for ggplot
+
+fit_mae_df2 <- fit_mae_df %>% 
+  gather(model, mae, -index)
+
+# Create violin plot with ggplot
+
+ggplot(fit_mae_df2, 
+       aes(model, mae)) + 
+       geom_boxplot(aes(fill = factor(model))) +
+       labs(title = "Trestbps Fitting Performance", 
+            y = "Mean Absolute Error (MAE)")
+
+# Or a pirateplot with yarrr
+yarrr::pirateplot(data = as.data.frame(fit_mae_df[,2:5]), 
+                  main = "Trestbps Fitting Accuracy, ")
 ```
 
-13. Only for patients older than 40, is there a relationship bewteen antiretroviral history (`str2`) and race (`race`)?
+#### Calculate predictions for test data
 
-   - Create a new dataframe called `trialact.o40 <- subset(trialact, age > 40)` and then do your analysis on this new dataframe.
+
+6. Following Part IV, calculate predictions for each model based on `heart_test`
+
+   - Don't forget to change the value of `truth_test` to reflect `trestbps`!
+
+```{r}
+# ------------------------------
+# Part IV: Calculate predictions for each model for heart_test
+# predict(model, heart_test)
+# ------------------------------
+
+# Calculate predictions for each model for heart_test
+
+glm_pred <- predict(glm_model, heart_test)
+svm_pred <- predict(svm_model, heart_test)
+rpart_pred <- predict(rpart_model, heart_test)
+randomforest_pred <- predict(randomforest_model, heart_test)
+
+# Calculate prediction ae (mean absolute error)
+
+truth_test <- heart_test$trestbps
+
+glm_pred_ae <- abs(glm_pred - truth_test)
+svm_pred_ae <- abs(svm_pred - truth_test)
+rpart_pred_ae <- abs(rpart_pred - truth_test)
+randomforest_pred_ae <- abs(randomforest_pred - truth_test)
+
+pred_mae_df <- data_frame(index = 1:nrow(heart_test),
+                          glm = glm_pred_ae,
+                          svm = svm_pred_ae,
+                          rpart = rpart_pred_ae,
+                          randomforest = randomforest_pred_ae)
+```
+
+7. Following part V, plot the prediction results! Which model was the best in predicting resting heart rate in the test set?
+
+   - Don't forget to change the names of the labels to reflect that we're predicting trestbps!
+
+```{r}
+# ------------------------------
+# Part V: Plot prediction results
+# ------------------------------
+
+# Create a second reshaped dataframe for ggplot
+pred_mae_df2 <- pred_mae_df %>% 
+              gather(model, mae, -index)
+
+# Create violin plot
+
+ggplot(pred_mae_df2, 
+       aes(model, mae)) + 
+       geom_boxplot(aes(fill = factor(model))) +
+       labs(title = "Resting blood pressure Prediction Performance", 
+            y = "Mean Absolute Error (MAE)")
+
+
+# Or a pirateplot
+yarrr::pirateplot(data = as.data.frame(pred_mae_df[,2:5]), 
+                  main = "Resting blood pressure Prediction Accuracy")
+```
+
+
+## Extras and Challenges
+
+8. Of all the models we've used, the only one you can easily visualize is a decision tree created from `rpart`. Try visualizing the trees you created using the following code:
+
+   - What does the rpart model tell you about the data?
+
+```{r, echo = TRUE}
+# Visualize the rpart model
+
+plot(rpart_model)  # Plot the structure of the tree
+text(rpart_model)  # Add labels
+```
+
+9. In the linear regression example `glm_model`, you can see which variables are significant by running `summary(glm_model)`. Try running this code to see which variables are significantly correlated with the criterion.
+
+10. The randomforest model is difficult to visualize, but you can see which variables are deemed to be important in the dataset by accessing the result `importance()`. Try visualising the importance of the variables as follows:
+
+```{r, echo = TRUE}
+# Create a dataframe of theh importance results
+importance_results <- as.data.frame(importance(randomforest_model))
+importance_results$feature <- rownames(importance_results)
+
+# Plot the result as a barplot
+ggplot(importance_results, aes(feature, IncNodePurity, fill = feature)) + 
+  geom_col()
+```
+
+
+11. Try repeating the same process as above (for either cholesterol or resting heart rate), but instead of training the data on 125 cases, try training it on only 50 cases.
+
+   - How do you think having fewer cases in the training data will affect accuracy in fitting and prediction? 
    
-   
-```{r}
-trialact.o40 <- subset(trialact, age > 40)
+# Additional reading
 
-chisq.test(table(trialact.o40$str2, trialact.o40$race))
-```
-
-14. Now repeat the previous analysis, but only for male patients
-
-  - Create a new dataframe called `trialact.male <- subset(trialact, gender == 0)` and then do your analysis on this new dataframe.
-
-```{r}
-trialact.male <- subset(trialact, gender == 0)
-
-chisq.test(table(trialact.male$str2, trialact.male$race))
-```
-
-### ANOVA with aov()
-
-
-15. Is there an effect of treatment arms (`arms`) on CD8 T cell count at 20 weeks (`cd820`)
-
-```{r}
-arms_cd820_aov <- aov(formula = cd820 ~ factor(arms),
-                     data = trialact)
-
-summary(arms_cd820_aov)
-
-TukeyHSD(arms_cd820_aov)
-```
-
-
-16. Is there an effect of treatment arms (`arms`) on weight (`wtkg`)?
-
-```{r}
-arms_weight_aov <- aov(formula = wtkg ~ factor(arms),
-                     data = trialact)
-
-summary(arms_weight_aov)
-
-TukeyHSD(arms_weight_aov)
-```
-
-
-17. Is there an effect of treatment arms (`arms`) on the number of days until the first occurance of a major negative event (`days`)
-
-  - Start by creating a new object `arms_days_aov = aov(...)`, make sure to convert `arms` to a factor with `factor(arms)`
-  - Then look at the summary of the object with `summary(arms_days_aov)`
-  - Finally, do posthoc tests with `TukeyHSD()` if necessary
-    
-```{r}
-arms_days_aov <- aov(formula = days ~ factor(arms),
-                     data = trialact)
-
-summary(arms_days_aov)
-
-TukeyHSD(arms_days_aov)
-```
-
-
-18. Does the previous result hold for patients with a history of intravenous drug use (`drugs`)?
-
-   - Create a new dataframe called `trialact_drugs = subset(trialact, drugs == 1)` and run your analysis on this dataframe
-   
-```{r}
-trialact_drugs <- subset(trialact, drugs == 1)
-
-arms_days_drugs_aov <- aov(formula = days ~ factor(arms),
-                     data = trialact_drugs)
-
-summary(arms_days_drugs_aov)
-
-TukeyHSD(arms_days_drugs_aov)
-```
-
-19. Conduct a two-way ANOVA testing the effects of *both* hemophilia (`hemo`) and drug use (`drugs`) on the number of days until a major negative event
-
-   - To include two factors in an anova, just include both in the formula such as: formula = days ~ factor(hemo) + factor(drugs). See https://bookdown.org/ndphillips/YaRrr/anova.html#ex-two-way-anova for an example
-    
-```{r}
-hemo_drugs_days_aov <- aov(formula = days ~ factor(hemo) + factor(drugs),
-                           data = trialact)
-
-summary(hemo_drugs_days_aov)
-```
-
-    
-## More examples
-
-20. Conduct a two-sample t-test comparing the CD4 T cell count at baseline (`cd40`) between whites and non-whites
-
-  - Whites are coded as 0 in `race` while non-whites are coded as 1
-
-```{r}
-t.test(formula = cd40 ~ race,
-       data = trialact,
-       alternative = "two.sided")
-```
-
-21. Conduct a two-sample t-test comparing the number of days until the first occurence of a major negative event (`days`) between patients taking zidovudine and those taking didanosine
-
-  - Zidovudine is coded as 0 in `arms`, while those taking didanosine are coded as 3 in `arms`
-  - Be sure to include the `subset()` argument to tell the test which two groups to compare
-    
-```{r}
-t.test(formula = days ~ arms,
-       data = trialact,
-       subset = arms %in% c(0, 3))
-```
-
-22. Conduct a correlation test between CD4 T cell count at baseline (`cd40`) and age (`days`). Do this once for white patients only (`race == 0`) and then once for non-white patients only (`race == 1`). Are the conclusions the same or different?
-
-```{r}
-cor.test(formula = ~ cd40 + days,
-         data = subset(trialact, race == 0))
-
-cor.test(formula = ~ cd40 + days,
-         data = subset(trialact, race == 1))
-```
-
-23. Are there different percentages of men versus women in the different treatment arms? Test this with a chi-square test comparing `gender` to `arms`:
-
-```{r}
-chisq.test(table(trialact$gender, trialact$arms))
-```
-
+- For more advanced machine learning functionality, check out the `caret` package [Documentation Link](http://topepo.github.io/caret/index.html)
