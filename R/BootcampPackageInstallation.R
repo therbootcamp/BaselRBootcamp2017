@@ -11,7 +11,7 @@ Bootcamp_package_installation <- function() {
                            "shiny", "shinyjs", "caret", "mlr", "parallel", "Rcpp",
                            "BayesFactor", "parfm", "lava")
 
-  for(package.i in packages.to.install) {
+  for(package.i in sort(packages.to.install)) {
 
     if((package.i %in% installed.packages) == FALSE) {
 
@@ -19,16 +19,18 @@ Bootcamp_package_installation <- function() {
         test = try(install.packages(package.i))
         if(is.null(test)){
           message(paste("Installing", package.i, "..."))
-          } else {
-          message(paste("Error: could not install psackage Rcpp"))
-          }
+        } else {
+        message(paste("Error: could not install psackage Rcpp"))
+        }
       } else {
         install.packages(package.i)
         message(paste("Installing", package.i, "..."))
       }
 
 
-    } else {message(paste(package.i, "already installed!"))}
+    } else {
+    message(paste(package.i, "already installed!"))
+    }
 
 
   }
