@@ -1,0 +1,358 @@
+---
+title: "Machine Learning"
+author: "BaselRBootcamp 2017"
+output: html_document
+---
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = FALSE, eval = FALSE)
+```
+
+
+### Slides
+
+Here a link to the lecture slides for this session: LINK
+
+### Overview
+
+In this practical you'll conduct machine learning analyses. Here are the main functions and packages you'll be using:
+
+| Algorithm| Function| Package | Additional Details |
+|:------|:--------|:----|:----|
+|     Regression|    `lm()`| Base R| https://bookdown.org/ndphillips/YaRrr/regression.html#the-linear-model|
+|     Regularized regression|    `glmnet()`| `glmnet` |https://web.stanford.edu/~hastie/glmnet/glmnet_alpha.html |
+|     Decision Trees|    `rpart()`| `rpart` | https://statweb.stanford.edu/~lpekelis/talks/13_datafest_cart_talk.pdf|
+|     Fast and Frugal Decision Trees|   `FFTrees()`| `FFTrees` |https://cran.r-project.org/web/packages/FFTrees/vignettes/FFTrees_function.html |
+| Random Forests | `randomForest()` | `randomForest` | http://www.blopig.com/blog/2017/04/a-very-basic-introduction-to-random-forests-using-r/|
+
+
+
+### Examples
+
+```{r, eval = FALSE, echo = TRUE}
+# -----------------------------------------------
+# Examples of hypothesis tests on the ChickWeight data
+# ------------------------------------------------
+
+library(dplyr)         # Load dplyr
+
+chick <- ChickWeight   # Save a copy of the ChickWeight data as chick
+
+# -----
+# 1-sample hypothesis test
+# -----
+
+# Q: Is the mean weight of chickens different from 110?
+
+t.test(x = ChickWeight$weight,     # The data
+       alternative = "two.sided",  # Two-sided test
+       mu = 110)                   # The null hyopthesis
+
+# -----
+# 2-sample hypothesis test
+# -----
+
+# Q: Is there a difference in weights from Diet 1 and Diet 2?
+
+t.test(formula = weight ~ Diet,    # DV ~ IV
+       alternative = "two.sided",  # Two-sided test
+       data = ChickWeight,         # The data
+       subset = Diet %in% c(1, 2)) # Groups to compare
+
+# -----
+# Correlation test
+# ------
+
+# Q: Is there a correlation between Time and weight?
+
+cor.test(formula = ~ weight + Time,
+         data = ChickWeight)
+
+# A: Yes. t = 0.84, t(576) = 36.7, p < .001
+
+# -----
+# Chi-Square test
+# ------
+
+# Q: Are there more observations from chicks on one diet versus another?
+
+chisq.test(x = table(ChickWeight$Diet))  # Input is a table of values
+
+# A: Yes, some diets are observed more than others. X2(3) = 52.6, p < .001
+
+# -----
+# ANOVA
+# -----
+
+# Q: Is there an overall effect of diet on weight?
+
+Diet_aov <- aov(formula = weight ~ factor(Diet),   # Run the anova
+                data = ChickWeight)
+
+summary(Diet_aov)       # Look at summary for overall test results
+TukeyHSD(Diet_aov)      # Conduct post-hoc tests
+
+# A: Yes, there is an overall effect of diet on weight, F(3, 574) = 10.81, p < .001
+# Furthermore, we find significant differences between diets 1-3, and diets 1-4 at the 0.05 level.
+
+```
+
+
+## Tasks
+
+### Gettting started
+
+A. For this practical, we'll use the `trialact` dataframe from the `speff2trial` package, load the package with the `library()` function 
+
+```{r, message = FALSE, echo = TRUE, eval = TRUE}
+library(speff2trial)
+```
+
+
+B. Now save a copy of the data as `trialact`
+
+```{r, echo = TRUE, eval = TRUE}
+trialact <- ACTG175
+```
+
+
+C. First thing's first, take a look at the first few rows of the data with the `head()` function. (It should look like this:)
+
+```{r, eval = TRUE}
+head(trialact)
+```
+
+
+### T tests with t.test()
+
+1. Conduct a one-sample t-test comparing the age of the patients versus a null hypothesis of 40 years.
+
+```{r}
+t.test(x = trialact$age,
+       alternative = "two.sided",
+       mu = 40)
+```
+
+2. Now, compare the mean age to a null hypothesis of 35 years
+
+```{r}
+t.test(x = trialact$age,
+       alternative = "two.sided",
+       mu = 35)
+```
+
+3. Conduct a two-sample t-test comparing the age of men versus women
+
+  - Women are coded as 0 in `gender`, and men are coded as 1. 
+  - Be sure to use the formula notation `formula = age ~ gender`
+
+```{r}
+t.test(formula = age ~ gender,
+       data = trialact,
+       alternative = "two.sided")
+```
+
+
+4. Conduct a two-sample t-test comparing the number of days until the first occurence of a major negative event (`days`) between those with a history of intravenous drug use (`drugs`) and those without a history of intraveneous drug use
+
+
+```{r}
+t.test(formula = days ~ drugs,
+       data = trialact)
+```
+
+
+
+### Correlation test with cor.test()
+
+5. Conduct a correlation test between weight (`wtkg`) and age (`age`)?
+
+```{r}
+cor.test(formula = ~ age + wtkg,
+         data = trialact)
+```
+
+6. Conduct a correlation test between CD4 T cell count at baseline (`cd40`) and CD4 T cell count at 20 weeks (`cd420`)
+
+```{r}
+cor.test(formula = ~ cd40 + cd420,
+         data = trialact)
+```
+
+7. Is there a relationship between CD4 T cell count at baseline (`cd40`) and the number of days until the first occurence of major negative event (`days`)?
+
+```{r}
+cor.test(formula = ~ cd40 + days,
+         data = trialact)
+```
+
+8. Only considering men, is there a correlation between CD4 T cell count at baseline (`cd40`)and CD8 T cell count at baseline (`cd80`)?
+
+  - Include the argument `subset = gender == 0` to restrict the analysis to men
+    
+```{r}
+cor.test(formula = ~ cd40 + cd80,
+         data = trialact,
+         subset = gender == 0)
+```
+
+9. Now, repeat the previous test, but only for women
+
+```{r}
+cor.test(formula = ~ cd40 + cd80,
+         data = trialact,
+         subset = gender == 1)
+```
+
+### Chi-square test with chisq.test()
+
+10. Do men and women (`gender`) have different distributions of race (`race`)? That is, is the percentage of women who are white differ from the percentage of men who are white?
+
+  - Be sure to create a table of gender and race values with `table(trialact$gender, trialact$race)`
+
+```{r}
+chisq.test(table(trialact$gender, trialact$race))
+```
+
+11. Is there a relationship between a history of intravenous drug use (`drugs`) and hemophilia (`hemo`)?
+
+```{r}
+chisq.test(table(trialact$hemo, trialact$drugs))
+```
+
+12. Is there a relationship between homosexual activity (`homo`) and gender (`gender`)
+
+```{r}
+chisq.test(table(trialact$homo, trialact$gender))
+```
+
+13. Only for patients older than 40, is there a relationship bewteen antiretroviral history (`str2`) and race (`race`)?
+
+   - Create a new dataframe called `trialact.o40 <- subset(trialact, age > 40)` and then do your analysis on this new dataframe.
+   
+   
+```{r}
+trialact.o40 <- subset(trialact, age > 40)
+
+chisq.test(table(trialact.o40$str2, trialact.o40$race))
+```
+
+14. Now repeat the previous analysis, but only for male patients
+
+  - Create a new dataframe called `trialact.male <- subset(trialact, gender == 0)` and then do your analysis on this new dataframe.
+
+```{r}
+trialact.male <- subset(trialact, gender == 0)
+
+chisq.test(table(trialact.male$str2, trialact.male$race))
+```
+
+### ANOVA with aov()
+
+
+15. Is there an effect of treatment arms (`arms`) on CD8 T cell count at 20 weeks (`cd820`)
+
+```{r}
+arms_cd820_aov <- aov(formula = cd820 ~ factor(arms),
+                     data = trialact)
+
+summary(arms_cd820_aov)
+
+TukeyHSD(arms_cd820_aov)
+```
+
+
+16. Is there an effect of treatment arms (`arms`) on weight (`wtkg`)?
+
+```{r}
+arms_weight_aov <- aov(formula = wtkg ~ factor(arms),
+                     data = trialact)
+
+summary(arms_weight_aov)
+
+TukeyHSD(arms_weight_aov)
+```
+
+
+17. Is there an effect of treatment arms (`arms`) on the number of days until the first occurance of a major negative event (`days`)
+
+  - Start by creating a new object `arms_days_aov = aov(...)`, make sure to convert `arms` to a factor with `factor(arms)`
+  - Then look at the summary of the object with `summary(arms_days_aov)`
+  - Finally, do posthoc tests with `TukeyHSD()` if necessary
+    
+```{r}
+arms_days_aov <- aov(formula = days ~ factor(arms),
+                     data = trialact)
+
+summary(arms_days_aov)
+
+TukeyHSD(arms_days_aov)
+```
+
+
+18. Does the previous result hold for patients with a history of intravenous drug use (`drugs`)?
+
+   - Create a new dataframe called `trialact_drugs = subset(trialact, drugs == 1)` and run your analysis on this dataframe
+   
+```{r}
+trialact_drugs <- subset(trialact, drugs == 1)
+
+arms_days_drugs_aov <- aov(formula = days ~ factor(arms),
+                     data = trialact_drugs)
+
+summary(arms_days_drugs_aov)
+
+TukeyHSD(arms_days_drugs_aov)
+```
+
+19. Conduct a two-way ANOVA testing the effects of *both* hemophilia (`hemo`) and drug use (`drugs`) on the number of days until a major negative event
+
+   - To include two factors in an anova, just include both in the formula such as: formula = days ~ factor(hemo) + factor(drugs). See https://bookdown.org/ndphillips/YaRrr/anova.html#ex-two-way-anova for an example
+    
+```{r}
+hemo_drugs_days_aov <- aov(formula = days ~ factor(hemo) + factor(drugs),
+                           data = trialact)
+
+summary(hemo_drugs_days_aov)
+```
+
+    
+## More examples
+
+20. Conduct a two-sample t-test comparing the CD4 T cell count at baseline (`cd40`) between whites and non-whites
+
+  - Whites are coded as 0 in `race` while non-whites are coded as 1
+
+```{r}
+t.test(formula = cd40 ~ race,
+       data = trialact,
+       alternative = "two.sided")
+```
+
+21. Conduct a two-sample t-test comparing the number of days until the first occurence of a major negative event (`days`) between patients taking zidovudine and those taking didanosine
+
+  - Zidovudine is coded as 0 in `arms`, while those taking didanosine are coded as 3 in `arms`
+  - Be sure to include the `subset()` argument to tell the test which two groups to compare
+    
+```{r}
+t.test(formula = days ~ arms,
+       data = trialact,
+       subset = arms %in% c(0, 3))
+```
+
+22. Conduct a correlation test between CD4 T cell count at baseline (`cd40`) and age (`days`). Do this once for white patients only (`race == 0`) and then once for non-white patients only (`race == 1`). Are the conclusions the same or different?
+
+```{r}
+cor.test(formula = ~ cd40 + days,
+         data = subset(trialact, race == 0))
+
+cor.test(formula = ~ cd40 + days,
+         data = subset(trialact, race == 1))
+```
+
+23. Are there different percentages of men versus women in the different treatment arms? Test this with a chi-square test comparing `gender` to `arms`:
+
+```{r}
+chisq.test(table(trialact$gender, trialact$arms))
+```
+
