@@ -1,5 +1,5 @@
 ---
-title: "Practical: Machine Learning"
+title: "Practical: Machine Learning (Answers)"
 author: "BaselRBootcamp 2017"
 output: html_document
 ---
@@ -235,7 +235,7 @@ View(heart)
 
    - You can just copy parts B and C directly into your code, you don't need to change anything.
 
-```{r, echo = FALSE}
+```{r, echo = TRUE}
 # -----------------------
 # Part B:
 # Create heart
@@ -273,15 +273,12 @@ heart_test <- heart[test_samples, ]
 
 #### Train models on trestbps
 
-2. Now let's do some model training! In our analyses, we will try to predict each patient's value of `trestbps` -- their resting blood pressure, as a function of all other variables in the data.
-
-
-3. Following Part I, create four new objects `glm_trestbps_train`, `svm_trestbps_train`, `rpart_trestbps_train`, and `randomforest_trestbps_train` predicting `trestbps`
+2. Now let's do some model training! In our analyses, we will try to predict each patient's value of `trestbps` -- their resting blood pressure, as a function of all other variables in the data. Following Part I, create four new objects `glm_trestbps_train`, `svm_trestbps_train`, `rpart_trestbps_train`, and `randomforest_trestbps_train` predicting `trestbps`
 
    - All you need to do is change what is being predicted in the formula
 
 
-```{r, echo = FALSE}
+```{r, echo = TRUE, eval = TRUE}
 # ------------------------------
 # Part I: Create models from training data
 # ------------------------------
@@ -427,6 +424,11 @@ text(rpart_model)  # Add labels
 
 9. In the linear regression example `glm_model`, you can see which variables are significant by running `summary(glm_model)`. Try running this code to see which variables are significantly correlated with the criterion.
 
+```{r}
+summary(glm_model)
+```
+
+
 10. The randomforest model is difficult to visualize, but you can see which variables are deemed to be important in the dataset by accessing the result `importance()`. Try visualising the importance of the variables as follows:
 
 ```{r, echo = TRUE}
@@ -443,11 +445,24 @@ ggplot(importance_results, aes(feature, IncNodePurity, fill = feature)) +
 11. Try repeating the same process as above (for either cholesterol or resting heart rate), but instead of training the data on 125 cases, try training it on only 50 cases.
 
    - How do you think having fewer cases in the training data will affect accuracy in fitting and prediction? 
+   
 12. So far we have only predicted continuous variables (`chol` and `trestbps`). However, all the machine learning models we have covered can also predict categorical values -- like whether patient's have a diagnosis value of 0 or 1. Try replicating your previous analyses, but now predict `diagnosis`.
 
- - In order to tell R that diagnosis is a factor (that is, a categorical variable), you need to convert it to a factor when running `formula()` each time you fit a model. For example, to run the support vector machines model, you'd run `svm_model <- svm(formula = factor(diagnosis) ~., data = heart_train)`. For the `glm()` model, you will additionally need to include the argument `family = 'binomial'` to tell the algorithm to run a logistic regression.
 
-   - You will need to change the fitting and prediction accuracy code in parts II and IV. Specifically, you can measure model error as the *disagreement* between model predictions and the true values. 
+   - In order to tell R that diagnosis is a factor (that is, a categorical variable), you need to convert it to a factor when running `formula()` each time you fit a model. For example, to run the support vector machines model, you'd run `svm_model <- svm(formula = factor(diagnosis) ~., data = heart_train)`. For the `glm()` model, you will additionally need to include the argument `family = 'binomial'` to tell the algorithm to run a logistic regression.
+
+```{r, eval = FALSE}
+# To model diagnosis, we can run the following
+#  Note: we need to convert diagnosis to a factor with factor(diagnosis)
+
+glm_model <- glm(formula = factor(diagnosis) ~ ., data = heart_train, family = "binomial")
+svm_model <- svm(formula = factor(diagnosis) ~ ., data = heart_train)
+rpart_model <- rpart(formula = factor(diagnosis) ~ ., data = heart_train)
+randomforest_model <- randomForest(formula = factor(diagnosis) ~ ., data = heart_train)
+```
+
+
+   - Once you have fitted the models, you will need to change the fitting and prediction accuracy code in parts II and IV. Specifically, you can measure model error as the *disagreement* between model predictions and the true values. 
    
 ```{r, echo = TRUE, eval = FALSE}
 # When modelling categorical values, then calculate model DISAGREEMENT 

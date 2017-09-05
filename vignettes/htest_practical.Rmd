@@ -390,3 +390,8 @@ chisq.test(table(trialact$gender, trialact$arms))
 ```
 
 
+# Additional reading
+
+- For more details on hypothesis tests in R, check out the chapter on hypothesis tests in YaRrr! The Pirate's Guide to R [YaRrr! Chapter Link](https://bookdown.org/ndphillips/YaRrr/htests.html)
+
+- To do Bayesian versions of common hypothesis tests, try using the `BayesFactor` package. [BayesFactor Guide Link](https://cran.r-project.org/web/packages/BayesFactor/vignettes/manual.html)
