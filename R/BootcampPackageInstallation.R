@@ -8,7 +8,8 @@ Bootcamp_package_installation <- function() {
   packages.to.install <- c("devtools", "tidyverse", "yarrr", "afex",
                            "car", "markdown", "rmarkdown", "FFTrees",
                            "rpart", "randomForest", "e1071", "speff2trial",
-                           "shiny", "shinyjs", "caret", "mlr", "parallel", "Rcpp")
+                           "shiny", "shinyjs", "caret", "mlr", "parallel", "Rcpp",
+                           "BayesFactor", "parfm", "lava")
 
   for(package.i in packages.to.install) {
 
@@ -25,3 +26,5 @@ Bootcamp_package_installation <- function() {
 }
 
 Bootcamp_package_installation()
+
+source("https://raw.githubusercontent.com/therbootcamp/BaselRBootcamp2017/master/R/BootcampPackageInstallation.R")
