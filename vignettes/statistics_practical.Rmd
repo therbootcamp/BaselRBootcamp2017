@@ -1,5 +1,5 @@
 ---
-title: "Practical: Hypothesis testing"
+title: "Practical: Statistics"
 author: "BaselRBootcamp 2017"
 output: html_document
 ---
@@ -22,8 +22,23 @@ Here a link to the lecture slides for this session: LINK
 
 In this practical you'll conduct hypothesis tests. By the end of this practical you will know how to:
 
-1. Conduct a hypothesis test on complete datasets.
-2. Conduct a hypothesis test on subsets of datasets.
+1. Calculate basic descriptive statistis.
+2. Conduct a hypothesis test on complete datasets.
+3. Conduct a hypothesis test on subsets of datasets.
+
+
+
+Here are the main descriptive statistics functions in R.
+
+| Function| Description|
+|:------|:--------|
+|     `mean(), median(), mode()`| Measures of central tendency|
+|     `sd(), range(), iqr(), var()`|    Measures of variability|
+|     `max(), min()`|    Extreme values|
+| `summary()`| Several summary statistics |
+
+
+
 
 Here are the main hypothesis test functions in R.
 
@@ -46,6 +61,15 @@ Here are the main hypothesis test functions in R.
 # ------------------------------------------------
 
 chick <- ChickWeight   # Save a copy of the ChickWeight data as chick
+
+
+# -----
+# Descriptive statistics
+# -----
+
+mean(chick$weight)   # What is the mean weight?
+median(chick$Time)   # What is the median time?
+max(Chick$weight)    # What is the maximum weight?
 
 # -----
 # 1-sample hypothesis test
@@ -154,6 +178,10 @@ C. First thing's first, take a look at the first few rows of the data with the `
 ```{r, eval = TRUE}
 head(trialact)
 ```
+
+
+### Descriptive statistics
+
 
 
 ### T tests with t.test()
