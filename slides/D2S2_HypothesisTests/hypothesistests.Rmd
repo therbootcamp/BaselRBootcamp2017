@@ -1,5 +1,5 @@
 ---
-title: "Plotting Part I"
+title: "Hypothesis Tests"
 subtitle: ""
 author: "The R Bootcamp<br/>Twitter: <a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
 date: "September 2017"
@@ -26,7 +26,7 @@ options(width=110)
 options(digits = 4)
 ```
 
-# Plotting
+# Hypothesis Tests
 .pull-left3[
 
 
