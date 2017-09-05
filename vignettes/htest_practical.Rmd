@@ -1,5 +1,5 @@
 ---
-title: "Hypothesis testing"
+title: "Practical: Hypothesis testing"
 author: "BaselRBootcamp 2017"
 output: html_document
 ---
@@ -9,13 +9,23 @@ knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = FALSE, eval 
 ```
 
 
+```{r, echo = FALSE, fig.align = 'center', eval = TRUE, fig.cap= "Source: https://www.slideshare.net/hakeemrehman/8-testing-of-hypothesis-for-variable-amp-attribute-data"}
+knitr::include_graphics("images/hypothesistestingcartoon.jpg")
+```
+
+
 ### Slides
 
 Here a link to the lecture slides for this session: LINK
 
 ### Overview
 
-In this practical you'll conduct hypothesis tests. Here are the main hyopthesis test functions in R.
+In this practical you'll conduct hypothesis tests. By the end of this practical you will know how to:
+
+1. Conduct a hypothesis test on complete datasets.
+2. Conduct a hypothesis test on subsets of datasets.
+
+Here are the main hypothesis test functions in R.
 
 | Function| Hypothesis Test| Additional Help |
 |:------|:--------|:----|
@@ -28,12 +38,12 @@ In this practical you'll conduct hypothesis tests. Here are the main hyopthesis 
 
 ### Examples
 
+- The following examples will take you through the steps of doing basic hypothesis tests. Follow along and try to see how piece of code works!
+
 ```{r, eval = FALSE, echo = TRUE}
 # -----------------------------------------------
 # Examples of hypothesis tests on the ChickWeight data
 # ------------------------------------------------
-
-library(dplyr)         # Load dplyr
 
 chick <- ChickWeight   # Save a copy of the ChickWeight data as chick
 
@@ -43,9 +53,15 @@ chick <- ChickWeight   # Save a copy of the ChickWeight data as chick
 
 # Q: Is the mean weight of chickens different from 110?
 
-t.test(x = ChickWeight$weight,     # The data
-       alternative = "two.sided",  # Two-sided test
-       mu = 110)                   # The null hyopthesis
+htest_A <- t.test(x = ChickWeight$weight,     # The data
+                   alternative = "two.sided",  # Two-sided test
+                   mu = 110)                   # The null hyopthesis
+
+htest_A            # Print result
+names(htest_A)     # See all attributes in object
+htest_A$statistic  # Get just the test statistic
+htest_A$p.value    # Get the p-value
+htest_A$conf.int   # Get a confidence interval
 
 # -----
 # 2-sample hypothesis test
@@ -53,10 +69,12 @@ t.test(x = ChickWeight$weight,     # The data
 
 # Q: Is there a difference in weights from Diet 1 and Diet 2?
 
-t.test(formula = weight ~ Diet,    # DV ~ IV
-       alternative = "two.sided",  # Two-sided test
-       data = ChickWeight,         # The data
-       subset = Diet %in% c(1, 2)) # Groups to compare
+htest_B <- t.test(formula = weight ~ Diet,     # DV ~ IV
+                   alternative = "two.sided",  # Two-sided test
+                   data = ChickWeight,         # The data
+                   subset = Diet %in% c(1, 2)) # Compare Diet 1 and Diet 2
+
+htest_B  # Print result
 
 # -----
 # Correlation test
@@ -64,10 +82,24 @@ t.test(formula = weight ~ Diet,    # DV ~ IV
 
 # Q: Is there a correlation between Time and weight?
 
-cor.test(formula = ~ weight + Time,
-         data = ChickWeight)
+htest_C <- cor.test(formula = ~ weight + Time,
+                    data = ChickWeight)
 
-# A: Yes. t = 0.84, t(576) = 36.7, p < .001
+htest_C
+
+# A: Yes. r = 0.84, t(576) = 36.7, p < .001
+
+
+# Q: Does the result hold when ONLY considering Diets 1 and 2?
+
+htest_D <- cor.test(formula = ~ weight + Time,
+                    data = ChickWeight,
+                    subset = Diet %in% c(1, 2))     # Only take data where Diet is 1 or 2
+
+htest_D
+
+# A: Yes. r = 0.81, t(339) = 25.08, p < .001
+
 
 # -----
 # Chi-Square test
@@ -75,7 +107,9 @@ cor.test(formula = ~ weight + Time,
 
 # Q: Are there more observations from chicks on one diet versus another?
 
-chisq.test(x = table(ChickWeight$Diet))  # Input is a table of values
+htest_E <- chisq.test(x = table(ChickWeight$Diet))  # Input is a table of values
+
+htest_E
 
 # A: Yes, some diets are observed more than others. X2(3) = 52.6, p < .001
 
@@ -316,7 +350,7 @@ summary(hemo_drugs_days_aov)
 ```
 
     
-## More examples
+## Extras and Challenges
 
 20. Conduct a two-sample t-test comparing the CD4 T cell count at baseline (`cd40`) between whites and non-whites
 
@@ -354,4 +388,5 @@ cor.test(formula = ~ cd40 + days,
 ```{r}
 chisq.test(table(trialact$gender, trialact$arms))
 ```
+
 

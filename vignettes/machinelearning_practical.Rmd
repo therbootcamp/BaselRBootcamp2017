@@ -4,7 +4,7 @@ author: "BaselRBootcamp 2017"
 output: html_document
 ---
 
-```{r, echo = FALSE, fig.align = 'center'}
+```{r, echo = FALSE, fig.align = 'center', fig.cap = "Source: https://www.toptal.com/machine-learning/machine-learning-theory-an-introductory-primer"}
 knitr::include_graphics("images/machinelearningcartoon.png")
 ```
 
@@ -49,7 +49,7 @@ install.packages(c("e1071", "rpart", "randomForest", "tidyverse", "yarrr", "FFTr
 
 ### Examples
 
-The following examples will take you through all steps of the machine learning process, from creating training and test data, to fitting models, to making predictions.
+- The following examples will take you through all steps of the machine learning process, from creating training and test data, to fitting models, to making predictions. Follow along and try to see how piece of code works!
 
 ```{r, eval = FALSE, echo = TRUE}
 # -----------------------------------------------
