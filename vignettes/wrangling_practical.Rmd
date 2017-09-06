@@ -112,9 +112,10 @@ library(dplyr)
 ```
 
 
-2. For this practical, we'll use the `trialact` dataframe from the `speff2trial` package, load the package with the `library()` function 
+2. For this practical, we'll use the `trialact` dataframe from the `speff2trial` package, load the package with the `library()` function (along with `tidyverse` as always)
 
 ```{r, message = FALSE, echo = TRUE, eval = TRUE}
+library(tidyverse)
 library(speff2trial)
 ```
 
@@ -122,7 +123,6 @@ library(speff2trial)
 3. Now save a copy of the data as a tibble called `trialact`. This way if you do something wrong to the data, you can always get the original back.
 
 ```{r, echo = TRUE, eval = TRUE, message = FALSE, warning = FALSE}
-library(tidyverse)
 trialact <- as_tibble(ACTG175)
 ```
 
