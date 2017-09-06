@@ -27,6 +27,7 @@ In this practical you'll conduct hypothesis tests. By the end of this practical 
 3. Conduct a hypothesis test on subsets of datasets.
 
 
+### Glossary and Packages
 
 Here are the main descriptive statistics functions in R.
 
@@ -37,9 +38,6 @@ Here are the main descriptive statistics functions in R.
 |     `max(), min()`|    Extreme values|
 | `summary()`| Several summary statistics |
 
-
-
-
 Here are the main hypothesis test functions in R.
 
 | Function| Hypothesis Test| Additional Help |
@@ -49,6 +47,13 @@ Here are the main hypothesis test functions in R.
 |     `chisq.test()`|    Chi-Square test| https://bookdown.org/ndphillips/YaRrr/htests.html#chi-square-chsq.test
 |     `aov(), TukeyHSD()`|    ANOVA and post-hoc test| https://bookdown.org/ndphillips/YaRrr/anova.html#full-factorial-between-subjects-anova|
 
+
+```{r, echo = TRUE, eval = FALSE}
+# Install all packages necessary for the practical
+#  Only necessary if you don't already have them
+
+install.packages(c("e1071", "rpart", "randomForest", "tidyverse", "yarrr", "FFTrees"))
+```
 
 
 ### Examples

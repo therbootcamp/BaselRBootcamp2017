@@ -25,9 +25,9 @@ In this practical you'll conduct machine learning analyses on a dataset on heart
 1. Create separate training and test data
 2. Fit a model to data
 3. Make predictions from a model
-4. Compare models in how well they canpredict new data.
+4. Compare models in how well they can predict new data.
 
-### Key Functions and packages
+### Glossary and packages
 
 Here are the main functions and packages you'll be using. For more information about the specific models, click on the link in *Additional Details*.
 
@@ -298,7 +298,7 @@ randomforest_model <- randomForest(formula = trestbps ~ ., data = heart_train)
 
    - The code will be almost identical to what is in the Example. All you need to do is change the value of `truth_train` to the correct column in `heart_train`
 
-```{r}
+```{r, echo = FALSE}
 # ------------------------------
 # Part II: Calculate fits for each model for heart_train
 #  predict(model, heart_train)
@@ -325,7 +325,7 @@ fit_mae_df <- data_frame(index = 1:nrow(heart_train),
    - Don't forget to change the labels to reflect that we are predicting trestbps, not cholesterol!
 
 
-```{r}
+```{r, eval = FALSE, echo = FALSE}
 # ------------------------------
 # Part III: Plot Training results
 # ------------------------------
@@ -355,7 +355,7 @@ yarrr::pirateplot(data = as.data.frame(fit_mae_df[,2:5]),
 
    - Don't forget to change the value of `truth_test` to reflect `trestbps`!
 
-```{r}
+```{r, eval = FALSE, echo = FALSE}
 # ------------------------------
 # Part IV: Calculate predictions for each model for heart_test
 # predict(model, heart_test)
@@ -388,7 +388,7 @@ pred_mae_df <- data_frame(index = 1:nrow(heart_test),
 
    - Don't forget to change the names of the labels to reflect that we're predicting trestbps!
 
-```{r}
+```{r, eval = FALSE, echo = FALSE}
 # ------------------------------
 # Part V: Plot prediction results
 # ------------------------------
@@ -418,7 +418,7 @@ yarrr::pirateplot(data = as.data.frame(pred_mae_df[,2:5]),
 
    - What does the rpart model tell you about the data?
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, eval = FALSE}
 # Visualize the rpart model
 
 plot(rpart_model)  # Plot the structure of the tree
@@ -429,8 +429,8 @@ text(rpart_model)  # Add labels
 
 10. The randomforest model is difficult to visualize, but you can see which variables are deemed to be important in the dataset by accessing the result `importance()`. Try visualising the importance of the variables as follows:
 
-```{r, echo = TRUE}
-# Create a dataframe of theh importance results
+```{r, echo = TRUE, eval = FALSE}
+# Create a dataframe of the importance results
 importance_results <- as.data.frame(importance(randomforest_model))
 importance_results$feature <- rownames(importance_results)
 
@@ -440,12 +440,16 @@ ggplot(importance_results, aes(feature, IncNodePurity, fill = feature)) +
 ```
 
 
-11. Try repeating the same process as above (for either cholesterol or resting heart rate), but instead of training the data on 125 cases, try training it on only 50 cases.
+11. You'll notice in Part C that we trained the models on 125 cases (out of the 303) in the full dataset. Try repeating the same machine learning process as above (for either cholesterol or resting heart rate), but instead of training the data on 125 cases, try training it on only 50 cases.
 
    - How do you think having fewer cases in the training data will affect accuracy in fitting and prediction? 
-12. So far we have only predicted continuous variables (`chol` and `trestbps`). However, all the machine learning models we have covered can also predict categorical values -- like whether patient's have a diagnosis value of 0 or 1. Try replicating your previous analyses, but now predict `diagnosis`.
+   
+   
+12. In all of our machine learning, we have allowed all models to use all data in the `heartdisease` dataset. What do you think would happen if we only let the models use a single predictor like `age`? Test your prediction by replicating the machine learning process, but *only* allow the models to make predictions based on `age`. Does one model substantially outperform the others? 
+   
+13. So far we have only predicted continuous variables (`chol` and `trestbps`). However, all the machine learning models we have covered can also predict categorical values -- like whether patient's have a diagnosis value of 0 or 1. Try replicating your previous analyses, but now predict `diagnosis`.
 
- - In order to tell R that diagnosis is a factor (that is, a categorical variable), you need to convert it to a factor when running `formula()` each time you fit a model. For example, to run the support vector machines model, you'd run `svm_model <- svm(formula = factor(diagnosis) ~., data = heart_train)`. For the `glm()` model, you will additionally need to include the argument `family = 'binomial'` to tell the algorithm to run a logistic regression.
+ - In order to tell R that diagnosis is a factor (that is, a categorical variable), you need to convert it to a factor when running `formula()` each time you fit a model. For example, to run the support vector machines model, you'd run `svm_model <- svm(formula = factor(diagnosis) ~., data = heart_train)`. For the `glm()` model, you will additionally need to include the argument `family = 'binomial'` to tell the algorithm to run a logistic regression. See the help menu for `?glm()` for examples.
 
    - You will need to change the fitting and prediction accuracy code in parts II and IV. Specifically, you can measure model error as the *disagreement* between model predictions and the true values. 
    
@@ -469,9 +473,13 @@ pred_d_df <- data_frame(index = 1:nrow(heart_test),
 ```
 
 
+14. So far we've only looked at the `heartdisease` data. Try conducting a similar analysis on the `ACTG175` data from the `speff2trial` package. For example, you could try to predict the number of days until each patient experiences a major negative event (`days`). Which of the different machine learning algorithms performs the best in predicting new data from this dataset? Do you discover any challenges in working with dataset that weren't present in the `heartdisease` data?
+
+
+
 
 # Additional reading
 
-- For more advanced machine learning functionality in R, check out the `caret` package [caret documentation link](http://topepo.github.io/caret/index.html) and the `mlr` package [mlr documentation link](https://cran.r-project.org/web/packages/mlr/vignettes/mlr.html)
+- For more advanced machine learning functionality in R, check out the `caret` package [caret documentation link](http://topepo.github.io/caret/index.html) and the `mlr` package [mlr documentation link](https://cran.r-project.org/web/packages/mlr/vignettes/mlr.html). Both of these packages contain functions that automate most aspects of the machine learning process.
 
 - To read more about the fundamentals of machine learning and statistical prediction, check out [An Introduction to Statistical Learning by James et al.](https://www.amazon.com/Introduction-Statistical-Learning-Applications-Statistics/dp/1461471370)
