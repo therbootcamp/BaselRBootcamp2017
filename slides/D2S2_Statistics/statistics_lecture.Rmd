@@ -29,20 +29,41 @@ options(digits = 4)
 # Statistics
 .pull-left3[
 
-asdf
+
+### In this tutorial we will cover
+
+- How to calculate basic descriptive statistics
+    - `mean()`, `median()`, `sd()`, ...
+
+- How to conduct hypothesis tests and how to work with `htest` objects
+    - `t.test()`, `cor.test()`, `aov()`, ...
+
 
 ]
 
 
 .pull-right3[
 
-### Questions you can answer with dplyr
+### Examples
 
-> *Can you calculate the mean survival times for each treatment separated by gender and time?*
+```{r, eval = FALSE}
+# mean weight
+mean(ChickWeight$weight)
 
-> *I need to know the mean birth rate only for countries in Africa from 1980 to 1980.*
+# Standard deviation of Time
+sd(ChickWeight$Time)
 
-> *What percent of female patients had adverse events to drug X during weeks 5 through 10?*
+# T-test comparing weights from Diets 1 and 2
+t.test(formula = weight ~ Diet,
+       data = Chickweight,
+       subset = Diet %in% c(1, 2))
+
+# Correlation test between weight and Time
+cor.test(formula = ~ weight + Time,
+         data = ChickWeight)
+```
+
+
 
 ]
 ---
@@ -59,7 +80,7 @@ asdf
 
 #### Examples
 
-| Statistic| R code|
+| Statistic| R Function|
 |------:|----:|
 |     Mean|    `mean(x)`|
 |     Median|    `median(x)`|
@@ -91,18 +112,20 @@ median(ChickWeight$Time) # Mean Time
 
 ### Inferential
 
-- Used to make inferences about a larger population.
-- Typically done in tandem with a *hypothesis test*
-- Hypothesis tests typically return lists of named items
+- Used to make inferences about a larger population. Typically done in tandem with a *hypothesis test*
 
 #### Examples
 
-| Hypothesis Test| R code|
+| Hypothesis Test| R Function|
 |------:|----:|
 |     T-test|    `t.test()`|
 |     Correlation Test|    `cor.test()`|
 |     Chi-Square Test|   `chisq.test()`|
-|     ANOVA|    `aov()`|
+|     ANOVA, Post-hoc|    `aov(), TukeyHSD()`|
+
+- Hypothesis tests typically return lists of outputs (e.g.; p-value, test statistic)
+
+
 ]
 
 .pull-right3[
@@ -118,6 +141,129 @@ t.test(x = c(4, 3, 6, 5, 3, 2),
 ]
 
 
+
+
+
+
+---
+# Inferential Statistics
+
+.pull-left3[
+
+### Different tests require different arguments
+
+- A one-sample t-test requires just a vector, while an ANOVA requires more arguments.
+- To see what arguments a test needs, consult the help menu (e.g.; `?t.test`)
+
+#### Examples
+
+| Hypothesis Test| Help code|
+|------:|:----|
+|     T-test|    `?t.test()`|
+|     Correlation Test|    `?cor.test()`|
+|     Chi-Square Test|   `?chisq.test()`|
+|     ANOVA|    `?aov()`|
+]
+
+.pull-right3[
+#### Always check help menus!
+
+`?t.test`
+
+```{r, echo = FALSE, out.width = "65%", fig.align = 'center'}
+knitr::include_graphics("images/ttesthelp_ss.png")
+```
+
+]
+
+
+
+
+---
+# Inferential Statistics
+
+.pull-left3[
+
+### Arguments to hypothesis tests
+
+- Some arguments are manditory, and some are optional.
+    - If you don't specify an optional argument, R will use a *default* value
+
+#### Ex) Arguments to `t.test`
+
+| Argument| Description| Default |
+|------:|----:|:---|
+|    `x`, `formula, data`|Vector OR a formula and data | *Required* |
+|     `mu`|   Null hypothesis| 0 |
+|     `alternative`| Alternative Hyp| `"two.sided"`| 
+]
+
+.pull-right3[
+
+### Specifying arguments to a hypothesis test
+
+```{r, eval = FALSE}
+
+# 0: Won't work! Manditory arguments not specified
+t.test()
+
+# 1: Will work and use default arguments
+t.test(x = ChickWeight$weight)
+
+# 1b: Same as above
+t.test(x = ChickWeight$weight,
+       mu = 0,
+       alternative = "two.sided")
+
+# 2: Specified arguments
+t.test(x = ChickWeight$weight,
+       mu = 120,
+       alternative = "greater")
+```
+
+
+]
+
+
+
+---
+# Inferential Statistics
+
+.pull-left3[
+
+### Formula
+
+- Many tests allow you to include a `formula` argument
+
+> `formula = y ~ a + b + ...`
+
+Means...
+
+> Model a dependent variable `y` as a function of `a` and `b` and `...`
+
+- Formulas go together with dataframes `data` containing all variables in the formula, and optional `subset` arguments to specify which cases in `data` to include. 
+
+
+]
+
+.pull-right3[
+
+### General structure of a hypothesis test and formula
+
+```{r, eval = FALSE}
+my.test(formula = y ~ a + b, # Formula
+        data = my.data,      # Dataframe
+        ...                  # Additional
+        )
+```
+
+- `y` is the dependent variable (e.g.; age), `a` and `b` are independent variables
+- `data` is a dataframe containing the variables in `formula`; (`y`, `a`, `b`)
+-  `...` additional arguments specific to test
+]
+
+
+
 ---
 # Inferential Statistics
 
@@ -126,7 +272,7 @@ t.test(x = c(4, 3, 6, 5, 3, 2),
 ### Assigning hypothesis test objects
 
 - Most hypothesis tests return an object of class `"htest"` which contain many values
-- You can assign the results of a hypothesis test to an object, and then extract the info you want
+- You can assign the results of a hypothesis test to an object, and then extract the info you want with the `$` operator:
 
 #### Examples of what's in htest objects
 
@@ -139,7 +285,7 @@ t.test(x = c(4, 3, 6, 5, 3, 2),
 ]
 
 .pull-right3[
-#### R implimentation
+### What's in an htest object?
 
 ```{r}
 # One-sample t-test comparing the weights of chicks to 120
@@ -161,70 +307,326 @@ names(weight.tt)
 
 
 ---
-# Inferential Statistics
+# Examples with ChickWeight Data
+
 
 .pull-left3[
 
-### Hyopthesis tests
+```{r, eval = FALSE}
+ChickWeight
+```
 
-- Different hypothesis tests require different inputs
-- A simple one-sample t-test requires just a vector, while an ANOVA requires many inputs.
+```{r, echo = FALSE}
+set.seed(102)
+x <- ChickWeight[sample(nrow(ChickWeight)),]
+rownames(x) <- NULL
+head(x)
+```
 
-#### Examples
 
-| Hypothesis Test| R code|
-|------:|----:|
-|     T-test|    `t.test()`|
-|     Correlation Test|    `cor.test()`|
-|     Chi-Square Test|   `chisq.test()`|
-|     ANOVA|    `aov()`|
+
 ]
 
-.pull-right3[
-#### R implimentation
 
-```{r}
-t.test(x = c(4, 3, 6, 5, 3, 2),
-       mu = 0,
-       alternative = "two.sided")
+.pull-right3[
+
+```{r, fig.cap = "Source: http://awallpapersimages.com/wp-content/uploads/2016/07/Chicken-cute-baby-image.jpg", echo = FALSE}
+knitr::include_graphics("images/cutechicken.jpg")
 ```
 
 
 ]
 
 
----
-# Inferential Statistics
 
+---
+# t-tests with `t.test()`
 
 .pull-left4[
 
-> To see all the named elements from a hypothesis test object x, run `names(x)`:
+### ChickWeight data
+```{r, eval = FALSE}
+ChickWeight
+```
 
-> `names(x)`
 
-> Then you can access the objects by name with $:
+```{r, echo = FALSE}
+set.seed(102)
+x <- ChickWeight[sample(nrow(ChickWeight)),]
+rownames(x) <- NULL
+head(x)
+```
 
-> `x$p.value`
-> `x$statistic`
-> `x$parameter`
-> `x$conf.int`
 
 ]
 
 .pull-right4[
 
-```{r}
-# One-sample t-test comparing the weights of chicks to 120
+### One sample t-test
 
-weight.tt <- t.test(x = ChickWeight$weight,
-                    mu = 120,
-                    alternative = "two.sided")
+> Is the mean weight of the chicks significantly different from 120?
 
-names(weight.tt)
+```{r, eval = TRUE}
+A <- t.test(x = ChickWeight$weight, # Vector of values 
+       alternative = "two.sided",   # Two sided test
+       mu = 120)                    # Null is 120
 
-weight.tt$statistic # What was the test statistic?
+A
 ```
+
 ]
 
 
+
+
+---
+# t-tests with `t.test()`
+
+.pull-left4[
+
+### ChickWeight data
+```{r, eval = FALSE}
+ChickWeight
+```
+
+
+```{r, echo = FALSE}
+set.seed(102)
+x <- ChickWeight[sample(nrow(ChickWeight)),]
+rownames(x) <- NULL
+head(x)
+```
+
+
+]
+
+.pull-right4[
+
+### Two sample t-test
+
+> Is the mean weight of the chicks on Diet 1 different from Diet 2?
+
+```{r, eval = TRUE}
+B <- t.test(formula = weight ~ Diet,    # Formula
+            data = ChickWeight,         # Data in Chickweight
+            subset = Diet %in% c(1, 2), # Only Diets 1,2
+            alternative = 'two.sided')  # Two-sided test
+
+B
+```
+
+]
+
+
+---
+# Correlation test with `cor.test()`
+
+.pull-left4[
+
+### ChickWeight data
+```{r, eval = FALSE}
+ChickWeight
+```
+
+
+```{r, echo = FALSE}
+set.seed(102)
+x <- ChickWeight[sample(nrow(ChickWeight)),]
+rownames(x) <- NULL
+head(x)
+```
+
+
+]
+
+.pull-right4[
+
+### Correlation Test
+
+> Is there a correlation between weight and Time?
+
+- For `cor.test()`, formula looks like `formula = ~ a + b`
+
+```{r, eval = TRUE}
+C <- cor.test(formula = ~ weight + Time, # Formula
+              data = ChickWeight)          # Data in Chickweight
+
+C
+```
+
+]
+
+
+
+---
+# Chi-Square test with `chisq.test()`
+
+.pull-left4[
+
+### ChickWeight data
+```{r, eval = FALSE}
+ChickWeight
+```
+
+
+```{r, echo = FALSE}
+set.seed(102)
+x <- ChickWeight[sample(nrow(ChickWeight)),]
+rownames(x) <- NULL
+head(x)
+```
+
+
+]
+
+.pull-right4[
+
+### Chi-Square test
+
+> Are there more observations from one Diet than another?
+
+- For `chisq.test()`, main argument should be a table of values created from the `table()` function:
+
+```{r, eval = TRUE}
+table(ChickWeight$Diet)  # Table of counts
+
+D <- chisq.test(x = table(ChickWeight$Diet))
+
+D
+```
+
+]
+
+
+
+
+
+---
+# ANOVA with `aov()`
+
+.pull-left4[
+
+### ChickWeight data
+```{r, eval = FALSE}
+ChickWeight
+```
+
+
+```{r, echo = FALSE}
+set.seed(102)
+x <- ChickWeight[sample(nrow(ChickWeight)),]
+rownames(x) <- NULL
+head(x)
+```
+
+
+]
+
+.pull-right4[
+
+### ANOVA
+
+> Is there difference in weights based on Diet?
+
+- Applying `summary()` to an `aov` object prints a nice table.
+
+```{r, eval = TRUE}
+E <- aov(formula = weight ~ Diet, # Formula
+         data = ChickWeight)      # Data in Chickweight
+
+summary(E)  # Sow a summary of the results
+```
+
+
+
+]
+
+
+
+
+---
+# Post-hoc tests with `TukeyHSD()`
+
+.pull-left4[
+
+### ChickWeight data
+```{r, eval = FALSE}
+ChickWeight
+```
+
+
+```{r, echo = FALSE}
+set.seed(102)
+x <- ChickWeight[sample(nrow(ChickWeight)),]
+rownames(x) <- NULL
+head(x)
+```
+
+
+]
+
+.pull-right4[
+
+### Post Hoc
+
+> Which specific pairs of Diets differed?
+
+- Apply `TukeyHSD()` to an `aov` object to get post-hoc tests.
+
+```{r, eval = TRUE}
+D <- aov(formula = weight ~ Diet, # Formula
+         data = ChickWeight)      # Data in Chickweight
+
+TukeyHSD(D)  # Conduct post-hoc tests on D
+```
+
+
+
+]
+
+
+
+---
+# Final notes
+
+.pull-left2[
+
+- When using a hypothesis test, always ask:
+
+> What are the arguments?
+
+> What format or class should the arguments be?
+
+- When in doubt, always look at the help files and examples at the end.
+
+- Save hypothesis tests as new objects, then apply `names()` to see what elements it contains, then extract what you want with `S`
+
+```{r, eval = FALSE}
+# Run test and save as test_A
+test_A <- t.test(formula = weight ~ Diet,
+                 data = ChickWeight,
+                 subset = Diet %in% c(1, 2))
+
+names(test_A)  # What is in the object?
+
+test_A$statistic # Ah ok! Show me the test statistic
+```
+
+
+
+]
+
+.pull-right2[
+
+`?t.test`
+
+```{r, echo = FALSE, out.width = "100%", fig.align = 'center'}
+knitr::include_graphics("images/ttesthelp_ss.png")
+```
+
+#### Questions?
+
+]
+
+---
+# Statistics Practical

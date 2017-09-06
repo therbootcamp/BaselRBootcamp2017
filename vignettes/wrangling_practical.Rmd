@@ -8,13 +8,37 @@ output: html_document
 knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = FALSE, eval = FALSE)
 ```
 
+```{r, echo = FALSE, fig.align = 'center', eval = TRUE, fig.cap= "Source: https://www.rstudio.com/"}
+knitr::include_graphics("images/dplyrhex.png")
+```
+
+### Slides
+
+Here a link to the lecture slides for this session: LINK
+
 ### Overview
 
 In this practical you'll practice "data wrangling" with the `dplyr` package. Data wrangling refers to modifying and summarizing data. For example, sorting, adding columns, recoding values, 
 
 If you don't have it already, you can access the dplyr cheatsheet here [https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf). This has a nice overview of all the major functions in dplyr.
 
+### Glossary
+
+Here are the main verbs you will be using in `dplyr`:
+
+| verb| action| example |
+|:---|:--------------------------|:----------------|
+|     `filter()`|    Select rows based on some criteria| `data %>% filter(age > 40 & sex == "m")`|
+|     `arrange()`|    Sort rows| `data %>% arrange(date, group)`|
+|     `select()`|    Select columns (and ignore all others)| `data %>% select(age, sex)`|
+|     `rename()`|    Rename columns| `data %>% rename(DATE_MONTHS_X24, date`)|
+|     `mutate()`|    Add new columns| `data %>% mutate(height.m = height.cm / 100)`|
+|     `case_when()`|    Recode values of a column| `data %>% sex.n = case_when(sex == 0 ~ "m", sex == 1 ~ "f")`|
+|     `group_by(), summarise()`|   Group data and then calculate summary statistics|`data %>% group_by(...) %>% summarise(...)` |
+
 ### Examples
+
+- The following examples will take you through the steps of doing data wrangling with dplyr. Try to go through each line of code and see how it works!
 
 ```{r, eval = FALSE, echo = TRUE}
 # -----------------------------------------------
@@ -60,7 +84,22 @@ chick %>%
     weight.mean = mean(weight),
     weight.max = max(weight),
     time.mean = mean(Time)
+    N = n()
+  ) %>%
+  arrange(weight.mean)
+
+
+# Many sequential functions
+
+chick %>%
+  filter(Chick > 10) %>%              # Only chicks with values larger than 10
+  group_by(Time, Diet) %>%            # Group by Time and Diet
+  summarise(
+    weight.median = median(weight),
+    weight.sd = sd(weight),
+    N = n()                           # Counts of cases
   )
+
 ```
 
 
@@ -80,7 +119,7 @@ library(speff2trial)
 ```
 
 
-3. Now save a copy of the data as `trialact`
+3. Now save a copy of the data as `trialact`. This way if you do something wrong to the data, you can always get the original back.
 
 ```{r, echo = TRUE, eval = TRUE}
 trialact <- ACTG175
@@ -89,13 +128,13 @@ trialact <- ACTG175
 
 4. First thing's first, take a look at the first few rows of the data with the `head()` function. (It should look like this:)
 
-```{r, eval = TRUE}
+```{r, eval = TRUE, echo = TRUE}
 head(trialact)
 ```
 
 ### `mutate()`
 
-5. Using the `mutate()` function, add a new column to the dataframe called `age_months` that shows each patient's age in months instead of years.
+5. Add a new column to the dataframe called `age_months` that shows each patient's age in months instead of years.
 
 ```{r}
 trialact <- trialact %>% mutate(
@@ -133,43 +172,30 @@ trialact <- trialact %>%
 
 ### `arrange()`
 
-9. Arrange the `trialact` data by age. After, look at the first few rows of the data with `head()` to make sure it worked.
+9. Arrange the `trialact` data in ascending order of age (from lowest to highest). After, look at the first few rows of the data with `head()` to make sure it worked.
 
 ```{r}
 trialact <- trialact %>% 
  arrange(age)
 ```
 
-10. You can sort the rows of dataframes with multiple columns by including many arguments to `arrange()`. Now sort the data by `karnof` and then age (`age`)
+10. Now arrange the data in descending order of age (from highest to lowest). After, look at the first few rows of the data with `head()` to make sure it worked.
+
+   - To arrange data in descending order, just include `desc()` around the variable. E.g.; `data %>% arrrange(desc(height))`
+
+11. You can sort the rows of dataframes with multiple columns by including many arguments to `arrange()`. Now sort the data by `karnof` and then age (`age`), and then arms (`arms`)
 
 ```{r}
 trialact <- trialact %>% 
- arrange(karnof, age)
+ arrange(karnof, age, arms)
 ```
-
-**Tip!**
-
-To sort the rows of a dataframe in descending order, just include the function `dec()`. For example, here's how I could sort the ChickWeight dataframe by descending order of Time, and then ascending order of Diet 
-
-```{r, eval = FALSE, echo = TRUE}
-# Sort in descending order of Time, and then ascending order of Diet
-ChickWeight <- ChickWeight %>% 
-               arrange(desc(Time), Diet)
-```
-
-
-11. Now, sort the `trialact` in ascending order of age (`age`), and then descending order of their sparrow score (`sparrow`), then ascending order of weight (`wtkg`):
-
-```{r}
-trialact <- trialact %>% 
- arrange(age, desc(sparrow), wtkg)
-```
-
 
 ### `case_when()`
 
-Create a new column `gender.char` that shows gender as a string. Hint: The column `gender` codes 0 as female, and 1 as male
+12. Create a new column `gender_char` that shows gender as a string.
 
+   - Look at the help file with `?ACTG175` to see how gender is coded.
+    
 ```{r}
 trialact <- trialact %>%
   mutate(
@@ -181,7 +207,7 @@ trialact <- trialact %>%
 ```
 
 
-Create a new column `over50` that is 1 when patients are older than 50, and 0 when they are younger than or equal to 50
+13. Create a new column `over50` that is 1 when patients are older than 50, and 0 when they are younger than or equal to 50
 
 ```{r}
 trialact <- trialact %>%
@@ -194,7 +220,7 @@ trialact <- trialact %>%
 ```
 
 
-Now, repeat the previous two questions, but do them both in the same call to `mutate()`. That is, in one block of code, create `gender.char` and `over50`
+14. Now, repeat the previous two questions, but do them both in the same call to `mutate()`. That is, in one block of code, create `gender_char` and `over50`
 
 ```{r}
 trialact <- trialact %>%
@@ -211,22 +237,7 @@ trialact <- trialact %>%
 
 ### `group_by()` and `summarise()`
 
-```{r, echo = TRUE, eval = FALSE}
-# Grouped aggregation with the ChickWeight Dataset
-ChickWeight %>% 
-  group_by(Diet) %>% 
-  summarise(
-  weight.mean = mean(weight),
-  time.median = median(Time),
-  n = n()
-)
-```
-
-
-
-Now let's do some grouped aggregation!
-
-13. For each arm, calculate the mean participant age
+15. For each arm, calculate the mean participant age.
 
 ```{r, eval = FALSE}
 trialact %>% 
@@ -236,7 +247,7 @@ trialact %>%
   )
 ```
 
-14. For each arm, calculate the mean participant age *and* the median Karnofsky score
+16. For each arm, calculate the mean participant age *and* the median Karnofsky score
 
 ```{r}
 trialact %>% 
@@ -247,7 +258,9 @@ trialact %>%
   )
 ```
 
-16. Separately for male and female patients, calculate the percent who have a history of intraveneous drug use (hint: to calculate a percent of a binary variable with 0s and 1s, just calculate the mean)
+17. Separately for male and female patients, calculate the percent who have a history of intraveneous drug use.
+
+   - To calculate a percent of a binary variable with 0s and 1s, just calculate the mean
 
 ```{r}
 trialact %>%
@@ -257,18 +270,19 @@ trialact %>%
   )
 ```
 
-17. Separately for male and female patients (`gender`), calculate the percent who have a history of intraveneous drug use (`drugs`), and the percent of patients who  (Hint: to calculate a percent of a binary variable with 0s and 1s, just calculate the mean)
+18. Separately for male and female patients (`gender`), calculate the percent who have a history of intraveneous drug use (`drugs`), and the percent of patients who indicate homosexual activity
 
 ```{r}
 trialact %>%
   group_by(gender) %>%
   summarise(
-    drug.percent = mean(drugs)
+    drug.percent = mean(drugs),
+    homo.percent = mean(homo)
   )
 ```
 
 
-Separately for all combinations of gender and race, calculate the mean age and mean CD4 T cell count at baseline (`cd40`) (Hint: group by `gender` and `race`)
+19. Separately for all combinations of gender and race, calculate the mean age and mean CD4 T cell count at baseline (`cd40`) (Hint: group by `gender` and `race`)
 
 ```{r}
 trialact %>%
@@ -279,9 +293,85 @@ trialact %>%
   )
 ```
 
+
 ### Challenges
 
+20. Now let's check the major differences between the treatment arms. For each arm, calculate the following:
 
+   - Mean days until a a major negative event (`days`)
+   - Mean CD4 T cell count at baseline.
+   - Mean CD4 T cell count at 20 weeks.
+   - Mean CD4 T cell count at 96 weeks.
+   - Mean *change* in CD4 T cell count between baseline and 96 weeks
+   - Number of patients (Hint: use `N = n()`)
+
+```{r}
+trialact %>%
+  group_by(arms) %>%
+  summarise(
+    days_mean = mean(days),
+    cd4_bl = mean(cd40),
+    cd4_20 = mean(cd420),
+    cd4_96 = mean(cd496, na.rm = TRUE),
+    cd4_change = mean(cd496 - cd40, na.rm = TRUE),
+    N = n()
+  )
+```
+
+21. Repeat the previous analysis, but before you do the grouping and summary statistics, recode the values of `arms` to text that reflect what the values actually represent. For example, looking at the help file `?ACTG175`, I can see that the treatment arm of - is "zidovudine". I might call this arm `"Z"`. Do this in the all in the same chunk of code.
+
+
+```{r}
+trialact %>%
+  mutate(
+    arms = case_when(
+      arms == 0 ~ "Z",
+      arms == 1 ~ "ZD",
+      arms == 2 ~ "ZZ",
+      arms == 3 ~ "D"
+    )
+  ) %>%
+  group_by(arms) %>%
+  summarise(
+    days_mean = mean(days),
+    cd4_bl = mean(cd40),
+    cd4_20 = mean(cd420),
+    cd4_96 = mean(cd496, na.rm = TRUE),
+    cd4_change = mean(cd496 - cd40, na.rm = TRUE)
+  )
+```
+
+22. Repeat the previous analysis, but only include patients with a Karnofsky score equal to 100, and who did not use zidovudine in the 30 days prior to the treatment initiation (`z30`)
+
+```{r}
+trialact %>%
+  filter(karnof == 100 & z30 == 0) %>%
+  mutate(
+    arms = case_when(
+      arms == 0 ~ "Z",
+      arms == 1 ~ "ZD",
+      arms == 2 ~ "ZZ",
+      arms == 3 ~ "D"
+    )
+  ) %>%
+  group_by(arms) %>%
+  summarise(
+    days_mean = mean(days),
+    cd4_bl = mean(cd40),
+    cd4_20 = mean(cd420),
+    cd4_96 = mean(cd496, na.rm = TRUE),
+    cd4_change = mean(cd496 - cd40, na.rm = TRUE)
+  )
+```
+
+
+# Additional reading
+
+- For more details on data wrangling with R, check out the chapter in YaRrr! The Pirate's Guide to R [YaRrr! Chapter Link](https://bookdown.org/ndphillips/YaRrr/advanceddataframe.html)
+
+- Hadley Wickham, the author of dplyr, also has great examples in the dplyr vignette here: [dplyr vignette link](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html)
+
+- The `tidyr` package is a natural extension to `dplyr` that allows you to reshape your data into a format that is easier to manage. Check out the [tidyr vignette](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html) for examples:
 
 
 
