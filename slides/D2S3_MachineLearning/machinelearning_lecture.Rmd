@@ -276,14 +276,180 @@ knitr::include_graphics("images/bohr.jpg")
 ---
 # What machine learning algorithms are there?
 
+.pull-left3[
+
+- There are hundreds if not thousands of machine learning algorithms from many different fields.
+    - E.g.; Computer vision, Natural language processing, reinforcement learning, graphical models
 
 
+- In this section, we will focus on 4:
+
+| Algorithm|
+|:------|
+|     Regression| 
+|     Decision Trees|   
+|     Random Forests|   
+|     Support Vector Machines|   
+
+]
+
+.pull-right3[
+
+Wikipedia lists 57 *Categories* of machine learning algorithms, each with dozens of examples
+
+```{r, echo = FALSE, eval = TRUE}
+knitr::include_graphics("images/wikipediaml.png")
+```
+
+]
 
 
 
 ---
+# Regression
+
+.pull-left3[
+
+In regression, the criterion is modeled as the weighted sum of predictors times *weights* $\beta_{1}$, $\beta_{2}$.
+
+### Example: Default on a loan
+
+Imagine a dataset predicting whether someone defaults on their loan based on characteristics such as age and income.
+
+One could model the default risk as:
+
+$$Risk = Age \times \beta_{age} + Income \times \beta_{income} + ...$$
+
+Training a model means finding values of $\beta_{Age}$ and $\beta_{Income}$ that 'best' match the training data.
+
+]
+
+
+.pull-right3[
+
+Create regressions using the `glm()` function (part of base-R)
+
+```{r, eval = FALSE}
+# Format of a regression model
+glm(formula, data)
+
+# Loan Example
+loan_glm_model <- glm(formula = risk ~ ., 
+                      data = loan_data)
+
+```
+
+
+```{r, echo = FALSE, eval = TRUE, out.width = "50%", fig.align = 'center'}
+knitr::include_graphics("images/regression.png")
+```
+
+]
+
+
+---
+# Decision Trees
+
+.pull-left3[
+
+In decision trees, the criterion is modeled as a sequence of logical Yes or No questions.
+
+### Example: Default on a loan
+
+```{r, echo = FALSE, eval = TRUE}
+knitr::include_graphics("images/defaulttree.png")
+```
+
+
+]
+
+.pull-right3[
+
+Create decision trees using the `rpart` package
+
+```{r, eval = FALSE}
+# Load the rpart package
+library(rpart)
+
+# Calculating a decision tree in R
+rpart(formula, data)
+
+# Loan Example
+loan_rpart_model <- rpart(formula = risk ~ ., 
+                          data = loan_data,
+                          method = "anova")
+```
+
+
+]
+
+---
+# Advanced algorithms
+
+.pull-left3[
+
+### Support Vector Machines
+
+
+```{r, echo = FALSE, eval = TRUE, out.width = "50%", fig.align = 'center'}
+knitr::include_graphics("images/supportvectormachine.png")
+```
+
+```{r, eval = FALSE}
+# Creating support vector machine model
+library(e1071)
+
+svm_model <- svm(formula = risk ~ .,
+                 data = loan_data)
+```
+
+
+
+]
+
+
+.pull-right3[
+
+### Random Forests
+
+
+```{r, echo = FALSE, eval = TRUE, out.width = "62%", fig.align = 'center'}
+knitr::include_graphics("images/randomforest.png")
+```
+
+```{r, eval = FALSE}
+# Creating random forest model
+library(randomForest)
+
+rf_model <- randomForest(formula = risk ~ .,
+                         data = loan_data)
+```
+
+]
+
+---
 # How do I do machine learning in R?
 
+.pull-left3[
+
+For advanced users packages such as `mlr` and `caret` can automate much of the the machine learning process.
+
+```{r, echo = FALSE, eval = TRUE, out.width = "100%", fig.align = 'center'}
+knitr::include_graphics("images/mlrcaret.png")
+```
+
+]
+
+.pull-right3[
+
+In the practical, we will go through the basic steps "by hand" so you can see the process:
+
+1. Get data
+2. Train models
+3. Predict new data
+4. Compare training to prediction accuracy
+
+]
 
 
 ---
