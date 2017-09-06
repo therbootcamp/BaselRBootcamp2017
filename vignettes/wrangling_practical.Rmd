@@ -45,9 +45,9 @@ Here are the main verbs you will be using in `dplyr`:
 # Examples of using dplyr on the ChickWeight data
 # ------------------------------------------------
 
-library(dplyr)         # Load dplyr
+library(tidyverse)         # Load tidyverse
 
-chick <- ChickWeight   # Save a copy of the ChickWeight data as chick
+chick <- as_tibble(ChickWeight)   # Save a copy of the ChickWeight data as chick
 
 # Add columns with mutate()
 
@@ -119,17 +119,18 @@ library(speff2trial)
 ```
 
 
-3. Now save a copy of the data as `trialact`. This way if you do something wrong to the data, you can always get the original back.
+3. Now save a copy of the data as a tibble called `trialact`. This way if you do something wrong to the data, you can always get the original back.
 
-```{r, echo = TRUE, eval = TRUE}
-trialact <- ACTG175
+```{r, echo = TRUE, eval = TRUE, message = FALSE, warning = FALSE}
+library(tidyverse)
+trialact <- as_tibble(ACTG175)
 ```
 
 
-4. First thing's first, take a look at the first few rows of the data with the `head()` function. (It should look like this:)
+4. First thing's first, take a look at the first few rows of the data by printing it. It should look like this:
 
 ```{r, eval = TRUE, echo = TRUE}
-head(trialact)
+trialact
 ```
 
 ### `mutate()`

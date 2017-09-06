@@ -73,7 +73,7 @@ library(FFTrees)        # for the heartdisease data
 # Create heart a dataset containing all data
 # -----------------------
 
-heart <- heartdisease   # Save a copy of the heartdisease data as heart
+heart <- as_tibble(heartdisease)   # Save a copy of the heartdisease data as a tibble called heart
 
 for(i in 1:ncol(heart)) {  # Convert character columns and diagnosis to factor
   
@@ -100,9 +100,9 @@ heart_test <- heart[test_samples, ]
 # ------------------------------
 
 glm_model <- glm(formula = chol ~ ., data = heart_train)
-svm_model <- svm(formula = chol ~ ., data = heart_train)
 rpart_model <- rpart(formula = chol ~ ., data = heart_train)
 randomforest_model <- randomForest(formula = chol ~ ., data = heart_train)
+svm_model <- svm(formula = chol ~ ., data = heart_train)
 
 # ------------------------------
 # Part II: Calculate fits for each model for heart_train
@@ -110,17 +110,18 @@ randomforest_model <- randomForest(formula = chol ~ ., data = heart_train)
 # ------------------------------
 
 glm_fit <- predict(glm_model, heart_train)
-svm_fit <- predict(svm_model, heart_train)
 rpart_fit <- predict(rpart_model, heart_train)
 randomforest_fit <- predict(randomforest_model, heart_train)
+svm_fit <- predict(svm_model, heart_train)
 
 # Calculate fitting absolute errors and put in a dataframe
 
 fit_mae_df <- data_frame(index = 1:nrow(heart_train),
                          glm = abs(glm_fit - heart_train$chol),
-                         svm = abs(svm_fit - heart_train$chol),
                          rpart = abs(rpart_fit - heart_train$chol),
-                         randomforest = abs(randomforest_fit - heart_train$chol))
+                         randomforest = abs(randomforest_fit - heart_train$chol),
+                         svm = abs(svm_fit - heart_train$chol))
+)
 
 # ------------------------------
 # Part III: Plot fitting results
@@ -151,24 +152,26 @@ yarrr::pirateplot(data = as.data.frame(fit_mae_df[,2:5]),
 # Calculate predictions for each model for heart_test
 
 glm_pred <- predict(glm_model, heart_test)
-svm_pred <- predict(svm_model, heart_test)
 rpart_pred <- predict(rpart_model, heart_test)
 randomforest_pred <- predict(randomforest_model, heart_test)
+svm_pred <- predict(svm_model, heart_test)
+
 
 # Calculate prediction ae (mean absolute error)
 
 truth_test <- heart_test$chol
 
 glm_pred_ae <- abs(glm_pred - truth_test)
-svm_pred_ae <- abs(svm_pred - truth_test)
 rpart_pred_ae <- abs(rpart_pred - truth_test)
 randomforest_pred_ae <- abs(randomforest_pred - truth_test)
+svm_pred_ae <- abs(svm_pred - truth_test)
+
 
 pred_mae_df <- data_frame(index = 1:nrow(heart_test),
                           glm = glm_pred_ae,
-                          svm = svm_pred_ae,
                           rpart = rpart_pred_ae,
-                          randomforest = randomforest_pred_ae)
+                          randomforest = randomforest_pred_ae,
+                          svm = svm_pred_ae)
 
 # ------------------------------
 # Part V: Plot prediction results
@@ -206,34 +209,31 @@ A. For this practical, we'll use the `heartdisease` dataframe from the `FFTrees`
 ```{r, message = FALSE, echo = TRUE, eval = TRUE, warning = FALSE}
 # Load libraries
 
+library(tidyverse)      # for datawrangling and ggplot2
 library(e1071)          # for svm()
 library(randomForest)   # for randomForest()
 library(rpart)          # for rpart()
 library(yarrr)          # for pirateplot()
-library(tidyverse)      # for datawrangling and ggplot2
 library(FFTrees)        # for the heartdisease data
 ```
 
 
-B. Now save a copy of the data as `heart`
+B. Now save a copy of the data as a tibble called `heart`
 
 ```{r, echo = TRUE, eval = TRUE}
-heart <- heartdisease
+heart <- as_tibble(heartdisease)
 ```
 
 
-C. Take a look at the data by running `head()` and `View()`
+C. Take a look at the data by printing it. It should look like this:
 
 ```{r, echo = TRUE, eval = FALSE}
-head(heart)
-View(heart)
+heart
 ```
 
 #### Create training and test data
 
-1. Following Part B and Part C, create separate dataframes `heart_train` for model training and `heart_test`
-
-   - You can just copy parts B and C directly into your code, you don't need to change anything.
+1. Copy and paste Parts B and C to create separate dataframes `heart_train` for model training and `heart_test`.
 
 ```{r, echo = FALSE}
 # -----------------------
@@ -271,12 +271,12 @@ heart_test <- heart[test_samples, ]
 ```
 
 
-#### Train models on trestbps
+#### Train models on  `trestbps`
 
-2. Now let's do some model training! In our analyses, we will try to predict each patient's value of `trestbps` -- their resting blood pressure, as a function of all other variables in the data.
+Now let's do some model training! In our analyses, we will try to predict each patient's value of `trestbps` -- their resting blood pressure, as a function of all other variables in the data.
 
 
-3. Following Part I, create four new objects `glm_trestbps_train`, `svm_trestbps_train`, `rpart_trestbps_train`, and `randomforest_trestbps_train` predicting `trestbps`
+2. Following Part I, create four new objects `glm_trestbps_train`, `svm_trestbps_train`, `rpart_trestbps_train`, and `randomforest_trestbps_train` predicting `trestbps`
 
    - All you need to do is change what is being predicted in the formula
 
@@ -294,7 +294,7 @@ randomforest_model <- randomForest(formula = trestbps ~ ., data = heart_train)
 
 #### Calculate fits for training data
 
-4. Following Part II, calculate fits for each model with `predict(model, heart_train)`, then create `fit_mae_df` containing the absolute fitting errors for each model
+3. Following Part II, calculate fits for each model with `predict(model, heart_train)`, then create `fit_mae_df` containing the absolute fitting errors for each model
 
    - The code will be almost identical to what is in the Example. All you need to do is change the value of `truth_train` to the correct column in `heart_train`
 
@@ -320,7 +320,7 @@ fit_mae_df <- data_frame(index = 1:nrow(heart_train),
                          randomforest = abs(randomforest_fit - truth_train))
 ```
 
-5. Following Part III, plot the training results
+4. Following Part III, plot the training results
 
    - Don't forget to change the labels to reflect that we are predicting trestbps, not cholesterol!
 
@@ -350,10 +350,9 @@ yarrr::pirateplot(data = as.data.frame(fit_mae_df[,2:5]),
 
 #### Calculate predictions for test data
 
+5. Following Part IV, calculate predictions for each model based on `heart_test`
 
-6. Following Part IV, calculate predictions for each model based on `heart_test`
-
-   - Don't forget to change the value of `truth_test` to reflect `trestbps`!
+   - Don't forget to change the value of `truth_test` to reflect the true value for the current analysis!
 
 ```{r, eval = FALSE, echo = FALSE}
 # ------------------------------
@@ -384,7 +383,7 @@ pred_mae_df <- data_frame(index = 1:nrow(heart_test),
                           randomforest = randomforest_pred_ae)
 ```
 
-7. Following part V, plot the prediction results! Which model was the best in predicting resting heart rate in the test set?
+6. Following part V, plot the prediction results! Which model was the best in predicting resting heart rate in the test set?
 
    - Don't forget to change the names of the labels to reflect that we're predicting trestbps!
 
@@ -411,19 +410,11 @@ yarrr::pirateplot(data = as.data.frame(pred_mae_df[,2:5]),
                   main = "Resting blood pressure Prediction Accuracy")
 ```
 
-
 ## Extras and Challenges
 
-8. Of all the models we've used, the only one you can easily visualize is a decision tree created from `rpart`. Try visualizing the trees you created using the following code:
+7. We have fitted many models and made predictions, but we haven't seen much about what is in them and what they contain. Try printing each of the model objects and applying the `summary()` function to them to see what information they print. For example, run `glm_model`, and summary(`glm_model`) to look at the glm model.
 
-   - What does the rpart model tell you about the data?
-
-```{r, echo = TRUE, eval = FALSE}
-# Visualize the rpart model
-
-plot(rpart_model)  # Plot the structure of the tree
-text(rpart_model)  # Add labels
-```
+8. Of all the models we've used, the only one you can easily visualize is a decision tree created from `rpart`. Try visualizing the trees you created by running `plot(rpart_model)` and then `text(rpart_model)`. What does the rpart model tell you about the data?
 
 9. In the linear regression example `glm_model`, you can see which variables are significant by running `summary(glm_model)`. Try running this code to see which variables are significantly correlated with the criterion.
 
@@ -439,13 +430,10 @@ ggplot(importance_results, aes(feature, IncNodePurity, fill = feature)) +
   geom_col()
 ```
 
-
-11. You'll notice in Part C that we trained the models on 125 cases (out of the 303) in the full dataset. Try repeating the same machine learning process as above (for either cholesterol or resting heart rate), but instead of training the data on 125 cases, try training it on only 50 cases.
-
-   - How do you think having fewer cases in the training data will affect accuracy in fitting and prediction? 
+11. You'll notice in Part C that we trained the models on 125 cases (out of the 303) in the full dataset. Try repeating the same machine learning process as above (for either cholesterol or resting heart rate), but instead of training the data on 125 cases, try training it on only 50 cases. How do you think having fewer cases in the training data will affect accuracy in fitting and prediction?
    
    
-12. In all of our machine learning, we have allowed all models to use all data in the `heartdisease` dataset. What do you think would happen if we only let the models use a single predictor like `age`? Test your prediction by replicating the machine learning process, but *only* allow the models to make predictions based on `age`. Does one model substantially outperform the others? 
+12. In all of our machine learning, we have allowed all models to use all data in the `heartdisease` dataset. What do you think would happen if we only let the models use a single predictor like `age`? Test your prediction by replicating the machine learning process, but *only* allow the models to make predictions based on `age`. Does one model substantially outperform the others? What happens if you include three variables such as `age`, `cp` and `slope`?
    
 13. So far we have only predicted continuous variables (`chol` and `trestbps`). However, all the machine learning models we have covered can also predict categorical values -- like whether patient's have a diagnosis value of 0 or 1. Try replicating your previous analyses, but now predict `diagnosis`.
 

@@ -60,12 +60,13 @@ install.packages(c("e1071", "rpart", "randomForest", "tidyverse", "yarrr", "FFTr
 
 - The following examples will take you through the steps of doing basic hypothesis tests. Follow along and try to see how piece of code works!
 
-```{r, eval = FALSE, echo = TRUE}
+```{r, eval = FALSE, echo = TRUE, message = FALSE, warning = FALSE}
 # -----------------------------------------------
 # Examples of hypothesis tests on the ChickWeight data
 # ------------------------------------------------
+library(tidyverse)
 
-chick <- ChickWeight   # Save a copy of the ChickWeight data as chick
+chick <- as_tibble(ChickWeight)   # Save a copy of the ChickWeight data as a tibble called chick
 
 # -----
 # Descriptive statistics
@@ -163,24 +164,25 @@ TukeyHSD(Diet_aov)      # Conduct post-hoc tests
 
 ### Gettting started
 
-A. For this practical, we'll use the `trialact` dataframe from the `speff2trial` package, load the package with the `library()` function 
+A. For this practical, we'll use the `trialact` dataframe from the `speff2trial` package, load the package with the `library()` function. Also load the `tidyverse` as always!
 
-```{r, message = FALSE, echo = TRUE, eval = TRUE}
+```{r, message = FALSE, echo = TRUE, eval = TRUE, message = FALSE, warning = FALSE}
+library(tidyverse)
 library(speff2trial)
 ```
 
 
-B. Now save a copy of the data as `trialact`
+B. Now save a copy of the data as a tibble called `trialact`
 
-```{r, echo = TRUE, eval = TRUE}
-trialact <- ACTG175
+```{r, echo = TRUE, eval = TRUE, message = FALSE, warning = FALSE}
+trialact <- as_tibble(ACTG175)
 ```
 
 
-C. First thing's first, take a look at the first few rows of the data with the `head()` function. (It should look like this:)
+C. First thing's first, take a look at the data by printing it. It should look like this
 
 ```{r, eval = TRUE}
-head(trialact)
+trialact
 ```
 
 
