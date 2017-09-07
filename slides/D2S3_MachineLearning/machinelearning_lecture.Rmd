@@ -29,51 +29,59 @@ options(digits = 4)
 
 # What is machine learning?
 
-- Algorithms autonomously learning from data.
-- Given data, an algorithm tunes its parameters to match the data, understand how it works, and make predictions for what will occur in the future.
+.pull-left3[
 
 
----
-# What is the history of machine learning?
+### Algorithms autonomously learning from data.
 
-- 1805 - 1809: Legendre and Gauss discover least squares. Soon after Galton defines **Regression** in a biological context, followed by Pearson for purely statistical analyses.
+Given data, an algorithm tunes its *parameters* to match the data, understand how it works, and make predictions for what will occur in the future.
 
-- 1952: Arthur Samuel creates first computer learning program for learning checkers and coins the term **Machine Learning** in 1959. 
+```{r, echo = FALSE, out.width = "80%", fig.align = 'center'}
+knitr::include_graphics("images/mldiagram_A.png")
+```
 
-- 1957: Frank Rosenblatt creates first **Neural Network** to simulate the thought process of the human brain.
+]
 
-- 1963: First algorithm for **Support Vector Machines** is developed by Vapnik & Chervonenkis.
+.pull-right3[
 
-- 1967: **Nearest neighbor algorithm** is developed for classification
-
-- 1984: Breiman & Olshen publish the CART algorithm for **Decision Trees**, followed by Quinlan who publishes the ID3 algorithm followed by C4.5
-
-- 1986: Rina Dechter introduces **Deep Learning**, with many subsequent updates in the 2000s.
-
-- 1995: Tin Kam Ho develops first algorithm for **Random Forests**
-
-Sources: Wikipedia, Bernard Marr, "A Short History of Machine Learning", Forbes.
-
-
----
-# Who uses machine learning?
-
-Everyone!
-
-```{r, echo = FALSE, out.width = "30%"}
-knitr::include_graphics("images/googlelogo.png")
+```{r, echo = FALSE, out.width = "70%", fig.align = 'center'}
+knitr::include_graphics("images/machinelearningcartoon.png")
 ```
 
 
-```{r, echo = FALSE, out.width = "10%"}
-knitr::include_graphics("images/facebooklogo.png")
+]
+
+---
+# Everyone uses machine learning
+
+.pull-left3[
+
+### Everyone!
+
+- How does Google know what search results you want?
+
+- How does Amazon know what products to recommend?
+
+- How does Netflix decide what shows you'll want to watch next?
+
+- How do Tesla cars recognize objects and predict accidents?
+
+
+> Machine learning drives our algorithms for demand forecasting, product search ranking, product and deals recommendations, merchandising placements, fraud detection, translations, and much more. ~ Jeff Bezos, Amazon founder
+
+]
+
+
+.pull-right3[
+
+```{r, echo = FALSE, out.width = "100%", fig.align = 'center'}
+knitr::include_graphics("images/mlexamples.png")
 ```
 
 
-Google, Apple, Facebook, Amazon
 
 
-> Machine learning drives our algorithms for demand forecasting, product search ranking, product and deals recommendations, merchandising placements, fraud detection, translations, and much more. ~ Jeff Bezos
+]
 
 ---
 # What is the basic machine learning process?
@@ -83,12 +91,78 @@ knitr::include_graphics("images/MLdiagram.png")
 ```
 
 
+
+
+
+
+---
+# Why do we separate training from prediction?
+
+.pull-left3[
+
+Just because an algorithm can fit past (training) data well, does *not* necessarily mean that it will *predict* new data well.
+
+
+<br> 
+
+```{r, fig.cap = "Anyone can come up with a model of past stock performance. Predicting future performance is much more difficult.", echo = FALSE, out.width = "70%", fig.align = 'center'}
+knitr::include_graphics("images/stockpen.jpg")
+```
+
+
+
+]
+
+.pull-right3[
+
+
+> "Prediction is difficult, especially when it is about the future" ~ Niels Bohr
+
+```{r, fig.cap = "Niels Bohr, Nobel Laureate in Physics", echo = FALSE, out.width = "20%", fig.align = 'center'}
+knitr::include_graphics("images/bohr.jpg")
+```
+
+> "An economist is an expert who will know tomorrow why the things he predicted yesterday didn't happen today." ~ Evan Esar
+
+> "A prediction about the direction of the stock market tells you nothing about where stocks are headed, but a whole lot about the person doing the predicting" ~ Warren Buffett
+
+]
+
+
+
+
+---
+# Training (fitting) vs. Testing (prediction)
+```{r, echo = FALSE, out.width = "70%", fig.align = 'center'}
+knitr::include_graphics("images/fittingpredictiondarts_A.png")
+```
+
+---
+# Training (fitting) vs. Testing (prediction)
+```{r, echo = FALSE, out.width = "70%", fig.align = 'center'}
+knitr::include_graphics("images/fittingpredictiondarts_B.png")
+```
+
+---
+# Training (fitting) vs. Testing (prediction)
+```{r, echo = FALSE, out.width = "70%", fig.align = 'center'}
+knitr::include_graphics("images/fittingpredictiondarts_C.png")
+```
+
+---
+# Training (fitting) vs. Testing (prediction)
+```{r, echo = FALSE, out.width = "70%", fig.align = 'center'}
+knitr::include_graphics("images/fittingpredictiondarts_D.png")
+```
+
+
+
+
 ---
 # Why do we separate training from prediction?
 
 - Data comes from two processes: *Signal* and *Noise* (aka Error).
-    
-
+<br>
 
 ```{r, echo = FALSE, fig.width = 7, fig.height = 3, dpi=200, out.width = "80%", fig.align = 'center'}
 
@@ -164,7 +238,8 @@ plot(x, y_obs, main = "Noise", xlab = "", ylab = "")
 ---
 # Why do we separate training from prediction?
 
-- A good model will sacrifice accuracy in fitting data, to focus on signal
+- A good model is one that tries to capture the signal and ignore the noise
+- A bad model is one that captures too much unpredictable noise,
     
 
 ```{r, echo = FALSE, fig.width = 7, fig.height = 3, dpi=200, out.width = "80%", fig.align = 'center'}
@@ -246,32 +321,6 @@ lines(x, y_obs, col = "red")
 
 
 
----
-# Why do we separate training from prediction?
-
-.pull-left3[
-
-Just because an algorithm can fit data (in training) well, does *not* necessarily mean that it will *predict* new data well.
-    
-    
-    
-    
-Because we care about predicting new data, we always need to test how well a model can predict new data *after* it has been trained on old data.
-
-]
-
-.pull-right3[
-
-
-> "Prediction is difficult, especially when it is about the future"
-
-```{r, fig.cap = "Niels Bohr, Nobel Laureate in Physics", echo = FALSE, out.width = "40%", fig.align = 'center'}
-knitr::include_graphics("images/bohr.jpg")
-```
-
-]
-
-
 
 ---
 # What machine learning algorithms are there?
@@ -284,12 +333,12 @@ knitr::include_graphics("images/bohr.jpg")
 
 - In this section, we will focus on 4:
 
-| Algorithm|
-|:------|
-|     Regression| 
-|     Decision Trees|   
-|     Random Forests|   
-|     Support Vector Machines|   
+| Algorithm|Complexity?|
+|:------|:----|
+|     Regression| Low / Medium | 
+|     Decision Trees| Low |
+|     Random Forests| High |
+|     Support Vector Machines| High |
 
 ]
 
@@ -304,23 +353,74 @@ knitr::include_graphics("images/wikipediaml.png")
 ]
 
 
-
 ---
-# Regression
+# How do you fit and evaluate models in R?
 
 .pull-left3[
 
-In regression, the criterion is modeled as the weighted sum of predictors times *weights* $\beta_{1}$, $\beta_{2}$.
+### Fitting a model
+
+
+```{r, eval = FALSE}
+A_model <- A_fun(formula = y ~.,
+                 data = data_train,
+                 ...)
+```
+
+
+| Argument| Description| Note |
+|------:|:----|:---|
+|     formula|  Formula indicating variables to use|  `y ~ .` is often used as a catch-all |
+|     data|    The dataset for model training| |
+|     ...|  Optional other arguments| See the function help page for details|
+
+
+]
+
+.pull-right3[
+
+
+### Evaluating a model
+
+```{r, eval = FALSE}
+# Common ways to explore / use a model
+
+A_model           # Print generic information
+
+names(A_model)    # Show attributes
+
+summary(A_model)  # Print summary information
+
+predict(A_model,  # Predict test data
+        newdata = data_test)  
+
+plot(A_model)     # Visualize the model
+```
+
+
+]
+
+
+
+---
+# Regression with `glm()`
+
+.pull-left3[
+
+In regression, the criterion is modeled as the weighted sum of predictors times *weights* $\beta_{1}$, $\beta_{2}$
 
 ### Example: Default on a loan
 
-Imagine a dataset predicting whether someone defaults on their loan based on characteristics such as age and income.
-
-One could model the default risk as:
+One could model the risk of defaulting on a loan as:
 
 $$Risk = Age \times \beta_{age} + Income \times \beta_{income} + ...$$
 
 Training a model means finding values of $\beta_{Age}$ and $\beta_{Income}$ that 'best' match the training data.
+
+```{r, echo = FALSE, eval = TRUE, out.width = "50%", fig.align = 'center'}
+knitr::include_graphics("images/regression.png")
+```
+
 
 ]
 
@@ -330,25 +430,27 @@ Training a model means finding values of $\beta_{Age}$ and $\beta_{Income}$ that
 Create regressions using the `glm()` function (part of base-R)
 
 ```{r, eval = FALSE}
-# Format of a regression model
-glm(formula, data)
+# glm() function for regression
+glm(formula = y ~.,     # Formula
+    data = data_train,  # Training data
+    family, ...)        # Optional arguments
 
-# Loan Example
+# Train glm model
 loan_glm_model <- glm(formula = risk ~ ., 
-                      data = loan_data)
+                      data = data_train)
 
+# Predict new data with glm model
+loan_glm_pred <- predict(loan_glm_model,
+                         newdata = data_test)
 ```
 
 
-```{r, echo = FALSE, eval = TRUE, out.width = "50%", fig.align = 'center'}
-knitr::include_graphics("images/regression.png")
-```
 
 ]
 
 
 ---
-# Decision Trees
+# Decision Trees with `rpart::rpart()`
 
 .pull-left3[
 
@@ -372,12 +474,18 @@ Create decision trees using the `rpart` package
 library(rpart)
 
 # Calculating a decision tree in R
-rpart(formula, data)
+rpart(formula = y ~.,       # Formula 
+      data = data_train,    # Training data
+      method, parms, cost)  # Optional arguments
 
-# Loan Example
+# Train rpart model
 loan_rpart_model <- rpart(formula = risk ~ ., 
                           data = loan_data,
                           method = "anova")
+
+# Predict new data with rpart model
+loan_rpart_pred <- predict(loan_rpart_model,
+                          newdata = data_test)
 ```
 
 
@@ -388,10 +496,10 @@ loan_rpart_model <- rpart(formula = risk ~ .,
 
 .pull-left3[
 
-### Support Vector Machines
+### Support Vector Machines with `e1071::svm()`
 
 
-```{r, echo = FALSE, eval = TRUE, out.width = "50%", fig.align = 'center'}
+```{r, echo = FALSE, eval = TRUE, out.width = "40%", fig.align = 'center'}
 knitr::include_graphics("images/supportvectormachine.png")
 ```
 
@@ -400,7 +508,8 @@ knitr::include_graphics("images/supportvectormachine.png")
 library(e1071)
 
 svm_model <- svm(formula = risk ~ .,
-                 data = loan_data)
+                 data = loan_data,
+                 ...)
 ```
 
 
@@ -410,10 +519,10 @@ svm_model <- svm(formula = risk ~ .,
 
 .pull-right3[
 
-### Random Forests
+### Random Forests with `randomForest::randomForest()`
 
 
-```{r, echo = FALSE, eval = TRUE, out.width = "62%", fig.align = 'center'}
+```{r, echo = FALSE, eval = TRUE, out.width = "50%", fig.align = 'center'}
 knitr::include_graphics("images/randomforest.png")
 ```
 
@@ -422,35 +531,86 @@ knitr::include_graphics("images/randomforest.png")
 library(randomForest)
 
 rf_model <- randomForest(formula = risk ~ .,
-                         data = loan_data)
+                         data = loan_data,
+                         ...)
 ```
 
 ]
+
+
+
 
 ---
 # How do I do machine learning in R?
 
 .pull-left3[
 
-For advanced users packages such as `mlr` and `caret` can automate much of the the machine learning process.
+
+If you're really into machine learning, packages such as `mlr` and `caret` can automate much of the the machine learning process.
 
 ```{r, echo = FALSE, eval = TRUE, out.width = "100%", fig.align = 'center'}
 knitr::include_graphics("images/mlrcaret.png")
 ```
 
+
+
 ]
+
+
 
 .pull-right3[
 
 In the practical, we will go through the basic steps "by hand" so you can see the process:
 
-1. Get data
-2. Train models
-3. Predict new data
-4. Compare training to prediction accuracy
+```{r, eval = FALSE}
+# Create training and test data
+data_train <- ...
+data_test <- ...
+
+# Train models on training data
+model_A <- A_fun(formula = y ~ ., 
+                 data = data_train)
+
+# Model A predictions
+pred_A <- predict(model_A, 
+                  newdata = data_test)
+
+# Calculate Model A error
+pred_err_A <- mean(abs(pred_A - data_test$y))
+
+# Compare to Models B, C, D...
+```
+
 
 ]
 
 
+
+
 ---
 # Questions?
+
+
+
+---
+# What is the history of machine learning?
+
+- 1805 - 1809: Legendre and Gauss discover least squares. Soon after Galton defines **Regression** in a biological context, followed by Pearson for purely statistical analyses.
+
+- 1952: Arthur Samuel creates first computer learning program for learning checkers and coins the term **Machine Learning** in 1959. 
+
+- 1957: Frank Rosenblatt creates first **Neural Network** to simulate the thought process of the human brain.
+
+- 1963: First algorithm for **Support Vector Machines** is developed by Vapnik & Chervonenkis.
+
+- 1967: **Nearest neighbor algorithm** is developed for classification
+
+- 1984: Breiman & Olshen publish the CART algorithm for **Decision Trees**, followed by Quinlan who publishes the ID3 algorithm followed by C4.5
+
+- 1986: Rina Dechter introduces **Deep Learning**, with many subsequent updates in the 2000s.
+
+- 1995: Tin Kam Ho develops first algorithm for **Random Forests**
+
+Sources: Wikipedia, Bernard Marr, "A Short History of Machine Learning", Forbes.
+
+
