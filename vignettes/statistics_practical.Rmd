@@ -9,8 +9,8 @@ knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = FALSE, eval 
 ```
 
 
-```{r, echo = FALSE, fig.align = 'center', eval = TRUE, fig.cap= "Source: https://www.slideshare.net/hakeemrehman/8-testing-of-hypothesis-for-variable-amp-attribute-data"}
-knitr::include_graphics("images/hypothesistestingcartoon.jpg")
+```{r, echo = FALSE, fig.align = 'center', eval = TRUE, out.width = "70%", fig.cap= "Source: https://www.slideshare.net/hakeemrehman/8-testing-of-hypothesis-for-variable-amp-attribute-data"}
+knitr::include_graphics("https://image.slidesharecdn.com/8-150928160000-lva1-app6892/95/8-testing-of-hypothesis-for-variable-amp-attribute-data-4-638.jpg?cb=1443456555")
 ```
 
 
@@ -22,7 +22,7 @@ Here a link to the lecture slides for this session: LINK
 
 In this practical you'll conduct hypothesis tests. By the end of this practical you will know how to:
 
-1. Calculate basic descriptive statistis.
+1. Calculate basic descriptive statistics.
 2. Conduct a hypothesis test on complete datasets.
 3. Conduct a hypothesis test on subsets of datasets.
 
@@ -220,7 +220,7 @@ t.test(formula = age ~ gender,
 ```
 
 
-4. Conduct a two-sample t-test comparing the number of days until the first occurence of a major negative event (`days`) between those with a history of intravenous drug use (`drugs`) and those without a history of intraveneous drug use
+4. Conduct a two-sample t-test comparing the number of days until the first occurrence of a major negative event (`days`) between those with a history of intravenous drug use (`drugs`) and those without a history of intravenous drug use
 
 ```{r}
 t.test(formula = days ~ drugs,
@@ -237,14 +237,14 @@ cor.test(formula = ~ age + wtkg,
          data = trialact)
 ```
 
-6. We would expect a correlation between CD4 T cell count at baseline (`cd40`) and at 20 weeks (`cd420`). But how strong is the correlation? Anser this question by conducting a correlation test between CD4 T cell count at baseline (`cd40`) and CD4 T cell count at 20 weeks (`cd420`).
+6. We would expect a correlation between CD4 T cell count at baseline (`cd40`) and at 20 weeks (`cd420`). But how strong is the correlation? Answer this question by conducting a correlation test between CD4 T cell count at baseline (`cd40`) and CD4 T cell count at 20 weeks (`cd420`).
 
 ```{r}
 cor.test(formula = ~ cd40 + cd420,
          data = trialact)
 ```
 
-7. Is there a relationship between CD4 T cell count at baseline (`cd40`) and the number of days until the first occurence of major negative event (`days`)?
+7. Is there a relationship between CD4 T cell count at baseline (`cd40`) and the number of days until the first occurrence of major negative event (`days`)?
 
 ```{r}
 cor.test(formula = ~ cd40 + days,
@@ -291,7 +291,7 @@ chisq.test(table(trialact$hemo, trialact$drugs))
 chisq.test(table(trialact$homo, trialact$gender))
 ```
 
-13. Only for patients older than 40, is there a relationship bewteen antiretroviral history (`str2`) and race (`race`)?
+13. Only for patients older than 40, is there a relationship between antiretroviral history (`str2`) and race (`race`)?
 
    - Create a new dataframe called `trialact.o40 <- subset(trialact, age > 40)` and then do your analysis on this new dataframe.
    
@@ -326,7 +326,7 @@ TukeyHSD(arms_cd820_aov)
 ```
 
 
-16. A researcher might be concered that certain treatments might lead to substantial weight-loss or weight-gain. Answer this question by testing if there an effect of treatment arms (`arms`) on weight (`wtkg`). If the effect is significant, conduct post-hoc tests.
+16. A researcher might be concerned that certain treatments might lead to substantial weight-loss or weight-gain. Answer this question by testing if there an effect of treatment arms (`arms`) on weight (`wtkg`). If the effect is significant, conduct post-hoc tests.
 
 ```{r}
 arms_weight_aov <- aov(formula = wtkg ~ factor(arms),
@@ -338,7 +338,7 @@ TukeyHSD(arms_weight_aov)
 ```
 
 
-17. The main variable of interest is if there is an effect of treatment arms (`arms`) on the number of days until the occurence of a major negative event (`days`). Answer this by conducting the appropriate ANOVA (with post-hoc tests if necessary).
+17. The main variable of interest is if there is an effect of treatment arms (`arms`) on the number of days until the occurrence of a major negative event (`days`). Answer this by conducting the appropriate ANOVA (with post-hoc tests if necessary).
 
     
 ```{r}
@@ -399,7 +399,7 @@ t.test(formula = cd40 ~ race,
        alternative = "two.sided")
 ```
 
-22. A researcher is particularly interested in whether or not there is a difference in the number of days until the first occurence of a major negative event between patients taking zidovudine and those taking didanosine. Conduct the appropriate test to answer this question.
+22. A researcher is particularly interested in whether or not there is a difference in the number of days until the first occurrence of a major negative event between patients taking zidovudine and those taking didanosine. Conduct the appropriate test to answer this question.
     
 ```{r}
 t.test(formula = days ~ arms,
@@ -417,7 +417,7 @@ cor.test(formula = ~ cd40 + days,
          data = subset(trialact, race == 1))
 ```
 
-24. A researcher is concerned that patients were not properly randomly assigned to the different treatment arms. Using the appropriate test(s), see if there is a significant imbalance between treatment arms in terms of gender, drug use, race, and homosexual activity. Do you find evidence for a signifant imbalance in any of these domains?
+24. A researcher is concerned that patients were not properly randomly assigned to the different treatment arms. Using the appropriate test(s), see if there is a significant imbalance between treatment arms in terms of gender, drug use, race, and homosexual activity. Do you find evidence for a significant imbalance in any of these domains?
 
 ```{r}
 chisq.test(table(trialact$gender, trialact$arms))

@@ -8,8 +8,8 @@ output: html_document
 knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = FALSE, eval = FALSE)
 ```
 
-```{r, echo = FALSE, fig.align = 'center', eval = TRUE, fig.cap= "Source: https://www.rstudio.com/"}
-knitr::include_graphics("images/dplyrhex.png")
+```{r, echo = FALSE, fig.align = 'center', eval = TRUE, fig.cap= "Source: https://www.rstudio.com/", out.width = "30%"}
+knitr::include_graphics("https://d33wubrfki0l68.cloudfront.net/071952491ec4a6a532a3f70ecfa2507af4d341f9/c167c/images/hex-dplyr.png")
 ```
 
 ### Slides
@@ -259,7 +259,7 @@ trialact %>%
   )
 ```
 
-17. Separately for male and female patients, calculate the percent who have a history of intraveneous drug use.
+17. Separately for male and female patients, calculate the percent who have a history of intravenous drug use.
 
    - To calculate a percent of a binary variable with 0s and 1s, just calculate the mean
 
@@ -271,7 +271,7 @@ trialact %>%
   )
 ```
 
-18. Separately for male and female patients (`gender`), calculate the percent who have a history of intraveneous drug use (`drugs`), and the percent of patients who indicate homosexual activity
+18. Separately for male and female patients (`gender`), calculate the percent who have a history of intravenous drug use (`drugs`), and the percent of patients who indicate homosexual activity
 
 ```{r}
 trialact %>%
