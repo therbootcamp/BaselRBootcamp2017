@@ -60,7 +60,7 @@
   float: left;
   width: 50%;
 }
-.pull-right5 {
+.pull-right6 {
   float: right;
   width: 45%;
 }
@@ -77,3 +77,13 @@ br2 {
    display: block;
    margin: 8px 0;
 }
+
+.pull-left9 {
+  float: left;
+  width: 45%;
+}
+.pull-right9 {
+  float: right;
+  width: 45%;
+}
+
