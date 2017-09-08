@@ -73,3 +73,9 @@
   float: right;
   width: 60%;
 }
+
+br2 {
+
+  display: block;
+  margin: 8px 0;
+}

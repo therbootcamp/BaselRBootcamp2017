@@ -18,11 +18,11 @@ knitr::include_graphics("https://raw.githubusercontent.com/therbootcamp/therboot
 
 ### Day 1 - Essentials
 
-| Session| Practical|Data |
-|:------|:----|:-----|
-|     [1 - What is R?]()|[slides](http://therbootcamp.github.io)   |     |
-|     [2 - Objects in R]()|    2|     |
-|     [3 - Data I/O]()|  4|     |
+| Session| |Data |
+|:------||:-----|
+|     1 - What is R? - [slides](http://therbootcamp.github.io/_slides/D1S1_WhatIsR/what_is_R.html)|[slides] - [practical]()   |     |
+|     2 - Objects in R - [slides]()|    2|     |
+|     3 - Data I/O - [slides]()|  4|     |
 
 ### Day 2 - Statistics
 

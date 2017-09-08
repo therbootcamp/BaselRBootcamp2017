@@ -1,5 +1,5 @@
 ---
-title: "Welcome"
+title: "Welcome!"
 subtitle: ""
 author: "The R Bootcamp<br/>Twitter: <a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
 date: "September 2017"
@@ -29,61 +29,143 @@ options(digits = 4)
 
 # Who are we
 
-Photos, backgorund, experience, packages
+```{r, echo = FALSE, out.width = "50%", fig.align = 'center'}
+knitr::include_graphics("aboutus.png")
+```
+
 
 ---
 
 # Aim
 
-The aim of this workshop is enable students to actively use the statistical environment R. We try to communicate both the basics of the R language, as well as introduce students to cutting-edge packages for wrangling, analyzing, and communicating statistical data.  
+.pull-left3[
+
+
+<br>
+<br>
+###The aim of this workshop is enable you to thoughtfully and actively use R. We will communicate both the basics of the R language, as well as cutting-edge packages for wrangling, analyzing, and communicating statistical data.  
+
+]
+
+
+.pull-right3[
+
+```{r, echo = FALSE, out.width = "60%", fig.align = 'center'}
+knitr::include_graphics("target.png")
+```
+
+]
 
 ---
 
 # References
 
-Hadley data science
-Hadley advanced R
-...
-yarrr
 
-that site recommended by tanny
+```{r, echo = FALSE, out.width = "100%", fig.align = 'center'}
+knitr::include_graphics("rbooks.png")
+```
+
+
 ---
 
 # Schedule <img src="schedule.png" height="600" align="right">
 
-
-(go briefly through schedule)
-
 ---
 
-# Practicals
+# Session
 
-(30min talk plus practical)
-(practicals work through tutorials)
-(tutorials have basic component and bonus levels)
-(choose what you find interesting)
-(we go round help and explain additional details)
+.pull-left3[
+
+- Each session is 2 hours
+
+- 20-40 minute introduction.
+
+- 80 - 100 minute hands-on, interactive practical.
+    - Starts easy, gets more challenging.
+    - Some elements go beyond the lecture, be bold!
+    
+]
+
+
+.pull-right3[
+
+```{r, echo = FALSE, out.width = "90%", fig.align = 'center'}
+knitr::include_graphics("interactiveprogramming.gif")
+```
+
+]
 
 
 ---
 
 # Breaks & refreshments
 
-(no explicit breaks)
-(refhreshments on the table)
-(coffee machine)
-(lunch time -> resturants)
+
+
+.pull-left3[
+
+- No explicit breaks during the practical, but feel free to take them!
+
+<br2>
+
+- Refreshments nearby
+
+<br2>
+
+- Coffee machine nearby (1 CHF)
+
+<br2>
+
+- Lunch time at local grocery store / restaurant
+
+
+
+]
+
+
+.pull-right3[
+
+
+<p align='center'><font size="6">Tibits</p>
+
+```{r, echo = FALSE, out.width = "60%", fig.align = 'center'}
+knitr::include_graphics("tibits.jpg")
+```
+
+]
 
 ---
 
-# Questions
+# Questions?
 
-(laptops ready)
-(sheets)
+```{r, echo = FALSE, out.width = "80%", fig.align = 'center'}
+knitr::include_graphics("questions.jpg")
+```
+
 
 ---
 
 # Introduction round
 
-(have everyone briefly introduce each other)
+.pull-left3[
 
+1. What is your name?
+
+2. Where are you from?
+
+3. What is your programming experience?
+
+4. Why do you want to learn R?
+
+]
+
+.pull-right3[
+
+
+
+```{r, echo = FALSE, out.width = "100%", fig.align = 'center'}
+knitr::include_graphics("introductions.jpg")
+```
+
+
+]
