@@ -1,0 +1,54 @@
+laminieren
+Do we need power chords???
+
+
+WHAT IS R
+
+how do helpfiles work?
+
+Talk about Vignettes
+
+Have them practice use functions
+
+include package loading in what is R
+
+basic coding: comment symbol, quotation marks, curly vs. brackets
+
+put assignment in R intro and the fact that it is a copy function
+
+RStudio shows syntax highlighting - have people look at error detection
+
+add history slide to what is R
+
+
+
+EFFICIENT CODE
+
+talk about benchmarking
+
+base functions can be amazingly fast
+
+
+
+TO TANNY 
+
+Generally talk about formulas
+What are important stats packages (tests, distributions, hierarchical, Bayesian, etc.)
+Talk about distributions
+
+
+INTRO
+
+Welcome
+who are we
+aim + basics + tidyverse + special sessions (shiny + machine learning + )
+Schedule
+Talk + practical
+basic + bonus levels
+Breaks
+Lunch
+Computers
+Sheets
+
+
+

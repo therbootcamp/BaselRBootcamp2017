@@ -1,0 +1,89 @@
+---
+title: "Welcome"
+subtitle: ""
+author: "The R Bootcamp<br/>Twitter: <a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
+date: "September 2017"
+output:
+  xaringan::moon_reader:
+    css: ["default", "my-theme.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+---
+
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+# see: https://github.com/yihui/xaringan
+# install.packages("xaringan")
+# see: 
+# https://github.com/yihui/xaringan/wiki
+# https://github.com/gnab/remark/wiki/Markdown
+options(width=110)
+options(digits = 4)
+```
+
+# Who are we
+
+Photos, backgorund, experience, packages
+
+---
+
+# Aim
+
+The aim of this workshop is enable students to actively use the statistical environment R. We try to communicate both the basics of the R language, as well as introduce students to cutting-edge packages for wrangling, analyzing, and communicating statistical data.  
+
+---
+
+# References
+
+Hadley data science
+Hadley advanced R
+...
+yarrr
+
+that site recommended by tanny
+---
+
+# Schedule <img src="schedule.png" height="600" align="right">
+
+
+(go briefly through schedule)
+
+---
+
+# Practicals
+
+(30min talk plus practical)
+(practicals work through tutorials)
+(tutorials have basic component and bonus levels)
+(choose what you find interesting)
+(we go round help and explain additional details)
+
+
+---
+
+# Breaks & refreshments
+
+(no explicit breaks)
+(refhreshments on the table)
+(coffee machine)
+(lunch time -> resturants)
+
+---
+
+# Questions
+
+(laptops ready)
+(sheets)
+
+---
+
+# Introduction round
+
+(have everyone briefly introduce each other)
+
