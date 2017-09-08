@@ -55,3 +55,25 @@
   float: right;
   width: 55%;
 }
+
+.pull-left6 {
+  float: left;
+  width: 50%;
+}
+.pull-right5 {
+  float: right;
+  width: 45%;
+}
+
+.pull-left7 {
+  float: left;
+  width: 43%;
+}
+.pull-right7 {
+  float: right;
+  width: 50%;
+}
+br2 {
+   display: block;
+   margin: 8px 0;
+}
