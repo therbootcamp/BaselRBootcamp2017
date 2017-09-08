@@ -1,0 +1,300 @@
+---
+title: "Practical: What is R"
+author: "BaselRBootcamp 2017"
+output: html_document
+---
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = TRUE, eval = TRUE)
+```
+
+
+```{r, echo = FALSE, fig.align = 'center', eval = TRUE, fig.cap= "Source: https://www.slideshare.net/hakeemrehman/8-testing-of-hypothesis-for-variable-amp-attribute-data"}
+knitr::include_graphics("images/hypothesistestingcartoon.jpg")
+```
+
+
+### Slides
+
+Here a link to the lecture slides for this session: LINK
+
+### Overview
+
+In this practical you'll get started with R. By the end of this practical you will know how to:
+
+1. Know your way around R Studio
+2. Run code
+
+
+## Tasks
+
+### Gettting started
+
+A. For this practical, we'll use the `trialact` dataframe from the `speff2trial` package, load the package with the `library()` function 
+
+```{r, message = FALSE, echo = TRUE, eval = TRUE}
+library(speff2trial)
+```
+
+
+B. Now save a copy of the data as `trialact`
+
+```{r, echo = TRUE, eval = TRUE}
+trialact <- ACTG175
+```
+
+
+C. First thing's first, take a look at the first few rows of the data with the `head()` function. (It should look like this:)
+
+```{r, eval = TRUE}
+head(trialact)
+```
+
+
+### Descriptive statistics
+
+
+
+### T tests with t.test()
+
+1. Conduct a one-sample t-test comparing the age of the patients versus a null hypothesis of 40 years. What is the p-value? Do you accept or reject the hull hypothesis?
+
+```{r}
+t.test(x = trialact$age,
+       alternative = "two.sided",
+       mu = 40)
+```
+
+2. Now, compare the mean age to a null hypothesis of 35 years. What has changed?
+
+```{r}
+t.test(x = trialact$age,
+       alternative = "two.sided",
+       mu = 35)
+```
+
+3. Conduct a two-sample t-test comparing the age of men versus women
+
+  - Women are coded as 0 in `gender`, and men are coded as 1. 
+  - Be sure to use the formula notation `formula = age ~ gender`
+
+```{r}
+t.test(formula = age ~ gender,
+       data = trialact,
+       alternative = "two.sided")
+```
+
+
+4. Conduct a two-sample t-test comparing the number of days until the first occurence of a major negative event (`days`) between those with a history of intravenous drug use (`drugs`) and those without a history of intraveneous drug use
+
+```{r}
+t.test(formula = days ~ drugs,
+       data = trialact)
+```
+
+
+### Correlation test with cor.test()
+
+5. Do older people tend to weigh more? Conduct a correlation test between weight (`wtkg`) and age (`age`). What is your conclusion?
+
+```{r}
+cor.test(formula = ~ age + wtkg,
+         data = trialact)
+```
+
+6. We would expect a correlation between CD4 T cell count at baseline (`cd40`) and at 20 weeks (`cd420`). But how strong is the correlation? Anser this question by conducting a correlation test between CD4 T cell count at baseline (`cd40`) and CD4 T cell count at 20 weeks (`cd420`).
+
+```{r}
+cor.test(formula = ~ cd40 + cd420,
+         data = trialact)
+```
+
+7. Is there a relationship between CD4 T cell count at baseline (`cd40`) and the number of days until the first occurence of major negative event (`days`)?
+
+```{r}
+cor.test(formula = ~ cd40 + days,
+         data = trialact)
+```
+
+8. Only considering men, is there a correlation between CD4 T cell count at baseline (`cd40`)and CD8 T cell count at baseline (`cd80`)?
+
+  - Include the argument `subset = gender == 0` to restrict the analysis to men
+    
+```{r}
+cor.test(formula = ~ cd40 + cd80,
+         data = trialact,
+         subset = gender == 0)
+```
+
+9. Now, repeat the previous test, but only for women
+
+```{r}
+cor.test(formula = ~ cd40 + cd80,
+         data = trialact,
+         subset = gender == 1)
+```
+
+### Chi-square test with chisq.test()
+
+10. Do men and women (`gender`) have different distributions of race (`race`)? That is, is the percentage of women who are white differ from the percentage of men who are white?
+
+  - Be sure to create a table of gender and race values with `table(trialact$gender, trialact$race)`
+
+```{r}
+chisq.test(table(trialact$gender, trialact$race))
+```
+
+11. Is there a relationship between a history of intravenous drug use (`drugs`) and hemophilia (`hemo`)?
+
+```{r}
+chisq.test(table(trialact$hemo, trialact$drugs))
+```
+
+12. Is there a relationship between homosexual activity (`homo`) and gender (`gender`)
+
+```{r}
+chisq.test(table(trialact$homo, trialact$gender))
+```
+
+13. Only for patients older than 40, is there a relationship bewteen antiretroviral history (`str2`) and race (`race`)?
+
+   - Create a new dataframe called `trialact.o40 <- subset(trialact, age > 40)` and then do your analysis on this new dataframe.
+   
+   
+```{r}
+trialact.o40 <- subset(trialact, age > 40)
+
+chisq.test(table(trialact.o40$str2, trialact.o40$race))
+```
+
+14. Now repeat the previous analysis, but only for male patients
+
+  - Create a new dataframe called `trialact.male <- subset(trialact, gender == 0)` and then do your analysis on this new dataframe.
+
+```{r}
+trialact.male <- subset(trialact, gender == 0)
+
+chisq.test(table(trialact.male$str2, trialact.male$race))
+```
+
+### ANOVA with aov()
+
+15. One of the main research hypotheses might be that there is an effect of treatment on CD8 T cell count at 20 weeks of treatment. Test this hypothesis to see if there an effect of treatment arms (`arms`) on CD8 T cell count at 20 weeks (`cd820`). If there is a significant effect, conduct post-hoc tests to see which treatment arms differed. 
+
+```{r}
+arms_cd820_aov <- aov(formula = cd820 ~ factor(arms),
+                     data = trialact)
+
+summary(arms_cd820_aov)
+
+TukeyHSD(arms_cd820_aov)
+```
+
+
+16. A researcher might be concered that certain treatments might lead to substantial weight-loss or weight-gain. Answer this question by testing if there an effect of treatment arms (`arms`) on weight (`wtkg`). If the effect is significant, conduct post-hoc tests.
+
+```{r}
+arms_weight_aov <- aov(formula = wtkg ~ factor(arms),
+                     data = trialact)
+
+summary(arms_weight_aov)
+
+TukeyHSD(arms_weight_aov)
+```
+
+
+17. The main variable of interest is if there is an effect of treatment arms (`arms`) on the number of days until the occurence of a major negative event (`days`). Answer this by conducting the appropriate ANOVA (with post-hoc tests if necessary).
+
+    
+```{r}
+arms_days_aov <- aov(formula = days ~ factor(arms),
+                     data = trialact)
+
+summary(arms_days_aov)
+
+TukeyHSD(arms_days_aov)
+```
+
+
+18. Does the previous result hold if you only consider patients with a history of intravenous drug use (`drugs`)? Answer this by conducting the same ANOVA *only* on these patients.
+
+   - Create a new dataframe called `trialact_drugs = subset(trialact, drugs == 1)` and run your analysis on this dataframe
+   
+```{r}
+trialact_drugs <- subset(trialact, drugs == 1)
+
+arms_days_drugs_aov <- aov(formula = days ~ factor(arms),
+                           data = trialact_drugs)
+
+summary(arms_days_drugs_aov)
+
+TukeyHSD(arms_days_drugs_aov)
+```
+
+## Extras and Challenges
+
+19. Conduct a two-way ANOVA testing the effects of *both* hemophilia (`hemo`) and drug use (`drugs`) on the number of days until a major negative event.
+
+   - To include multiple factors in an anova, just include both in the formula such as: `formula = dv ~ factor(x) + factor(y) + ... `. See https://bookdown.org/ndphillips/YaRrr/anova.html#ex-two-way-anova for an example
+    
+```{r}
+hemo_drugs_days_aov <- aov(formula = days ~ factor(hemo) + factor(drugs),
+                           data = trialact)
+
+summary(hemo_drugs_days_aov)
+```
+
+
+20. Repeat the previous ANOVA, but now test if there is an *interaction* between hemophilia and drugs on the number of days until a major negative event.
+
+   - To include interactions in an ANOVA, just include both in the formula using the `*` operator: `formula = dv ~ factor(x) * factor(y)`. See https://bookdown.org/ndphillips/YaRrr/anova.html#ex-two-way-anova for an example
+    
+```{r}
+hemo_drugs_days_aov <- aov(formula = days ~ factor(hemo) * factor(drugs),
+                           data = trialact)
+
+summary(hemo_drugs_days_aov)
+```
+
+21. Is there a difference in the CD4 T cell count at baseline between whites and non-whites? Answer this by conducting the appropriate hypothesis test.
+
+```{r}
+t.test(formula = cd40 ~ race,
+       data = trialact,
+       alternative = "two.sided")
+```
+
+22. A researcher is particularly interested in whether or not there is a difference in the number of days until the first occurence of a major negative event between patients taking zidovudine and those taking didanosine. Conduct the appropriate test to answer this question.
+    
+```{r}
+t.test(formula = days ~ arms,
+       data = trialact,
+       subset = arms %in% c(0, 3))
+```
+
+23. A researcher wants to know if the relationship between CD4 T cell count at baseline and age is the same for whites and non-whites. Conduct the appropriate statistical test separately for both groups. Are the conclusions the same or different?
+
+```{r}
+cor.test(formula = ~ cd40 + days,
+         data = subset(trialact, race == 0))
+
+cor.test(formula = ~ cd40 + days,
+         data = subset(trialact, race == 1))
+```
+
+24. A researcher is concerned that patients were not properly randomly assigned to the different treatment arms. Using the appropriate test(s), see if there is a significant imbalance between treatment arms in terms of gender, drug use, race, and homosexual activity. Do you find evidence for a signifant imbalance in any of these domains?
+
+```{r}
+chisq.test(table(trialact$gender, trialact$arms))
+chisq.test(table(trialact$race, trialact$arms))
+chisq.test(table(trialact$drugs, trialact$arms))
+```
+
+
+# Additional reading
+
+- For more details on hypothesis tests in R, check out the chapter on hypothesis tests in YaRrr! The Pirate's Guide to R [YaRrr! Chapter Link](https://bookdown.org/ndphillips/YaRrr/htests.html)
+
+- For more advanced mixed level ANOVAs with random effects, consult the `afex` and `lmer` packages.
+
+- To do Bayesian versions of common hypothesis tests, try using the `BayesFactor` package. [BayesFactor Guide Link](https://cran.r-project.org/web/packages/BayesFactor/vignettes/manual.html)

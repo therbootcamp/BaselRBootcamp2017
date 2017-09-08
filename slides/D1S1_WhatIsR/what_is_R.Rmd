@@ -146,7 +146,7 @@ $\rightarrow$ [Rcpp](http://www.rcpp.org/), [rPython](http://rpython.r-forge.r-p
 
 # RStudio: R's favorite environment
 
-Next to many useful packages, R users greatly benefit from R's integrated development environment [RStudio](https://www.rstudio.com/). Rstudio is a graphical user interface that allows you to (a) edit code, (b) run code, (c) access files and progress, and (d) create plots. In addition RStudio helps you with version control via [Github](https://github.com/), to write reports using [markdown](http://rmarkdown.rstudio.com/authoring_basics.html) and [knitr](https://yihui.name/knitr/), and with integrating C++ into R.<br><br>  
+Next to many useful packages, R users greatly benefit from R's integrated development environment [RStudio](https://www.rstudio.com/). Rstudio is a graphical user interface that allows you to (a) edit code, (b) run code, (c) access files and progress, and (d) create plots. In addition RStudio helps you with version control via [Github](https://github.com/), to write reports using [markdown](http://rmarkdown.rstudio.com/authoring_basics.html) and [knitr](https://yihui.name/knitr/), integrating C++ into R, writing clean code, and to debug code.<br><br>  
 
 
 ```{r, out.width = "800px", echo = F, fig.align='center'}
@@ -223,56 +223,45 @@ knitr::include_graphics("http://d33wubrfki0l68.cloudfront.net/f55c43407ae8944b98
 
 ---
 
-# Calls and assignments
+# Calls, assignments, and expressions
 
 In R every action is a function call. Specifically R scripts advances by **passing on data and arguments to functions**, calling the function, and receiving its output. However, functions may however not always look like functions. The output is then stored in a new object using assignment. 
 
-.pull-left5[
-#### The `mean` function
+.pull-left9[
+```{r}
+# defining a function - arithm. mean
+my_fun <- function(x, b){ x * b }
 
-# 
-my_vector <- c(1, 5, 2)
-print(class(my_vector))
+# define some data
+my_data <- c(1, 5, 7, 3) 
 
-# testing the class (aka object type) of an object
-print(my_vector)
+# pass on arguments and call function
+my_fun(my_data, 5) 
 
-# Sorting 
-sort(my_vector)  
-print(my_vector) # still unsorted
+# store output by assignment
+my_out <- my_fun(my_data, 5)
+```
 
 ]
 
-.pull-right5[
+.pull-right9[
 ```{r}
-# creating a vector and testing its class (type of object)
-my_vector <- c(1, 5, 2)
-print(class(my_vector))
+# a basic expression
+2 + 2
 
-# testing the class (aka object type) of an object
-print(my_vector)
+# is also a function
+'+'(2,2)
 
-# Sorting 
-sort(my_vector)  
-print(my_vector) # still unsorted
 ```
+]
 
 ---
 
 # Object-orientation
 
-R is an object-oriented language. In the case of R this means that: 
+R is an object-oriented language. This means that for R that **everything is an object** (including functions). This also means that there are several generic functions that respond to the **object's class**. Another important feature of R regarding objects is that R **always copies deep**. This is why practically everything in R is an assignment. 
 
-.pull-left5[
-1. Everything is an object. Objects have inherent attributes.
-<br><br>
-2. Some functions are generic (S3-methods).
-<br><br>
-3. R always copies (deep). (Almost) every code element is an assignment.
-<br><br>
-]
 
-.pull-right5[
 ```{r}
 # creating a vector and testing its class (type of object)
 my_vector <- c(1, 5, 2)
@@ -286,16 +275,91 @@ sort(my_vector)
 print(my_vector) # still unsorted
 
 ```
-]
 
 
 ---
-### References Statistical Modeling:
-- John Fox and Sanford Weisberg (2011). *An R Companion to Applied Regression, Second Edition.* Thousand Oaks CA: Sage. URL: http://socserv.socsci.mcmaster.ca/jfox/Books/Companion
-- Russell V. Lenth (2016). Least-Squares Means: The R Package lsmeans. *Journal of Statistical
-  Software*, 69(1), 1-33. https://doi.org/10.18637/jss.v069.i01
-- Cohen, J., Cohen, P., West, S. G., & Aiken, L. S. (2002). *Applied Multiple Regression/Correlation Analysis for the Behavioral Sciences.* New York: Routledge Academic.
 
-### References Example Data:
-- Revelle, William, Wilt, Joshua, and Rosenthal, Allen (2009) Personality and Cognition: The Personality-Cognition Link. In Gruszka, Alexandra and Matthews, Gerald and Szymura, Blazej (Eds.) _Handbook of Individual Differences in Cognition: Attention, Memory and Executive Control_, Springer.
-- Skovgaard-Olsen, N., Singmann, H., & Klauer, K. C. (2016). The relevance effect and conditionals. *Cognition*, 150, 26-36. https://doi.org/10.1016/j.cognition.2015.12.017
+# Syntax
+
+Every language has specific expressive style. R is characterized by the following elements.
+
+.pull-left9[
++ Comment symbol `#`
+<br2>
++ Quotations with either `""` or ''
+<br2>
++ Curly brackets `{}` enclose expressions explicitly
+<br2>
++ Parentheses `()` call functions
+<br2>
++ Semicolon `;` separates expressions
+<br2>
++ `<`,`>`,`|`,`&`,`==`, `!=` define logical statements
+]
+
+```{r, eval = F}
+# This is a comment
+
+# Quotes are used to define strings
+"a" == 'a'
+
+# Expression and calls
+my_fun(x,y){ x  + y }
+
+# two expression in one line
+2 + 2 ; 3 + 3
+
+# are these equal/different
+2 == 2 ; 2 != 2
+
+```
+
+]
+
+---
+
+.pull-left9[
+# Help
+
+An important part of using R are **help files** and **vignettes**. Help files are required documentations for every R function and package published on [**CRAN**](https://cran.r-project.org/). In the beginning the help files may appear cryptical, however, over time you will realise that they are exceptionally helpful. Vignettes are longer tutorials sometimes provided by the authors of a package.     
+
+```{r, eval = F}
+# To access help files
+help("name_of_function")
+?name_of_function
+
+# find help files
+??name_of_function
+
+# To list and access vignettes
+vignette(package="name_of_package")
+vignette(package="name_of_vignette")
+```
+
+]
+
+.pull-right9[
+<br><br><iframe src="R_ Arithmetic Mean.htm" height="540" width="800" align="center"></iframe>
+]
+
+---
+
+# Packages
+
+One of the huge benefits of R is its vast and cutting-edge collection of packages. Responsible for this is the larger and active user base, but also the [**CRAN**](https://cran.r-project.org/), who examine every package, apply a rigorous quality control, and eventually host the packages on various mirrors throughout the world. When downloading one of the many packages never forget that the package must also be loaded.        
+
+```{r, eval = F}
+# To install a package
+install.packages('package_name')
+
+# load a package
+library(package_name)
+
+```
+
+]
+
+---
+
+# Interactive sessions
+
