@@ -1,5 +1,5 @@
 ---
-title: "Data Wranging with dplyr"
+title: "Plotting Part I"
 subtitle: ""
 author: "The R Bootcamp<br/>Twitter: <a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
 date: "September 2017"
@@ -26,16 +26,8 @@ options(width=110)
 options(digits = 4)
 ```
 
-# dplyr
+# Plotting
 .pull-left3[
-
-dplyr is a package for managing dataframes.
-
-Anytime you want to slice, dice, aggregate, or manipulate a dataframe, there is almost certainly a way to do it in dplyr.
-
-```{r, echo = FALSE, out.width = "50%", fig.align = 'center'}
-knitr::include_graphics("images/dplyr_hex.png")
-```
 
 
 
@@ -162,7 +154,9 @@ x
 |     `select()`|    Select columns (and ignore all others)| `select(age, sex)`|
 |     `rename()`|    Rename columns| `rename(DATE_MONTHS_X24, date`)|
 |     `mutate()`|    Add new columns| `mutate(height.m = height.cm / 100)`|
+|     `case_when()`|    Recode values of a column| `sex.n = case_when(sex == 0 ~ "m", sex == 1 ~ "f")`|
 |     `group_by(), summarise()`|   Group data and then calculate summary statistics|`group_by(treatment) %>% summarise(...)` |
+
 
 
 
@@ -203,6 +197,103 @@ x <- ChickWeight %>%          # Start with the ChickWeight data
 head(x)   # Print the result
 ```
 
+---
+
+
+### Recoding values with case_when()
+
+.pull-left3[
+Recoding values is a common data wrangling task. You can easily do this with `case_when()`:
+
+```{r, eval = FALSE}
+data %>%
+  mutate(
+  var_new = case_when(
+    var_old == OLD_A ~ NEW_A,
+    var_old == OLD_B ~ NEW_B
+  )
+```
+
+
+
+For example, in a dataset, the column `sex` might be coded with 1s and 0s.
+
+You might want to create a new column `sex_new` where 1 = "female" and 0 = "male":
+
+| sex| sex_new|
+|------:|----:|
+|    1|   "female"|
+|    0|   "male"|
+
+]
+
+.pull-right3[
+
+
+
+To change the value of 1 to `"female"`, and 0 to `"male"`, you can use `case_when()`:
+
+
+```{r, eval = FALSE}
+# Add a column sex_new to data 
+
+data <- data %>% 
+  mutate(
+        sex_new = case_when(
+          sex == 1 ~ "female",
+          sex == 0 ~ "male"
+        )
+  )
+```
+
+
+You can think about the code above as follows:
+
+- Create a new column `sex_new` where
+    - If `sex == 1`, then set the value to `"female"`
+    - If `sex == 0`, then set the value to `"male"`
+
+]
+
+
+---
+
+.pull-left3[
+#### Ex: Chick 3
+
+*Create a new variable Diet_name which shows Diet in text format. Here is a table of the values*
+
+| Diet| Diet_name|
+|------:|----:|
+|    1|   "fruit"|
+|    2|   "vegetables"|
+|    3|   "meat"|
+|    4|   "grains"|
+
+]
+
+.pull-right3[
+
+```{r, message = FALSE, warning = FALSE, eval = TRUE}
+
+ChickWeight <- ChickWeight %>%           # Start with the ChickWeight data
+                 mutate(
+                   Diet_name = case_when(
+                     Diet == 1 ~ "fruit",
+                     Diet == 2 ~ "vegetables",
+                     Diet == 3 ~ "meat",
+                     Diet == 4 ~ "grains"
+                   )
+   
+ )
+
+head(ChickWeight)
+```
+
+
+]
+
+
 
 
 
@@ -214,8 +305,6 @@ head(x)   # Print the result
 *For each Diet, calculate the mean weight*
 
 ```{r, message = FALSE, warning = FALSE}
-library(dplyr)
-
 ChickWeight %>%           # Start with the ChickWeight data
   group_by(Diet) %>%      # Group the data by Diet
   summarise(              # Now summarise....
@@ -234,8 +323,6 @@ ChickWeight %>%           # Start with the ChickWeight data
 *For each time period less than 10, calculate the mean weight*
 
 ```{r, message = FALSE, warning = FALSE}
-library(dplyr)
-
 ChickWeight %>%                # Start with the ChickWeight data
   filter(Time < 10) %>%        # Only Time periods less than 10
   group_by(Time) %>%           # Group the data by Diet
@@ -249,14 +336,11 @@ ChickWeight %>%                # Start with the ChickWeight data
 
 
 ---
-
 #### Ex: Chick 5:
 
 *For each Diet, calculate the mean weight, maximum time, and the number of chicks on each diet*:
 
 ```{r, message = FALSE, warning = FALSE}
-library(dplyr)
-
 ChickWeight %>%           # Start with the ChickWeight data
   group_by(Diet) %>%      # Group the data by Diet
   summarise(              # Now summarise....

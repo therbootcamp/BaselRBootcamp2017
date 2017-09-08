@@ -1,0 +1,531 @@
+---
+title: "Data Wranging with dplyr"
+subtitle: ""
+author: "The R Bootcamp<br/>Twitter: <a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
+date: "September 2017"
+output:
+  xaringan::moon_reader:
+    css: ["default", "my-theme.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+---
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+# see: https://github.com/yihui/xaringan
+# install.packages("xaringan")
+# see: 
+# https://github.com/yihui/xaringan/wiki
+# https://github.com/gnab/remark/wiki/Markdown
+options(width=110)
+options(digits = 4)
+```
+
+# dplyr
+.pull-left3[
+
+dplyr is a package for managing dataframes.
+
+Anytime you want to slice, dice, aggregate, or manipulate a dataframe, there is almost certainly a way to do it in dplyr.
+
+```{r, echo = FALSE, out.width = "50%", fig.align = 'center'}
+knitr::include_graphics("images/dplyr_hex.png")
+```
+
+
+
+]
+
+
+.pull-right3[
+
+### Questions you can answer with dplyr
+
+> *Can you calculate the mean survival times for each treatment separated by gender and time?*
+
+> *I need to know the mean birth rate only for countries in Africa from 1980 to 1980.*
+
+> *What percent of female patients had adverse events to drug X during weeks 5 through 10?*
+
+]
+---
+
+# dplyr CheatSheet!
+https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf
+
+```{r, echo = FALSE, out.width="600", fig.align = 'center'}
+knitr::include_graphics("images/data_wrangling_ss.png")
+```
+
+
+
+
+---
+
+.pull-left3[
+# dplyr
+
+dplyr is a combination of 3 things:
+
+1. **`objects`** like dataframes
+2. **`verbs`** that **do** things to objects.
+3. **`pipes`** `%>%` that string together objects and verbs
+
+<br>
+
+
+```{r, echo = FALSE, out.width = "70%", fig.align = 'center'}
+knitr::include_graphics("images/pipe.jpg")
+```
+
+
+]
+
+
+.pull-right3[
+
+<br>
+<br>
+<br>
+
+```{r, echo = FALSE, out.width = "70%", fig.align = 'center'}
+knitr::include_graphics("images/sequential.png")
+```
+
+
+dplyr is meant to be sequential and work like language
+
+> Take data X, then do Y, then do Z...
+
+Here's the basic structure of `dplyr` in action
+
+```{r, eval = FALSE}
+data %>%           # Start with data, and THEN
+     VERB1 %>%     # Do VERB1, (and THEN)
+     VERB2 %>% ... # Do VERB2, (and THEN)
+```
+
+]
+
+
+
+---
+
+.pull-left4[
+# dplyr
+
+
+### Question:
+
+> From the ChickWeight dataframe, calculate the mean weight and time for each diet
+
+]
+
+
+.pull-right4[
+
+### Answer:
+```{r, message = FALSE, warning = FALSE}
+library(dplyr)
+
+x <- ChickWeight %>%  # Start with ChickWeight
+  group_by(Diet) %>%  # Group by Diet
+  summarise(          # Get ready to summarise....
+    weight.mean = mean(weight), # Mean weight
+    time.mean = mean(Time),     # Mean time
+    N = n()                     # Number of cases
+  )
+  
+
+x
+```
+
+]
+
+
+
+
+---
+
+
+# Common dplyr verbs
+
+| verb| action| example |
+|:---|:----|:----------------|
+|     `filter()`|    Select rows based on some criteria| `filter(age > 40 & sex == "m")`|
+|     `arrange()`|    Sort rows| `arrange(date, group)`|
+|     `select()`|    Select columns (and ignore all others)| `select(age, sex)`|
+|     `rename()`|    Rename columns| `rename(DATE_MONTHS_X24, date`)|
+|     `mutate()`|    Add new columns| `mutate(height.m = height.cm / 100)`|
+|     `case_when()`|    Recode values of a column| `sex.n = case_when(sex == 0 ~ "m", sex == 1 ~ "f")`|
+|     `group_by(), summarise()`|   Group data and then calculate summary statistics|`group_by(treatment) %>% summarise(...)` |
+
+
+
+
+
+
+---
+
+#### Ex: Chick 1
+
+*Add a column called `weight_d_time` that is weight divided by time*
+
+```{r, message = FALSE, warning = FALSE}
+library(dplyr)
+
+x <- ChickWeight %>%          # Start with the ChickWeight data
+      mutate(                 # Create new columns...
+            weight_d_time = weight / Time
+            )
+
+head(x)   # Print the result
+```
+
+
+
+---
+
+#### Ex: Chick 2
+
+*Add a column called `weight_d_time` that is weight divided by time AND `time_d` that is time in days*
+
+```{r, message = FALSE, warning = FALSE}
+x <- ChickWeight %>%          # Start with the ChickWeight data
+      mutate(                 # Create new columns...
+            weight_d_time = weight / Time,  # weight_d_time is weight divided by Time
+            time_d = Time * 7               # time_d is Time times 7
+            )
+
+head(x)   # Print the result
+```
+
+---
+
+
+### Recoding values with case_when()
+
+.pull-left3[
+Recoding values is a common data wrangling task. You can easily do this with `case_when()`:
+
+```{r, eval = FALSE}
+data %>%
+  mutate(
+  var_new = case_when(
+    var_old == OLD_A ~ NEW_A,
+    var_old == OLD_B ~ NEW_B
+  )
+```
+
+
+
+For example, in a dataset, the column `sex` might be coded with 1s and 0s.
+
+You might want to create a new column `sex_new` where 1 = "female" and 0 = "male":
+
+| sex| sex_new|
+|------:|----:|
+|    1|   "female"|
+|    0|   "male"|
+
+]
+
+.pull-right3[
+
+
+
+To change the value of 1 to `"female"`, and 0 to `"male"`, you can use `case_when()`:
+
+
+```{r, eval = FALSE}
+# Add a column sex_new to data 
+
+data <- data %>% 
+  mutate(
+        sex_new = case_when(
+          sex == 1 ~ "female",
+          sex == 0 ~ "male"
+        )
+  )
+```
+
+
+You can think about the code above as follows:
+
+- Create a new column `sex_new` where
+    - If `sex == 1`, then set the value to `"female"`
+    - If `sex == 0`, then set the value to `"male"`
+
+]
+
+
+---
+
+.pull-left3[
+#### Ex: Chick 3
+
+*Create a new variable Diet_name which shows Diet in text format. Here is a table of the values*
+
+| Diet| Diet_name|
+|------:|----:|
+|    1|   "fruit"|
+|    2|   "vegetables"|
+|    3|   "meat"|
+|    4|   "grains"|
+
+]
+
+.pull-right3[
+
+```{r, message = FALSE, warning = FALSE, eval = TRUE}
+
+ChickWeight <- ChickWeight %>%           # Start with the ChickWeight data
+                 mutate(
+                   Diet_name = case_when(
+                     Diet == 1 ~ "fruit",
+                     Diet == 2 ~ "vegetables",
+                     Diet == 3 ~ "meat",
+                     Diet == 4 ~ "grains"
+                   )
+   
+ )
+
+head(ChickWeight)
+```
+
+
+]
+
+
+
+
+
+
+---
+
+#### Ex: Chick 3
+
+*For each Diet, calculate the mean weight*
+
+```{r, message = FALSE, warning = FALSE}
+ChickWeight %>%           # Start with the ChickWeight data
+  group_by(Diet) %>%      # Group the data by Diet
+  summarise(              # Now summarise....
+    weight.mean = mean(weight) # Mean weight
+  )
+```
+
+
+
+
+
+---
+
+#### Ex: Chick 4
+
+*For each time period less than 10, calculate the mean weight*
+
+```{r, message = FALSE, warning = FALSE}
+ChickWeight %>%                # Start with the ChickWeight data
+  filter(Time < 10) %>%        # Only Time periods less than 10
+  group_by(Time) %>%           # Group the data by Diet
+  summarise(                   # Now summarise....
+    weight.mean = mean(weight) # Mean weight
+  )
+```
+
+
+
+
+
+---
+#### Ex: Chick 5:
+
+*For each Diet, calculate the mean weight, maximum time, and the number of chicks on each diet*:
+
+```{r, message = FALSE, warning = FALSE}
+ChickWeight %>%           # Start with the ChickWeight data
+  group_by(Diet) %>%      # Group the data by Diet
+  summarise(              # Now summarise....
+    weight.mean = mean(weight), # Mean weight
+    time.max = max(Time),       # Max time
+    N = n()                     # Number of observations
+  )
+```
+
+
+
+
+---
+
+
+# Other dplyr verbs
+
+
+| verb| action| example |
+|:---|:----|:----------------|
+|     `sample_n()`|    Select a random sample of n rows| `sample_n(10)`|
+|     `sample_frac()`|    Select a random fraction of rows| `sample_frac(.20)`|
+|     `first(), last()`|    Give the first (or last) observation| `first(), last()`|
+
+
+
+---
+
+#### Ex: Chick 6:
+
+*Give me a random sample of 10 rows from the ChickWeight dataframe, but only show me the values for Chick and weight*
+
+```{r}
+# Give me a random sample of 10 rows, but only show me columns Chick and weight
+
+ChickWeight %>% 
+  select(Chick, weight) %>%
+  sample_n(10)
+```
+
+
+---
+.pull-left3[
+
+#dplyr
+
+dplyr operations (almost) always return a dataframe which you can assign to a new object:
+
+
+> *Create a dataframe with the average weight for each time period and nothing else!!*
+
+]
+
+.pull-right3[
+
+```{r}
+# Create a new object called time_agg
+
+time_agg <- ChickWeight %>%
+  group_by(Time) %>%
+  summarise(
+    weight.mean = mean(weight)
+  )
+
+head(time_agg)
+```
+
+
+]
+
+
+---
+
+.pull-left3[
+
+#dplyr summary
+
+dplyr is great for elegantly performing sequential operations on data.
+
+The 'pipe' operator `%>%` helps you string multiple *objects* (like dataframes) and *verbs* (summarise, order, aggregate...) together.
+
+
+```{r, echo = FALSE, out.width = "50%", fig.align = 'center'}
+knitr::include_graphics("images/dplyr_hex.png")
+```
+
+
+]
+
+
+
+
+.pull-right3[
+
+<br>
+<br>
+
+Basic structure of dplyr commands:
+
+```{r, eval = FALSE}
+data %>%    # Start with data, AND THEN...
+  VERB1 %>% # Do VERB1, AND THEN...
+  VERB2 %>% # Do VERB2, AND THEN...
+  VERB3 %>% # Do VERB3, AND THEN...
+  group_by(x, y) %>%  # Group by variables x, y
+    summarise(
+      VAR_A_New = fun(X),
+      VAR_B_New = fun(Y)
+    )
+  )
+```
+
+### Questions?
+
+]
+
+---
+
+
+.pull-left3[
+#tidyr
+
+`tidyr` is a package for 'tidying' data.
+
+'tidying' data means getting it into a different format (usually moving data between rows and columns)
+
+
+```{r, echo = FALSE, out.width = "70%", fig.align = 'center'}
+knitr::include_graphics("images/tidyr_hex.png")
+```
+]
+
+
+.pull-right3[
+
+<br>
+<br>
+
+### Questions you can answer with tidyr
+
+> Right now there are different rows for each patient, I need every patient's data to be in a single row.
+
+> Can you restructure the data so data in different columns are shown in a single column?
+
+]
+
+
+
+---
+#tidyr
+
+There are two important functions in `tidyr`, `gather()` and `spread()`:
+
+.pull-left3[
+
+`gather()`: Move data from *columns* into many *rows*
+
+
+```{r, echo = FALSE, out.width = "80%", fig.align = 'center'}
+knitr::include_graphics("images/gather_ss.png")
+```
+]
+
+
+.pull-right3[
+
+`spread()`: Move data from several *rows* into columns
+
+```{r, echo = FALSE, out.width = "80%", fig.align = 'center'}
+knitr::include_graphics("images/spread_ss.png")
+```
+
+]
+
+
+
+
+
+
+
