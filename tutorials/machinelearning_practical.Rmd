@@ -4,8 +4,8 @@ author: "BaselRBootcamp 2017"
 output: html_document
 ---
 
-```{r, echo = FALSE, fig.align = 'center', fig.cap = "Source: https://www.toptal.com/machine-learning/machine-learning-theory-an-introductory-primer"}
-knitr::include_graphics("images/machinelearningcartoon.png")
+```{r, echo = FALSE, fig.align = 'center', out.width = "50%", fig.cap = "Source: https://www.toptal.com/machine-learning/machine-learning-theory-an-introductory-primer"}
+knitr::include_graphics("https://uploads.toptal.io/blog/image/443/toptal-blog-image-1407508081138.png")
 ```
 
 
@@ -43,7 +43,13 @@ Here are the main functions and packages you'll be using. For more information a
 # Install all packages necessary for the practical
 #  Only necessary if you don't already have them
 
-install.packages(c("e1071", "rpart", "randomForest", "tidyverse", "yarrr", "FFTrees"))
+install.packages(
+  c("e1071", 
+    "rpart", 
+    "randomForest", 
+    "tidyverse", 
+    "yarrr", 
+    "FFTrees"))
 ```
 
 
@@ -73,7 +79,7 @@ library(FFTrees)        # for the heartdisease data
 # Create heart a dataset containing all data
 # -----------------------
 
-heart <- as_tibble(heartdisease)   # Save a copy of the heartdisease data as a tibble called heart
+heart <- heartdisease   # Save a copy of the heartdisease data as heart
 
 for(i in 1:ncol(heart)) {  # Convert character columns and diagnosis to factor
   
@@ -101,7 +107,7 @@ heart_test <- heart[test_samples, ]
 
 glm_model <- glm(formula = chol ~ ., data = heart_train)
 rpart_model <- rpart(formula = chol ~ ., data = heart_train)
-randomforest_model <- randomForest(formula = chol ~ ., data = as.data.frame(as_tibble(heart_train)))
+randomforest_model <- randomForest(formula = chol ~ ., data = as.data.frame(heart_train))
 svm_model <- svm(formula = chol ~ ., data = heart_train)
 
 # ------------------------------
@@ -227,7 +233,7 @@ B. Now run the code in Part B to save a copy of the data as a tibble called `hea
 # -----------------------
 
 # Create heart a dataset containing all data
-heart <- as_tibble(heartdisease )
+heart <- heartdisease
 
 # Some of the columns need to be converted to factors
 for(i in 1:ncol(heart)) {
@@ -241,10 +247,10 @@ for(i in 1:ncol(heart)) {
 ```
 
 
-C. Take a look at the data by printing it. It should look like this:
+C. Take a look at the data by printing the first few rows with `head()`. It should look like this:
 
 ```{r, echo = FALSE, eval = TRUE}
-heart
+head(heart)
 ```
 
 #### Part C: Create training and test data
