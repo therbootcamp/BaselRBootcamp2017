@@ -27,6 +27,48 @@ options(width=110)
 options(digits = 4)
 ```
 
+
+
+# Welcome!
+
+
+.pull-left3[
+
+```{r, echo = FALSE, out.width = "100%", fig.align = 'center'}
+knitr::include_graphics("homepage.png")
+```
+
+]
+
+
+.pull-right3[
+
+
+```{r, echo = FALSE, out.width = "100%", fig.align = 'center'}
+knitr::include_graphics("basel.jpeg")
+```
+
+]
+
+
+---
+# Schedule and Course links
+
+
+##[https://therbootcamp.github.io/_slides/schedule.html](https://therbootcamp.github.io/_slides/schedule.html)
+
+
+
+```{r, echo = FALSE, out.width = "60%", fig.align = 'center'}
+knitr::include_graphics("scheduless.png")
+```
+
+
+
+
+
+
+---
 # Who are we
 
 ```{r, echo = FALSE, out.width = "50%", fig.align = 'center'}
@@ -58,7 +100,7 @@ knitr::include_graphics("target.png")
 
 ---
 
-# References
+# Where can I learn more?
 
 
 ```{r, echo = FALSE, out.width = "100%", fig.align = 'center'}
@@ -69,6 +111,16 @@ knitr::include_graphics("rbooks.png")
 ---
 
 # Schedule <img src="schedule.png" height="600" align="right">
+
+
+---
+
+# Survey
+
+```{r, echo = FALSE, out.width = "100%", fig.align = 'center'}
+knitr::include_graphics("survey.png")
+```
+
 
 ---
 
@@ -169,3 +221,38 @@ knitr::include_graphics("introductions.jpg")
 
 
 ]
+
+---
+
+.pull-left3[
+
+# Session 1
+# What is R???
+
+```{r, echo = FALSE, out.width = "70%", fig.align = 'center'}
+knitr::include_graphics("rlogo.png")
+```
+
+
+]
+
+
+.pull-right3[
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+```{r, echo = FALSE, out.width = "100%", fig.align = 'center'}
+knitr::include_graphics("rstudio.jpg")
+
+```
+
+
+]
+
+
