@@ -14,7 +14,7 @@ knitr::include_graphics("https://d33wubrfki0l68.cloudfront.net/071952491ec4a6a53
 
 ### Slides
 
-Here a link to the lecture slides for this session: LINK
+Here a link to the introduction slides for this session: LINK
 
 ### Overview
 
@@ -27,14 +27,14 @@ If you don't have it already, you can access the dplyr cheatsheet here [https://
 Here are the main verbs you will be using in `dplyr`:
 
 | verb| action| example |
-|:---|:--------------------------|:----------------|
-|     `filter()`|    Select rows based on some criteria| `data %>% filter(age > 40 & sex == "m")`|
-|     `arrange()`|    Sort rows| `data %>% arrange(date, group)`|
-|     `select()`|    Select columns (and ignore all others)| `data %>% select(age, sex)`|
-|     `rename()`|    Rename columns| `data %>% rename(DATE_MONTHS_X24, date`)|
-|     `mutate()`|    Add new columns| `data %>% mutate(height.m = height.cm / 100)`|
-|     `case_when()`|    Recode values of a column| `data %>% sex.n = case_when(sex == 0 ~ "m", sex == 1 ~ "f")`|
-|     `group_by(), summarise()`|   Group data and then calculate summary statistics|`data %>% group_by(...) %>% summarise(...)` |
+|:---|:------------------------------------|:----------------|
+|     `filter()`|    Select rows based on some criteria| data %>% filter(age > 40 & sex == "m")|
+|     `arrange()`|    Sort rows| data %>% arrange(date, group)|
+|     `select()`|    Select columns (and ignore all others)| data %>% select(age, sex)|
+|     `rename()`|    Rename columns| data %>% rename(DATE_MONTHS_X24, date)|
+|     `mutate()`|    Add new columns| data %>% mutate(height.m = height.cm / 100)|
+|     `case_when()`|    Recode values of a column| data %>% sex.n = case_when(sex == 0 ~ "m", sex == 1 ~ "f")|
+|     `group_by(), summarise()`|   Group data and then calculate summary statistics|data %>% group_by(...) %>% summarise(...)|
 
 ### Examples
 
@@ -114,7 +114,7 @@ library(dplyr)
 
 2. For this practical, we'll use the `trialact` dataframe from the `speff2trial` package, load the package with the `library()` function (along with `tidyverse` as always)
 
-```{r, message = FALSE, echo = TRUE, eval = TRUE}
+```{r, message = FALSE, echo = TRUE, eval = TRUE, warning = FALSE}
 library(tidyverse)
 library(speff2trial)
 ```

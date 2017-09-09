@@ -19,12 +19,12 @@ knitr::include_graphics("https://raw.githubusercontent.com/therbootcamp/therboot
 ### Session Links
 
 
-| Day 1|Day 2 |
-|:------|:-----|
-| 0 - Welcome! - [slides](therbootcamp.github.io/_slides/D1S0_Intro/Intro.html) | |
-| 1 - What is R? - [slides](therbootcamp.github.io/_slides/D1S1_WhatIsR/what_is_R.html)|   |
-|  2 - Objects in R - [slides](therbootcamp.github.io/_slides/D1S2_Objects/Working_with_objects.html)|  
-|     3 - Data I/O - [slides](therbootcamp.github.io/_slides/D1S3_dataio/Data_IO.html)|  | 
+| Day 1|
+|:------|
+| 0 - Welcome! - [slides](D1S0_Intro/Intro.html) | 
+| 1 - What is R? - [slides](D1S1_WhatIsR/what_is_R.html), [practical](practical_what_is_R.html)|   
+|  2 - Objects in R - [slides](D1S2_Objects/Working_with_objects.html), [practical](practical_objects.html) |
+|     3 - Data I/O - [slides](D1S3_dataio/Data_IO.html), [practical](practical_readin.html)|  
 
 ### Day 2 - Statistics
 *Note: Click the session name for the slides*
