@@ -118,6 +118,12 @@ library(tidyverse)
 library(tidyverse)
 ```
 
+```{r, eval = FALSE, echo = FALSE}
+library(ACTG175)
+write_csv(ACTG175, path = "tutorials/data/aidstrial.csv")
+```
+
+
 
 3. Now save a copy of the data as a tibble called `aidstrial`. This way if you do something wrong to the data, you can always get the original back.
 
