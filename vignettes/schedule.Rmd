@@ -16,15 +16,19 @@ knitr::include_graphics("https://raw.githubusercontent.com/therbootcamp/therboot
 
 *Note: Click the session name for the slides*
 
-### Day 1 - Essentials
+### Session Links
 
-| Session| |Data |
-|:------||:-----|
-|     1 - What is R? - [slides](http://therbootcamp.github.io/_slides/D1S1_WhatIsR/what_is_R.html)|[slides] - [practical]()   |     |
-|     2 - Objects in R - [slides]()|    2|     |
-|     3 - Data I/O - [slides]()|  4|     |
+
+| Day 1|Day 2 |
+|:------|:-----|
+| 0 - Welcome! - [slides](therbootcamp.github.io/_slides/D1S0_Intro/Intro.html) | |
+| 1 - What is R? - [slides](therbootcamp.github.io/_slides/D1S1_WhatIsR/what_is_R.html)|   |
+|  2 - Objects in R - [slides](therbootcamp.github.io/_slides/D1S2_Objects/Working_with_objects.html)|  
+|     3 - Data I/O - [slides](therbootcamp.github.io/_slides/D1S3_dataio/Data_IO.html)|  | 
 
 ### Day 2 - Statistics
+*Note: Click the session name for the slides*
+
 
 | Session|Lecturer| Slides|Practical |
 |:------|:----|:----|:-----|
@@ -33,6 +37,7 @@ knitr::include_graphics("https://raw.githubusercontent.com/therbootcamp/therboot
 |     3 - Machine Learning|Nathaniel|    |     |
 
 ### Day 3 - Tidying and Visualisations
+*Note: Click the session name for the slides*
 
 | Session|Lecturer| Slides|Practical |
 |:------|:---|:----|:-----|
@@ -40,7 +45,8 @@ knitr::include_graphics("https://raw.githubusercontent.com/therbootcamp/therboot
 |     2 - Plotting|Nathaniel|   |     |
 |     3 - Plotting 2.0|Nathaniel|   |     |
 
-### Day 3 - Productivity
+### Day 4 - Productivity
+*Note: Click the session name for the slides*
 
 | Session| Slides|Practical |
 |:------|:---|:----|:-----|

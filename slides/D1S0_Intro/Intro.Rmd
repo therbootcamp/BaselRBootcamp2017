@@ -54,16 +54,28 @@ knitr::include_graphics("basel.jpeg")
 ---
 # Schedule and Course links
 
+.pull-left3[
+
+## Wifi
+
+###user: rbootcamp-17
+
+###pass: Basel2017R
+
+
+## Schedule and Links
 
 ##[https://therbootcamp.github.io/_slides/schedule.html](https://therbootcamp.github.io/_slides/schedule.html)
 
+]
 
+.pull-right3[
 
 ```{r, echo = FALSE, out.width = "60%", fig.align = 'center'}
 knitr::include_graphics("scheduless.png")
 ```
 
-
+]
 
 
 
