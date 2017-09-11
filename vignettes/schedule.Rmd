@@ -1,11 +1,25 @@
 ---
 title: "BaselRBootcamp"
+author: "http://therbootcamp.github.io"
 output: html_document
 ---
 
-## Links
+### Sessions
 
-- BaselRBootcamp main page: [http://therbootcamp.github.io](http://therbootcamp.github.io)
+
+| Day 1 - Essentials | Day 2 - Statistics |
+|:------------------------------------------------------|:---------------------------------------------|
+| 0 - Welcome! - [slides](D1S0_Intro/Intro.html) | *Coming Soon* |
+| 1 - What is R? - [slides](D1S1_WhatIsR/what_is_R.html), [practical](practical_what_is_R.html)| 1 - Data Wrangling - [slides](D2S1_Wrangling/wrangling_lecture.html), [practical](wrangling_practical.html)|
+|  2 - Objects in R - [slides](D1S2_Objects/Working_with_objects.html), [practical](practical_objects.html) | 2 - Statistics - [slides](D2S2_Statistics/statistics_lecture.html), [practical](statistics_practical.html)|
+|     3 - Data I/O - [slides](D1S3_dataio/Data_IO.html), [practical](practical_readin.html)|3 - Machine Learning - [slides](D2S3_MachineLearning/machinelearning_lecture.html), [practical](machinelearning_practical.html) |
+
+
+### Datasets
+
+*To save data, right-click and "save link as..."*
+
+- [ACTG175 AIDS clinical trial](https://raw.githubusercontent.com/therbootcamp/BaselRBootcamp2017/master/data/ACTG175.csv)
 
 
 ## September, 2017 Schedule
@@ -14,42 +28,9 @@ output: html_document
 knitr::include_graphics("https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/assets/img/schedule_Sep2017.png")
 ```
 
-*Note: Click the session name for the slides*
 
-### Session Links
+### Recommended readings
 
+- R for Data Science by Grolemund and Wickham: [http://r4ds.had.co.nz/](http://r4ds.had.co.nz/) 
+- YaRrr! The Pirate's Guide to R! [https://bookdown.org/ndphillips/YaRrr/](https://bookdown.org/ndphillips/YaRrr/)
 
-| Day 1|
-|:------|
-| 0 - Welcome! - [slides](D1S0_Intro/Intro.html) | 
-| 1 - What is R? - [slides](D1S1_WhatIsR/what_is_R.html), [practical](practical_what_is_R.html)|   
-|  2 - Objects in R - [slides](D1S2_Objects/Working_with_objects.html), [practical](practical_objects.html) |
-|     3 - Data I/O - [slides](D1S3_dataio/Data_IO.html), [practical](practical_readin.html)|  
-
-### Day 2 - Statistics
-*Note: Click the session name for the slides*
-
-
-| Session|Lecturer| Slides|Practical |
-|:------|:----|:----|:-----|
-|     1 - Wrangling Data|Nathaniel|    |     |
-|     2 - Statistics|Nathaniel|    |     |
-|     3 - Machine Learning|Nathaniel|    |     |
-
-### Day 3 - Tidying and Visualisations
-*Note: Click the session name for the slides*
-
-| Session|Lecturer| Slides|Practical |
-|:------|:---|:----|:-----|
-|     1 - Tidying Code|Dirk|    |     |
-|     2 - Plotting|Nathaniel|   |     |
-|     3 - Plotting 2.0|Nathaniel|   |     |
-
-### Day 4 - Productivity
-*Note: Click the session name for the slides*
-
-| Session| Slides|Practical |
-|:------|:---|:----|:-----|
-|     1 - Efficient Code|Dirk|    |     |
-|     2 - Dynamic Reports|Nathaniel|    |     |
-|     3 - Next Steps|Dirk|    |     |

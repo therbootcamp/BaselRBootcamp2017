@@ -16,7 +16,7 @@ knitr::include_graphics("https://image.slidesharecdn.com/8-150928160000-lva1-app
 
 ### Slides
 
-Here a link to the lecture slides for this session: LINK
+- [Here are the introduction slides for this practical on statistics!](https://therbootcamp.github.io/_slides/D2S2_Statistics/statistics_lecture.html)
 
 ### Overview
 
@@ -29,16 +29,17 @@ In this practical you'll conduct hypothesis tests. By the end of this practical 
 
 ### Glossary and Packages
 
-Here are the main descriptive statistics functions in R.
+Here are the main descriptive statistics functions we will be covering.
 
 | Function| Description|
 |:------|:--------|
+| `table()` | Frequency table |
 |     `mean(), median(), mode()`| Measures of central tendency|
 |     `sd(), range(), iqr(), var()`|    Measures of variability|
 |     `max(), min()`|    Extreme values|
 | `summary()`| Several summary statistics |
 
-Here are the main hypothesis test functions in R.
+Here are the main hypothesis test functions we will be covering.
 
 | Function| Hypothesis Test| Additional Help |
 |:------|:--------|:----|
@@ -47,13 +48,6 @@ Here are the main hypothesis test functions in R.
 |     `chisq.test()`|    Chi-Square test| https://bookdown.org/ndphillips/YaRrr/htests.html#chi-square-chsq.test
 |     `aov(), TukeyHSD()`|    ANOVA and post-hoc test| https://bookdown.org/ndphillips/YaRrr/anova.html#full-factorial-between-subjects-anova|
 
-
-```{r, echo = TRUE, eval = FALSE}
-# Install all packages necessary for the practical
-#  Only necessary if you don't already have them
-
-install.packages(c("e1071", "rpart", "randomForest", "tidyverse", "yarrr", "FFTrees"))
-```
 
 
 ### Examples
@@ -74,7 +68,8 @@ chick <- as_tibble(ChickWeight)   # Save a copy of the ChickWeight data as a tib
 
 mean(chick$weight)   # What is the mean weight?
 median(chick$Time)   # What is the median time?
-max(Chick$weight)    # What is the maximum weight?
+max(chick$weight)    # What is the maximum weight?
+table(chick$Diet)    # How many observations for each diet?
 
 # -----
 # 1-sample hypothesis test
@@ -82,7 +77,7 @@ max(Chick$weight)    # What is the maximum weight?
 
 # Q: Is the mean weight of chickens different from 110?
 
-htest_A <- t.test(x = ChickWeight$weight,     # The data
+htest_A <- t.test(x = chick$weight,     # The data
                    alternative = "two.sided",  # Two-sided test
                    mu = 110)                   # The null hyopthesis
 
@@ -100,7 +95,7 @@ htest_A$conf.int   # Get a confidence interval
 
 htest_B <- t.test(formula = weight ~ Diet,     # DV ~ IV
                    alternative = "two.sided",  # Two-sided test
-                   data = ChickWeight,         # The data
+                   data = chick,         # The data
                    subset = Diet %in% c(1, 2)) # Compare Diet 1 and Diet 2
 
 htest_B  # Print result
@@ -112,7 +107,7 @@ htest_B  # Print result
 # Q: Is there a correlation between Time and weight?
 
 htest_C <- cor.test(formula = ~ weight + Time,
-                    data = ChickWeight)
+                    data = chick)
 
 htest_C
 
@@ -122,7 +117,7 @@ htest_C
 # Q: Does the result hold when ONLY considering Diets 1 and 2?
 
 htest_D <- cor.test(formula = ~ weight + Time,
-                    data = ChickWeight,
+                    data = chick,
                     subset = Diet %in% c(1, 2))     # Only take data where Diet is 1 or 2
 
 htest_D
@@ -136,7 +131,7 @@ htest_D
 
 # Q: Are there more observations from chicks on one diet versus another?
 
-htest_E <- chisq.test(x = table(ChickWeight$Diet))  # Input is a table of values
+htest_E <- chisq.test(x = table(chick$Diet))  # Input is a table of values
 
 htest_E
 
@@ -149,7 +144,7 @@ htest_E
 # Q: Is there an overall effect of diet on weight?
 
 Diet_aov <- aov(formula = weight ~ factor(Diet),   # Run the anova
-                data = ChickWeight)
+                data = chick)
 
 summary(Diet_aov)       # Look at summary for overall test results
 TukeyHSD(Diet_aov)      # Conduct post-hoc tests
@@ -164,7 +159,7 @@ TukeyHSD(Diet_aov)      # Conduct post-hoc tests
 
 ### Gettting started
 
-A. For this practical, we'll use the `trialact` dataframe from the `speff2trial` package, load the package with the `library()` function. Also load the `tidyverse` as always!
+A. For this practical, we'll use the `ACTG175` dataframe from the `speff2trial` package, load the package with the `library()` function. Also load the `tidyverse` as always!
 
 ```{r, message = FALSE, echo = TRUE, eval = TRUE, message = FALSE, warning = FALSE}
 library(tidyverse)
@@ -172,30 +167,36 @@ library(speff2trial)
 ```
 
 
-B. Now save a copy of the data as a tibble called `trialact`
+B. Convert the data to a tibble (Hint, use assignment and `as_tibble()`)
 
 ```{r, echo = TRUE, eval = TRUE, message = FALSE, warning = FALSE}
-trialact <- as_tibble(ACTG175)
+ACTG175 <- as_tibble(ACTG175)
 ```
 
 
 C. First thing's first, take a look at the data by printing it. It should look like this
 
 ```{r, eval = TRUE}
-trialact
+ACTG175
 ```
 
 
 ### Descriptive statistics
 
+D. What was the mean age of all patients?
 
+E. What was the median weight of all patients?
+
+F. What was the mean CD4 T cell count at baseline? What was it at 20 weeks?
+
+G. How many patients have a history of intraveneous drug use and how many do not? (Hint: use `table()`)
 
 ### T tests with t.test()
 
-1. Conduct a one-sample t-test comparing the age of the patients versus a null hypothesis of 40 years. What is the p-value? Do you accept or reject the hull hypothesis?
+1. Conduct a one-sample t-test comparing the age of the patients versus a null hypothesis of 40 years. What is the test statistic? What is the p-value? Do you accept or reject the hull hypothesis?
 
 ```{r}
-t.test(x = trialact$age,
+t.test(x = ACTG175$age,
        alternative = "two.sided",
        mu = 40)
 ```
@@ -203,19 +204,19 @@ t.test(x = trialact$age,
 2. Now, compare the mean age to a null hypothesis of 35 years. What has changed?
 
 ```{r}
-t.test(x = trialact$age,
+t.test(x = ACTG175$age,
        alternative = "two.sided",
        mu = 35)
 ```
 
-3. Conduct a two-sample t-test comparing the age of men versus women
+3. A researcher wants to make sure that men and women in the clinical study are similar in terms of age. Conduct a two-sample t-test comparing the age of men versus women to test if they are indeed similar or not.
 
   - Women are coded as 0 in `gender`, and men are coded as 1. 
   - Be sure to use the formula notation `formula = age ~ gender`
 
 ```{r}
 t.test(formula = age ~ gender,
-       data = trialact,
+       data = ACTG175,
        alternative = "two.sided")
 ```
 
@@ -224,7 +225,7 @@ t.test(formula = age ~ gender,
 
 ```{r}
 t.test(formula = days ~ drugs,
-       data = trialact)
+       data = ACTG175)
 ```
 
 
@@ -234,21 +235,21 @@ t.test(formula = days ~ drugs,
 
 ```{r}
 cor.test(formula = ~ age + wtkg,
-         data = trialact)
+         data = ACTG175)
 ```
 
 6. We would expect a correlation between CD4 T cell count at baseline (`cd40`) and at 20 weeks (`cd420`). But how strong is the correlation? Answer this question by conducting a correlation test between CD4 T cell count at baseline (`cd40`) and CD4 T cell count at 20 weeks (`cd420`).
 
 ```{r}
 cor.test(formula = ~ cd40 + cd420,
-         data = trialact)
+         data = ACTG175)
 ```
 
 7. Is there a relationship between CD4 T cell count at baseline (`cd40`) and the number of days until the first occurrence of major negative event (`days`)?
 
 ```{r}
 cor.test(formula = ~ cd40 + days,
-         data = trialact)
+         data = ACTG175)
 ```
 
 8. Only considering men, is there a correlation between CD4 T cell count at baseline (`cd40`)and CD8 T cell count at baseline (`cd80`)?
@@ -257,7 +258,7 @@ cor.test(formula = ~ cd40 + days,
     
 ```{r}
 cor.test(formula = ~ cd40 + cd80,
-         data = trialact,
+         data = ACTG175,
          subset = gender == 0)
 ```
 
@@ -265,7 +266,7 @@ cor.test(formula = ~ cd40 + cd80,
 
 ```{r}
 cor.test(formula = ~ cd40 + cd80,
-         data = trialact,
+         data = ACTG175,
          subset = gender == 1)
 ```
 
@@ -273,43 +274,43 @@ cor.test(formula = ~ cd40 + cd80,
 
 10. Do men and women (`gender`) have different distributions of race (`race`)? That is, is the percentage of women who are white differ from the percentage of men who are white?
 
-  - Be sure to create a table of gender and race values with `table(trialact$gender, trialact$race)`
+  - Be sure to create a table of gender and race values with `table(ACTG175$gender, ACTG175$race)`
 
 ```{r}
-chisq.test(table(trialact$gender, trialact$race))
+chisq.test(table(ACTG175$gender, ACTG175$race))
 ```
 
 11. Is there a relationship between a history of intravenous drug use (`drugs`) and hemophilia (`hemo`)?
 
 ```{r}
-chisq.test(table(trialact$hemo, trialact$drugs))
+chisq.test(table(ACTG175$hemo, ACTG175$drugs))
 ```
 
 12. Is there a relationship between homosexual activity (`homo`) and gender (`gender`)
 
 ```{r}
-chisq.test(table(trialact$homo, trialact$gender))
+chisq.test(table(ACTG175$homo, ACTG175$gender))
 ```
 
 13. Only for patients older than 40, is there a relationship between antiretroviral history (`str2`) and race (`race`)?
 
-   - Create a new dataframe called `trialact.o40 <- subset(trialact, age > 40)` and then do your analysis on this new dataframe.
+   - Create a new dataframe called `ACTG175.o40 <- subset(ACTG175, age > 40)` and then do your analysis on this new dataframe.
    
    
 ```{r}
-trialact.o40 <- subset(trialact, age > 40)
+ACTG175.o40 <- subset(ACTG175, age > 40)
 
-chisq.test(table(trialact.o40$str2, trialact.o40$race))
+chisq.test(table(ACTG175.o40$str2, ACTG175.o40$race))
 ```
 
 14. Now repeat the previous analysis, but only for male patients
 
-  - Create a new dataframe called `trialact.male <- subset(trialact, gender == 0)` and then do your analysis on this new dataframe.
+  - Create a new dataframe called `ACTG175.male <- subset(ACTG175, gender == 0)` and then do your analysis on this new dataframe.
 
 ```{r}
-trialact.male <- subset(trialact, gender == 0)
+ACTG175.male <- subset(ACTG175, gender == 0)
 
-chisq.test(table(trialact.male$str2, trialact.male$race))
+chisq.test(table(ACTG175.male$str2, ACTG175.male$race))
 ```
 
 ### ANOVA with aov()
@@ -318,7 +319,7 @@ chisq.test(table(trialact.male$str2, trialact.male$race))
 
 ```{r}
 arms_cd820_aov <- aov(formula = cd820 ~ factor(arms),
-                     data = trialact)
+                     data = ACTG175)
 
 summary(arms_cd820_aov)
 
@@ -330,7 +331,7 @@ TukeyHSD(arms_cd820_aov)
 
 ```{r}
 arms_weight_aov <- aov(formula = wtkg ~ factor(arms),
-                     data = trialact)
+                     data = ACTG175)
 
 summary(arms_weight_aov)
 
@@ -343,7 +344,7 @@ TukeyHSD(arms_weight_aov)
     
 ```{r}
 arms_days_aov <- aov(formula = days ~ factor(arms),
-                     data = trialact)
+                     data = ACTG175)
 
 summary(arms_days_aov)
 
@@ -353,13 +354,13 @@ TukeyHSD(arms_days_aov)
 
 18. Does the previous result hold if you only consider patients with a history of intravenous drug use (`drugs`)? Answer this by conducting the same ANOVA *only* on these patients.
 
-   - Create a new dataframe called `trialact_drugs = subset(trialact, drugs == 1)` and run your analysis on this dataframe
+   - Create a new dataframe called `ACTG175_drugs = subset(ACTG175, drugs == 1)` and run your analysis on this dataframe
    
 ```{r}
-trialact_drugs <- subset(trialact, drugs == 1)
+ACTG175_drugs <- subset(ACTG175, drugs == 1)
 
 arms_days_drugs_aov <- aov(formula = days ~ factor(arms),
-                           data = trialact_drugs)
+                           data = ACTG175_drugs)
 
 summary(arms_days_drugs_aov)
 
@@ -368,61 +369,79 @@ TukeyHSD(arms_days_drugs_aov)
 
 ## Extras and Challenges
 
-19. Conduct a two-way ANOVA testing the effects of *both* hemophilia (`hemo`) and drug use (`drugs`) on the number of days until a major negative event.
+### Generating random samples from distributions
+
+19. You can easily generate random samples from statistical distributions in R. To see all of them, run `?distributions`. For example, to generate samples from the well known Normal distribution, you can use `rnorm()`. Look at the help menu for `rnorm()` to see its arguments. 
+
+
+20. Using `rnorm()`,  create a new object `samp_10` which is 10 samples from a Normal distribution with mean 10 and standard deviation 5. Print the object to see what the elements look like. What should the mean and standard deviation of this sample? be? Test it by evaluating its mean and standard deviation directly using the appropriate functions. Then, do a one-sample t-test on this sample against the null hypothesis that the true mean is 12. What are the results? 
+
+21. Evalaute your code for the previous question *exactly* as it is -- that is, don't change *anything*. What are the new values in `samp_10` and the new mean, standard deviation, and t-test result. Why are the new results different?
+
+22. Now, create a new object called `samp_1000` which is 1,000 samples from a Normal distribution (again with mean 12 and standard deviation 5). Print this object to see what it looks like. What should the mean and standard deviation of this sample be? Do the same hypothesis test as you did in the previous question. What is your new p-value?
+
+
+
+### 2 - Way ANOVA
+
+
+23. Conduct a two-way ANOVA testing the effects of *both* hemophilia (`hemo`) and drug use (`drugs`) on the number of days until a major negative event.
 
    - To include multiple factors in an anova, just include both in the formula such as: `formula = dv ~ factor(x) + factor(y) + ... `. See https://bookdown.org/ndphillips/YaRrr/anova.html#ex-two-way-anova for an example
     
 ```{r}
 hemo_drugs_days_aov <- aov(formula = days ~ factor(hemo) + factor(drugs),
-                           data = trialact)
+                           data = ACTG175)
 
 summary(hemo_drugs_days_aov)
 ```
 
 
-20. Repeat the previous ANOVA, but now test if there is an *interaction* between hemophilia and drugs on the number of days until a major negative event.
+24. Repeat the previous ANOVA, but now test if there is an *interaction* between hemophilia and drugs on the number of days until a major negative event.
 
    - To include interactions in an ANOVA, just include both in the formula using the `*` operator: `formula = dv ~ factor(x) * factor(y)`. See https://bookdown.org/ndphillips/YaRrr/anova.html#ex-two-way-anova for an example
     
 ```{r}
 hemo_drugs_days_aov <- aov(formula = days ~ factor(hemo) * factor(drugs),
-                           data = trialact)
+                           data = ACTG175)
 
 summary(hemo_drugs_days_aov)
 ```
 
-21. Is there a difference in the CD4 T cell count at baseline between whites and non-whites? Answer this by conducting the appropriate hypothesis test.
+### You choose the test!
+
+25. Is there a difference in the CD4 T cell count at baseline between whites and non-whites? Answer this by conducting the appropriate hypothesis test.
 
 ```{r}
 t.test(formula = cd40 ~ race,
-       data = trialact,
+       data = ACTG175,
        alternative = "two.sided")
 ```
 
-22. A researcher is particularly interested in whether or not there is a difference in the number of days until the first occurrence of a major negative event between patients taking zidovudine and those taking didanosine. Conduct the appropriate test to answer this question.
+26. A researcher is particularly interested in whether or not there is a difference in the number of days until the first occurrence of a major negative event between patients taking zidovudine and those taking didanosine. Conduct the appropriate test to answer this question.
     
 ```{r}
 t.test(formula = days ~ arms,
-       data = trialact,
+       data = ACTG175,
        subset = arms %in% c(0, 3))
 ```
 
-23. A researcher wants to know if the relationship between CD4 T cell count at baseline and age is the same for whites and non-whites. Conduct the appropriate statistical test separately for both groups. Are the conclusions the same or different?
+27. A researcher wants to know if the relationship between CD4 T cell count at baseline and age is similar for whites and non-whites. Specifically, she wants to know if both correlations are significant (and in the same direction!) or not. Conduct the appropriate statistical test separately for both groups. Are the conclusions the same or different?
 
 ```{r}
 cor.test(formula = ~ cd40 + days,
-         data = subset(trialact, race == 0))
+         data = subset(ACTG175, race == 0))
 
 cor.test(formula = ~ cd40 + days,
-         data = subset(trialact, race == 1))
+         data = subset(ACTG175, race == 1))
 ```
 
-24. A researcher is concerned that patients were not properly randomly assigned to the different treatment arms. Using the appropriate test(s), see if there is a significant imbalance between treatment arms in terms of gender, drug use, race, and homosexual activity. Do you find evidence for a significant imbalance in any of these domains?
+28. A researcher is concerned that patients were not properly randomly assigned to the different treatment arms. Using the appropriate test(s), see if there is a significant imbalance between treatment arms in terms of gender, drug use, race, and homosexual activity. Do you find evidence for a significant imbalance in any of these domains?
 
 ```{r}
-chisq.test(table(trialact$gender, trialact$arms))
-chisq.test(table(trialact$race, trialact$arms))
-chisq.test(table(trialact$drugs, trialact$arms))
+chisq.test(table(ACTG175$gender, ACTG175$arms))
+chisq.test(table(ACTG175$race, ACTG175$arms))
+chisq.test(table(ACTG175$drugs, ACTG175$arms))
 ```
 
 
