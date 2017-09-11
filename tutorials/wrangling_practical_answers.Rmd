@@ -5,7 +5,7 @@ output: html_document
 ---
 
 ```{r, echo = FALSE}
-knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = TRUE, eval = FALSE)
+knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = TRUE, eval = TRUE)
 ```
 
 ```{r, echo = FALSE, fig.align = 'center', eval = TRUE, fig.cap= "Source: https://www.rstudio.com/", out.width = "30%"}
@@ -83,7 +83,7 @@ chick %>%
   summarise(
     weight.mean = mean(weight),
     weight.max = max(weight),
-    time.mean = mean(Time)
+    time.mean = mean(Time),
     N = n()
   ) %>%
   arrange(weight.mean)
@@ -115,7 +115,7 @@ chick %>%
 library(tidyverse)
 ```
 
-3. For this practical, we'll use the `ACTG175` data, this is the result of a randomized clinical trial comparing the effects of different medications on adults infected with the human immunodeficiency virus. The data are stored at "https://raw.githubusercontent.com/therbootcamp/BaselRBootcamp2017/master/tutorials/data/ACTG175.csv"". Using `read_csv()` load the data into R and store it as a new object called `ACTG175`. (Hint: This is really easy! Look at the help menu for `read_csv()` and pay particular attention to the `file` argument and the examples for tips)
+3. For this practical, we'll use the `ACTG175` data, this is the result of a randomized clinical trial comparing the effects of different medications on adults infected with the human immunodeficiency virus. The data are stored at "https://raw.githubusercontent.com/therbootcamp/BaselRBootcamp2017/master/tutorials/data/ACTG175.csv". Using `read_csv()` load the data into R and store it as a new object called `ACTG175`. (Hint: This is really easy! Just run `read_csv(file = LINK)`, where `LINK` is the file URL.)
 
 ```{r, echo = TRUE, eval = TRUE, message = FALSE, warning = FALSE}
 ACTG175 <- read_csv(file = "https://raw.githubusercontent.com/therbootcamp/BaselRBootcamp2017/master/tutorials/data/ACTG175.csv")
@@ -132,16 +132,15 @@ write_csv(ACTG175, path = "tutorials/data/ACTG175.csv")
 ```
 
 
-4. Ok you've got the data from the internet into your R session. But let's save a local copy of the data as a `.csv` file so we'll always have access to it. Using `write_csv()`, save a copy of the data as a `.csv` file called `ACTG175.csv`, also make sure to put it in the data folder you just created.
-
+4. Ok you've got the data from the internet into your R session. But let's save a local copy of the data as a `.csv` file so we'll always have access to it. Using `write_csv()`, save a copy of the data as a `.csv` file called `ACTG175.csv`, also make sure to put it in the data folder you just created (Hint: the main arguments to `write_csv()` are `x`, the object you are writing, and `path`, the directory and file name you're saving the object to.)
 
 5. Now that you have a local copy of the data saved, we try loading the data back into R from that file. But first, delete the object `ACTG175` from your workspace by running `rm(ACTG175)`.
 
-6. Now it's time to get the data back from the local file! To do this, load the `ACTG175.csv` file data back into your R session and again store it as the object `ACTG175`. Now, your code should be able to access your local copy of the data, even when you are not online.
+6. Now it's time to get the data back from the local file! To do this, use `read_csv()` to load the `ACTG175.csv` file data back into your R session and again store it as the object `ACTG175`. Now, your code should be able to access your local copy of the data, even when you are not online.
 
-7. The `ACTG175` data is comes from the `speff2trial` package. Install the `speff2trial` package using `install.packages()`, load the package with `library()` and then look at the help menu for the `ACTG175` data by running `?ACTG175`
+7. The `ACTG175` data is comes from the `speff2trial` package. If you don't have the `speff2trial` package allready, install it using `install.packages()`. Then, load the package with `library()` and then look at the help menu for the `ACTG175` data by running `?ACTG175`. (Note: If you become really interested in the data, you can also read an article discussing the trial here: [http://www.nejm.org/doi/full/10.1056/nejm199610103351501#t=article](http://www.nejm.org/doi/full/10.1056/nejm199610103351501#t=article))
 
-8. First thing's first, take a look at the first few rows of the data by printing it. It should look like this:
+8. First thing's first, take a look at the first few rows of the data by printing the `ACTG175` object. It should look like this:
 
 ```{r, eval = TRUE, echo = TRUE}
 ACTG175
