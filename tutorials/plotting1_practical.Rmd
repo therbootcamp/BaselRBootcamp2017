@@ -87,7 +87,8 @@ ggplot(data = mpg,
        geom_smooth(col = "blue", method = "lm") + 
   labs(y = "Highway Miles per Gallon (mpg)",
        x = "Engine displacement (displ)",
-       color = "Class")
+       color = "Class") +
+  theme_bw()    # Use black and white theme
 
 
 # Facet by class
@@ -162,14 +163,14 @@ diamonds_small <- diamonds %>% sample_n(100)
 
 3. Create the following scatterplot showing the relationship between the number of carats in the diamonds (`carat`) and its price (`price`)
 
-```{r, echo = FALSE, eval = TRUE, fig.width = 4, fig.height = 4}
+```{r, echo = FALSE, eval = TRUE, fig.width = 6, fig.height = 4}
 ggplot(data = diamonds_small, aes(x = carat, y = price)) + 
   geom_point()
 ```
 
 4. Color the points by their cut
 
-```{r, echo = FALSE, eval = TRUE, fig.width = 4, fig.height = 4}
+```{r, echo = FALSE, eval = TRUE, fig.width = 6, fig.height = 4}
 ggplot(data = diamonds_small, aes(x = carat, y = price, color = cut)) + 
   geom_point()
 ```
@@ -260,7 +261,8 @@ ggplot(midwest, aes(x = XX, y = XX)) +
        y = "XX", 
        x = "XX", 
        title = "XX", 
-       caption = "XX")
+       caption = "XX") + 
+       theme_bw()
 ```
 
 
@@ -272,8 +274,10 @@ ggplot(midwest, aes(x = percollege, y = percpovertyknown)) +
        y = "Poverty rate", 
        x = "Percent with college education", 
        title = "Midwest Data", 
-       caption = "Source: ggplot2 package")
+       caption = "Source: ggplot2 package") + 
+       theme_bw()
 ```
+
 
 
 ### Density plot
@@ -289,7 +293,7 @@ ggplot(data = XX,
             caption = "XX",
             x = "XX",
             y = "XX",
-            fill = "X")
+            fill = "X") + theme_bw()
 ```
 
 
@@ -302,7 +306,7 @@ ggplot(data = midwest,
             caption = "Source: midwest dataset in ggplot2",
             x = "Percent of inhabitants with a college education",
             y = "Density",
-            fill = "State")
+            fill = "State") + theme_bw()
 ```
 
 
@@ -321,31 +325,36 @@ devtools::install_github("kassambara/ggcorrplot")
 
 Using the following code as a template, create the following plot showing the correlations between different county statistics:
 
-```{r, eval = FALSE, echo = TRUE}
+
+```{r, echo = TRUE, eval = FALSE}
 library(ggcorrplot)
 
-# Create a correlation matrix from several numeric columns
-corr_mtx <- cor(midwest %>% 
-                  select(area, poptotal, popdensity, percwhite, percblack, 
-                         percollege, percpovertyknown, inmetro, percadultpoverty))
+# Select a few numeric columns from the diamonds data
+diamonds_numeric <- diamonds %>% 
+                    select(carat, depth, table, price)
 
-# Plot
-ggcorrplot(cor = XX, 
+# Create a correlation matrix from those data
+corr_mtx <- cor(diamonds_numeric)
+
+# Plot the correlation matrix with ggcorrplot
+ggcorrplot(cor = XX,
            type = "XX",
            lab = TRUE, 
-           method = "XX",
            lab_size = 3, 
+           method = "XX", 
+           colors = c("red", "white", "springgreen3"), 
            title = "XX",
            ggtheme = theme_bw)
 ```
+
+
 
 ```{r, echo = FALSE, eval = TRUE}
 library(ggcorrplot)
 
 # Create a correlation matrix from several numeric columns
-corr_mtx <- cor(midwest %>% 
-                  select(area, poptotal, popdensity, percwhite, percblack, 
-                         percollege, percpovertyknown, inmetro, percadultpoverty))
+corr_mtx <- cor(diamonds %>% 
+                  select(carat, depth, table, price))
 
 # Plot
 ggcorrplot(cor = corr_mtx,
@@ -354,17 +363,42 @@ ggcorrplot(cor = corr_mtx,
            lab_size = 3, 
            method = "circle", 
            colors = c("red", "white", "springgreen3"), 
-           title = "Correlogram of mtcars",
+           title = "Correlogram of diamonds data",
+           ggtheme = theme_bw)
+```
+
+Now, make the folowing plot of correlations from the `midwest` data:
+
+```{r, echo = FALSE, eval = TRUE}
+library(ggcorrplot)
+
+# Create a correlation matrix from several numeric columns
+corr_mtx <- cor(midwest %>% 
+                  select(area, poptotal, popdensity, percwhite, percblack, 
+                         percollege, percpovertyknown))
+
+# Plot
+ggcorrplot(cor = corr_mtx,
+           type = "lower",
+           lab = TRUE, 
+           lab_size = 3, 
+           method = "circle", 
+           colors = c("red", "white", "springgreen3"), 
+           title = "Correlations of Measures from Midwest Counties",
            ggtheme = theme_bw)
 ```
 
 
 
-### Line plot with `geom_line()`
 
-Using the following template, create the following plot of savings data (`psavert`) from the `economics` dataset. 
 
-```{r, eval = FALSE, echo = TRUE}
+
+
+### Challenges
+
+Make the folowing plot of savings data (`psavert`) from the `economics` dataset (hint: use the `geom_line()` function)
+
+```{r, eval = FALSE, echo = FALSE}
 ggplot(data = XX, aes(x = XX, y = XX)) + 
        geom_line() + 
        labs(title = "XX", 
@@ -385,9 +419,41 @@ ggplot(data = economics, aes(x = date, y = psavert)) +
        y = "Savings Rate %") + theme_bw() + geom_smooth()
 ```
 
-Once you have done that, try creating the following plot from 
 
 
+Make this plot from the `diamonds` data
+
+```{r, echo = FALSE, eval = TRUE, fig.width = 10, fig.height = 6}
+ggplot(data = diamonds, 
+       aes(carat, fill = cut)) + 
+       geom_density(alpha = 0.5) + 
+       labs(title = "Carats", 
+            subtitle = "For diamonds of different cuts",
+            caption = "Source: diamonds dataset in ggplot2",
+            x = "Carats",
+            y = "Density",
+            fill = "Cut") + theme_bw()
+```
+
+Make this plot, also from the `ACTG175` dataset. To do this, you'll need to use both `geom_boxplot()` and `geom_point()`. To jitter the points, use the `position` argument to `geom_point()`, as well as the `position_jitter()` function to control how much to jitter the points.
+
+```{r, eval = TRUE, echo = FALSE, fig.width = 10, fig.height = 6}
+ggplot(data = ACTG175,
+       aes(x = factor(arms), y = days, fill = factor(arms))) +
+   facet_wrap(~ drugs, nrow = 1, labeller = label_both) +
+  geom_boxplot(outlier.size = 0, alpha = .2) + 
+  labs(title = "Number of days until a major negative event",
+       subtitle = "For different treatment arms and separated by drug users and non drug users",
+       caption = "Source: ACTG175 dataset from the speff2trial package",
+       x = "Treatment Arm",
+       y = "Number of days until a major negative event",
+       fill = "Arm") +
+  theme_bw() +  
+  scale_fill_brewer(palette = "Dark2") + 
+  geom_point(alpha = .2, 
+             position = position_jitter(w = 0.1, h = 0))
+
+```
 
 ### Maps
 
