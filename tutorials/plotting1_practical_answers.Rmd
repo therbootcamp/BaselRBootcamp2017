@@ -5,7 +5,7 @@ output: html_document
 ---
 
 ```{r, echo = FALSE}
-knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = FALSE, eval = FALSE, message = FALSE, warning = FALSE, fig.align = 'center')
+knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = TRUE, eval = TRUE, message = FALSE, warning = FALSE, fig.align = 'center')
 ```
 
 ```{r, echo = FALSE, fig.align = 'center', eval = TRUE, fig.cap= "Source: https://www.rstudio.com/", out.width = "30%"}
@@ -150,7 +150,7 @@ ggplot(data = mpg,
 |     `Davis`|   `car` |
 | `heartdisease` | `FFTrees` | 
 
-2. Load the `tidyverse` package.
+2. Load the `tidyverse`, `speff2trial`, `car`, and `FFTrees` packages
 
 ```{r, eval = TRUE, message = FALSE, warning = FALSE}
 library(tidyverse)
@@ -169,14 +169,14 @@ diamonds
 
 Create the following blank plot
 
-```{r, echo = FALSE, eval = TRUE, fig.width = 6, fig.height = 4}
+```{r, echo = TRUE, eval = TRUE, fig.width = 6, fig.height = 4}
 ggplot(data = diamonds, 
        mapping = aes(x = carat, y = price))
 ```
 
 3. Now add points showing the relationship between the number of carats in the diamonds (`carat`) and its price (`price`)
 
-```{r, echo = FALSE, eval = TRUE, fig.width = 6, fig.height = 4}
+```{r, echo = TRUE, eval = TRUE, fig.width = 6, fig.height = 4}
 ggplot(data = diamonds, 
        mapping = aes(x = carat, y = price)) + 
   geom_point()
@@ -184,7 +184,7 @@ ggplot(data = diamonds,
 
 3. Make the points transparent using the `alpha` argument to `geom_point()`
 
-```{r, echo = FALSE, eval = TRUE, fig.width = 6, fig.height = 4}
+```{r, echo = TRUE, eval = TRUE, fig.width = 6, fig.height = 4}
 ggplot(data = diamonds, 
        mapping = aes(x = carat, y = price)) + 
   geom_point(alpha = .05)
@@ -192,7 +192,7 @@ ggplot(data = diamonds,
 
 4. Color the points by their cut
 
-```{r, echo = FALSE, eval = TRUE, fig.width = 6, fig.height = 4}
+```{r, echo = TRUE, eval = TRUE, fig.width = 6, fig.height = 4}
 ggplot(data = diamonds, 
   mapping = aes(x = carat, y = price, color = cut)) + 
   geom_point(alpha = .05)
@@ -200,7 +200,7 @@ ggplot(data = diamonds,
 
 5. Create different plots for each value of `cut` using the `facet_wrap` function:
 
-```{r, echo = FALSE, eval = TRUE, fig.width = 8, fig.height = 2}
+```{r, echo = TRUE, eval = TRUE, fig.width = 8, fig.height = 2}
 ggplot(data = diamonds, 
        mapping = aes(x = carat, y = price, color = cut)) + 
   geom_point(alpha = .05) + 
@@ -209,7 +209,7 @@ ggplot(data = diamonds,
 
 4. Add a black, smoothed mean line to each plot using `geom_smooth()` (You can also try turning the line into a regression line using the `method` argument)
 
-```{r, echo = FALSE, eval = TRUE, fig.width = 8, fig.height = 2}
+```{r, echo = TRUE, eval = TRUE, fig.width = 8, fig.height = 2}
 ggplot(data = diamonds, 
        mapping = aes(x = carat, y = price, color = cut)) + 
   geom_point(alpha = .05) + 
@@ -240,7 +240,7 @@ ggplot(data = XX,
 ```
 
 
-```{r, echo = FALSE, eval = TRUE, fig.width = 4, fig.height = 4}
+```{r, echo = TRUE, eval = TRUE, fig.width = 4, fig.height = 4}
 ggplot(data = diamonds, 
        mapping = aes(x = carat)) + 
   geom_density(fill = "tomato1") + 
@@ -278,7 +278,7 @@ ggplot(data = XX,
 ```
 
    
-```{r, echo = FALSE, eval = TRUE, fig.width = 8, fig.height = 3}
+```{r, echo = TRUE, eval = TRUE, fig.width = 8, fig.height = 3}
 ggplot(data = diamonds, 
        mapping = aes(x = log(price), fill = cut)) + 
        geom_density(color = "black") + 
@@ -311,7 +311,7 @@ ggplot(data = XX,
 ```
 
 
-```{r, echo = FALSE, eval = TRUE, fig.width = 6, fig.height = 4}
+```{r, echo = TRUE, eval = TRUE, fig.width = 6, fig.height = 4}
 ggplot(data = diamonds,
   mapping = aes(x = cut, y = log(price), fill = cut)) + 
   geom_boxplot()  + 
@@ -354,7 +354,7 @@ ggplot(data = XX,
 ```
 
 
-```{r, echo = FALSE, eval = TRUE, fig.width = 8, fig.height = 5}
+```{r, echo = TRUE, eval = TRUE, fig.width = 8, fig.height = 5}
 ggplot(data = midwest, 
     mapping = aes(x = percollege, y = percpovertyknown)) + 
     geom_point(aes(fill = state, size = popdensity), shape = 21, color = "white") + 
@@ -375,7 +375,7 @@ ggplot(data = midwest,
 
 Create the following density plot showing the density of inhabitants with a college education in different states using the following template
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, eval = FALSE}
 ggplot(data = XX, 
        mapping = aes(XX, fill = XX)) + 
   geom_density(alpha = XX) + 
@@ -389,7 +389,7 @@ ggplot(data = XX,
 ```
 
 
-```{r, echo = FALSE, eval = TRUE, fig.width = 8, fig.height = 5}
+```{r, echo = TRUE, eval = TRUE, fig.width = 8, fig.height = 5}
 ggplot(data = midwest, 
        mapping = aes(percollege, fill = state)) + 
   geom_density(alpha = 0.8) + 
@@ -425,7 +425,7 @@ ggplot(XX,
 ```
 
 
-```{r, echo = FALSE, eval = TRUE, fig.width = 10, fig.height = 12}
+```{r, echo = TRUE, eval = TRUE, fig.width = 10, fig.height = 12}
 # Read in nba data
 nba_long <- read.csv("https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_slides/data/nba_long.csv")
 
@@ -481,7 +481,7 @@ ggplot(data = XX,
   theme_minimal()
 ```
 
-```{r, echo = FALSE, eval = TRUE, fig.width = 7, fig.height = 4}
+```{r, echo = TRUE, eval = TRUE, fig.width = 7, fig.height = 4}
 library(ggjoy)
 
 ggplot(data = midwest,
@@ -538,7 +538,7 @@ ggcorrplot(cor = XX,
 ```
 
 
-```{r, echo = FALSE, eval = TRUE, fig.width = 10, fig.height = 10}
+```{r, echo = TRUE, eval = TRUE, fig.width = 10, fig.height = 10}
 library(ggcorrplot)
 
 # Select only numeric rows
@@ -562,7 +562,7 @@ ggcorrplot(cor = corr_mtx,
 
 Make the following plot of savings data (`psavert`) from the `economics` dataset (hint: use the `geom_line()` function and map `date` to the x aesthetic and `psavert` to the y aesthetic.)
 
-```{r, eval = FALSE, echo = FALSE}
+```{r, eval = FALSE, echo = TRUE}
 ggplot(data = XX, aes(x = XX, y = XX)) + 
        geom_line() + 
        labs(title = "XX", 
@@ -573,7 +573,7 @@ ggplot(data = XX, aes(x = XX, y = XX)) +
        geom_smooth()
 ```
 
-```{r, eval = TRUE, echo = FALSE, fig.width = 10, fig.height = 6}
+```{r, eval = TRUE, echo = TRUE, fig.width = 10, fig.height = 6}
 # plot
 ggplot(data = economics, 
        mapping = aes(x = date, y = psavert)) + 
@@ -589,7 +589,7 @@ ggplot(data = economics,
 
 Make this plot from the `diamonds` data showing the relationship between diamond cut (`cut`), color (`color`), and carats (`carat`)
 
-```{r, echo = FALSE, eval = TRUE, fig.width = 10, fig.height = 10}
+```{r, echo = TRUE, eval = TRUE, fig.width = 10, fig.height = 10}
 ggplot(data = diamonds, 
        aes(carat, fill = cut)) +
   facet_wrap(~ color, labeller = "label_both") + 
@@ -605,7 +605,7 @@ ggplot(data = diamonds,
 
 Make the following plot from the `ACTG175` dataset. To do this, you'll need to use both `geom_boxplot()` and `geom_point()`. To jitter the points, use the `position` argument to `geom_point()`, as well as the `position_jitter()` function to control how much to jitter the points.
 
-```{r, eval = TRUE, echo = FALSE, fig.width = 10, fig.height = 6}
+```{r, eval = TRUE, echo = TRUE, fig.width = 10, fig.height = 6}
 ggplot(data = ACTG175,
        aes(x = factor(arms), y = days, fill = factor(arms))) +
    facet_wrap(~ drugs, nrow = 1, labeller = label_both) +
@@ -628,7 +628,7 @@ The `Davis` dataframe in the `car` package contains measurements of the reported
   - Instead of using `geom_point()`, use `geom_count()` to create points whose size reflects the number of observations at that location.
   - Include an "identity line" with the `geom_abline()` function.
 
-```{r, eval = TRUE, echo = FALSE, fig.width = 10, fig.height = 6}
+```{r, eval = TRUE, echo = TRUE, fig.width = 10, fig.height = 6}
 library(car)
 
 ggplot(data = Davis,
@@ -663,15 +663,6 @@ Create a plot showing the relationship between `age`, `chol` and `diagnosis`
 
 Create a plot showing the relationship between `cp`, `slope`, and `diagnosis`
 
-
-
-### Maps
-
-```{r}
-install.packages(c("maps", "mapdata"))
-devtools::install_github("dkahle/ggmap")
-
-```
 
 
 ### References
