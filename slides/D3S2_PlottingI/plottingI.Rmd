@@ -1,0 +1,1103 @@
+---
+title: "Plotting Part I"
+subtitle: "ggplot2"
+author: "The R Bootcamp<br/>Twitter: <a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
+date: "September 2017"
+output:
+  xaringan::moon_reader:
+    css: ["default", "my-theme.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+---
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+# see: https://github.com/yihui/xaringan
+# install.packages("xaringan")
+# see: 
+# https://github.com/yihui/xaringan/wiki
+# https://github.com/gnab/remark/wiki/Markdown
+options(width=110)
+options(digits = 4)
+```
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = TRUE, eval = TRUE, message = FALSE, warning = FALSE, fig.align = 'center')
+```
+
+# Plotting
+.pull-left3[
+
+
+
+]
+
+
+.pull-right3[
+
+### Questions you can answer with dplyr
+
+> *Can you calculate the mean survival times for each treatment separated by gender and time?*
+
+> *I need to know the mean birth rate only for countries in Africa from 1980 to 1980.*
+
+> *What percent of female patients had adverse events to drug X during weeks 5 through 10?*
+
+]
+---
+
+# Cheat Sheet!
+https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf
+
+```{r, echo = FALSE, out.width="600", fig.align = 'center'}
+knitr::include_graphics("images/ggplot_cheatsheet_ss.png")
+```
+
+
+
+---
+
+## Grammar of Graphics
+
+.pull-left3[
+
+
+<br>
+<br>
+
+>###1. A plot is built of simple building blocks
+
+>###2. By comining different building blocks, plots of any complexity can be created.
+
+
+
+]
+
+
+.pull-right3[
+
+```{r, echo = FALSE, out.width="60%", fig.align = 'center'}
+knitr::include_graphics("images/wilkonson_book.png")
+```
+
+]
+
+
+---
+
+## Grammar of Graphics
+
+.pull-left3[
+
+
+]
+
+
+.pull-right3[
+
+```{r, echo = FALSE, out.width="100%", fig.align = 'center'}
+knitr::include_graphics("images/gg_diagram.png")
+```
+
+]
+
+
+---
+## How??
+
+
+How do you make
+
+
+
+
+
+---
+## ggplot2
+
+
+.pull-left3[
+<br>
+<br>
+
+- ### ggplot2 is an R package written by Hadley Wickham.
+
+- ### Makes it *easy* to create plots according to the grammar of graphics
+
+- ### By far one of the most popular R packages, used to generate most R plots.
+
+
+]
+
+
+.pull-right3[
+
+
+```{r, echo = FALSE, out.width="70%", fig.align = 'center'}
+knitr::include_graphics("images/wickham_portrait.png")
+```
+
+
+]
+
+---
+## ggplot2
+
+
+.pull-left3[
+
+```{r, echo = FALSE, out.width="80%", fig.align = 'center'}
+knitr::include_graphics("images/ggplot_hex.png")
+```
+
+
+]
+
+
+.pull-right3[
+
+### Load the ggplot2 package
+
+```{r, eval = FALSE}
+# Load the tidyverse (includes ggplot2)
+library(tidyverse)
+```
+
+
+### Or
+
+```{r, eval = FALSE}
+# Load ggplot2 directly
+library(ggplot2)
+```
+
+]
+
+
+---
+## `mpg` data
+
+.pull-left3[
+
+The `mpg` data is a tibble of car data contained in the `ggplot2` package
+
+```{r, message = FALSE, warning = FALSE, echo = FALSE, results = 'asis'}
+library(tidyverse)
+set.seed(102)
+knitr::kable(mpg[sample(nrow(mpg), size = 8),c("manufacturer", "model", "cty", "hwy", "class")], format = "markdown")
+```
+
+]
+
+.pull-right3[
+
+<br>
+<br>
+
+```{r, echo = FALSE, out.width="80%", fig.align = 'center'}
+knitr::include_graphics("images/carlot.jpg")
+```
+
+
+
+]
+
+
+---
+## Creating this plot
+
+.pull-left3[
+
+
+**Data**
+
+- Use the `mpg` tibble
+
+**Aesthetics**
+
+- Show engine displacement (`disp`) on the x axis
+- Show highway miles per gallon (`hwy`) on the y-axis
+- Color plotting elements by the class of car (`class`)
+
+**Geometric objects**
+
+- Show data as points.
+- Add a regression line
+
+**Labels and themes**
+
+- Add plotting labels
+- Use a black and white plotting theme
+
+]
+
+
+.pull-right3[
+
+Our goal is to build the following plot step by step:
+
+
+```{r, echo = FALSE, out.width = "90%"}
+# Add a regression line for all classes
+
+ggplot(data = mpg, 
+       mapping = aes(x = displ, y = hwy, color = class)) +
+  geom_point(size = 3, alpha = .9) + 
+  geom_smooth(col = "blue", method = "lm")+
+  labs(x = "Engine Displacement in Liters",
+       y = "Highway miles per gallon",
+       title = "MPG data",
+       subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
+       caption = "Source: mpg data in ggplot2") + theme_bw()
+
+```
+
+
+]
+
+
+---
+## `data`
+
+
+.pull-left3[
+
+- To create a ggplot2 object, use the `ggplot()` function.
+
+- Start with the `data` argument.
+
+   - `data` should be a dataframe (or Tibble)
+
+- Including only a `data` argument returns a blank plotting space, because we haven't specified any plotting *aesthetics* or *geometric objects*
+
+]
+
+
+.pull-right3[
+
+
+```{r, out.width = "70%", fig.width = 4, fig.height = 4}
+ggplot(data = mpg)
+```
+
+
+]
+
+
+---
+## Aesthetics
+
+
+.pull-left3[
+
+- An **aesthetic** is a visual property of the objects in your plot. 
+
+### Common aesthetics
+
+| aesthetics| Description|
+|:------|:----|
+|     `x`|    Data mapped to x-coordinate|
+|     `y`|    Data mapped to y-coordinate|
+|     `color`, `fill`|    Color and filling|
+|     `alpha`|    Transparency|
+|     `shape`| Overall shape|
+|    `size`|  Size|
+
+- Add plotting aesthetics with the `aes()` function
+
+
+]
+
+
+.pull-right3[
+
+```{r, out.width = "70%", fig.width = 4, fig.height = 4}
+ggplot(data = mpg,
+       mapping = aes(x = displ, y = hwy))
+```
+
+
+]
+
+
+
+---
+## Geometric objects (geoms)
+
+
+.pull-left3[
+
+- A **geom** is a geometric object in a plot that represents data
+
+
+### Common geoms
+
+| geom| plot type|
+|:------|:----|
+|     `geom_point()`|    Scatterplot|
+|     `geom_bar()`|    barplot|
+|     `geom_smooth()`|    Regression line|
+
+
+- To add a geom to a plot, just include ` + geom_X()` where X is the type of geom.
+- `ggplot()` will automatically apply that geom to the aesthetics.
+
+]
+
+
+.pull-right3[
+
+> Add a point geom with `geom_point()`
+
+```{r, out.width = "70%", fig.width = 4, fig.height = 4}
+ggplot(data = mpg,
+       mapping = aes(x = displ, y = hwy)) + 
+  geom_point()
+```
+
+
+]
+
+
+
+---
+## Geometric objects (geoms)
+
+.pull-left3[
+
+<br>
+<br>
+
+*How do we get points to be shown in different colors like the plot below?*
+
+
+```{r, out.width = "100%", fig.width = 6, fig.height = 4, echo = FALSE}
+ggplot(data = mpg,
+       mapping = aes(x = displ, y = hwy, color = class)) + 
+  geom_point()
+```
+
+
+
+]
+
+.pull-right3[
+
+
+
+> What plotting aesthetic is missing from ths code below to make our plot on the left?
+
+```{r, out.width = "80%", fig.width = 5, fig.height = 4}
+ggplot(data = mpg,
+       mapping = aes(x = displ, y = hwy)) + 
+  geom_point()
+```
+
+
+
+]
+
+
+
+
+---
+## Color aesthetic
+
+
+```{r, out.width = "60%", fig.width = 6, fig.height = 4, echo = TRUE}
+ggplot(data = mpg,
+       mapping = aes(x = displ, y = hwy, col = class)) +  # Map mpg$class to color aes
+  geom_point()   # Add points that respect the aesthetics
+```
+
+
+
+
+
+
+
+---
+## Geometric objects (geoms)
+
+.pull-left3[
+
+
+*Code WITHOUT color aesthetic*
+
+```{r, out.width = "100%", fig.width = 6, fig.height = 4, echo = TRUE}
+ggplot(data = mpg,
+       mapping = aes(x = displ, 
+                     y = hwy)) + 
+  geom_point()
+```
+
+
+
+]
+
+.pull-right3[
+
+
+*Code WITH color aesthetic*
+
+```{r, out.width = "90%", fig.width = 6, fig.height = 4, echo = TRUE}
+ggplot(data = mpg,
+       mapping = aes(x = displ, 
+                     y = hwy, 
+                     col = class)) + 
+  geom_point()
+```
+
+
+
+]
+
+---
+
+### What's next?
+
+.pull-left3[
+
+> Where are are at
+
+
+
+```{r, out.width = "90%", fig.width = 6, fig.height = 4, echo = TRUE}
+ggplot(data = mpg,
+       mapping = aes(x = displ, 
+                     y = hwy, 
+                     col = class)) + 
+  geom_point()
+```
+
+
+]
+
+
+.pull-right3[
+<br>
+
+> Our goal.
+
+<br>
+
+```{r, echo = FALSE, out.width = "90%", fig.width = 7, fig.height = 5}
+# Add a regression line for all classes
+
+ggplot(data = mpg, 
+       mapping = aes(x = displ, y = hwy, col = class)) +
+  geom_point(size = 3, alpha = .9) + 
+  geom_smooth(col = "blue", method = "lm")+
+  labs(x = "Engine Displacement in Liters",
+       y = "Highway miles per gallon",
+       title = "MPG data",
+       subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
+       caption = "Source: mpg data in ggplot2") + theme_bw()
+
+```
+
+]
+
+### What are we missing?
+
+
+---
+### Smoothed lines with `geom_smooth()`
+
+.pull-left3[
+
+To add a smoothed line to a plot, use `geom_smooth()`
+
+### `geom_smooth()` arguments
+
+| Arguments| Description|
+|:------|:----|
+|     `method`| How should the line be generated?|
+|     `level`|    Confidence|
+| `col, size`, ...| Other plotting aesthetics|
+
+
+- If you add additional plotting aesthetics, they will *override* the general plotting aesthetics
+
+
+]
+
+.pull-right3[
+
+> Add a blue smoothed line
+
+```{r, fig.width = 7, fig.height = 4}
+ggplot(data = mpg, 
+       mapping = aes(x = displ, y = hwy, col = class)) +
+  geom_point() + 
+  geom_smooth(col = "blue")
+```
+
+]
+
+
+
+---
+
+## Why are these two different?
+
+.pull-leftEven[
+
+### Plot A
+
+```{r, fig.width = 7, fig.height = 4, out.width = "90%"}
+ggplot(data = mpg, 
+       mapping = aes(x = displ, y = hwy, 
+                     col = class)) +
+  geom_point() + 
+  geom_smooth(col = "blue")
+```
+
+]
+
+
+.pull-rightEven[
+
+### Plot B
+
+```{r, fig.width = 7, fig.height = 4, out.width = "90%"}
+ggplot(data = mpg, 
+       mapping = aes(x = displ, y = hwy, 
+                     col = class)) +
+  geom_point() + 
+  geom_smooth()
+```
+
+]
+
+
+
+---
+## Overrriding aesthetics
+
+
+- You can include additional aesthetics, like color, shape, and size, in *any* geom.
+
+- This will override the *global* aesthetics
+
+```{r, fig.width = 7, fig.height = 4, out.width = "50%"}
+ggplot(data = mpg, 
+       mapping = aes(x = displ, y = hwy, col = class)) +
+  geom_point() + 
+  geom_smooth(col = "blue") # geom_smooth IGNORES global col aesthetic
+```
+
+
+---
+## Example A: No overriding
+
+```{r, fig.width = 7, fig.height = 4, out.width = "60%"}
+ggplot(data = mpg, 
+       mapping = aes(x = displ, y = hwy, col = class)) +
+  geom_point() + # geom_point RESPECTS global col aesthetic (class)
+  geom_smooth()  # geom_smooth RESPECTS global col aesthetic (class)
+```
+
+
+---
+## Example B: Override col aesthetic in geom_smooth()
+
+```{r, fig.width = 7, fig.height = 4, out.width = "60%"}
+ggplot(data = mpg, 
+       mapping = aes(x = displ, y = hwy, col = class)) +
+  geom_point() +            # geom_point RESPECTS global col aesthetic (class)
+  geom_smooth(col = "blue") # geom_smooth IGNORES global col aesthetic (class)
+```
+
+---
+## Example C: Override col aesthetic in geom_smooth() & geom_point()
+
+```{r, fig.width = 7, fig.height = 4, out.width = "60%"}
+ggplot(data = mpg, 
+       mapping = aes(x = displ, y = hwy, col = class)) +
+  geom_point(col = "pink") + # geom_point IGNORES global col aesthetic (class)
+  geom_smooth(col = "blue")  # geom_smooth IGNORES global col aesthetic (class)
+```
+
+---
+## Example D: Override col aesthetic in geom_point()
+
+```{r, fig.width = 7, fig.height = 4, out.width = "60%"}
+ggplot(data = mpg, 
+       mapping = aes(x = displ, y = hwy, col = class)) +
+  geom_point(col = "pink") + # geom_point IGNORES global col aesthetic (class)
+  geom_smooth()              # geom_smooth RESPECTS global col aesthetic (class)
+```
+
+
+
+---
+## What we want
+
+```{r, fig.width = 7, fig.height = 4, out.width = "60%"}
+ggplot(data = mpg, 
+       mapping = aes(x = displ, y = hwy, col = class)) +
+  geom_point() +
+  geom_smooth(col = "blue",  # geom_smooth RESPECTS global col aesthetic (class)
+              method = "lm") # Use lm (linear model) smoothing line
+```
+
+
+
+---
+### What's next?
+
+.pull-left2[
+
+> Where are are at
+
+
+
+```{r, fig.width = 7, fig.height = 4, out.width = "60%"}
+ggplot(data = mpg, 
+       mapping = aes(x = displ, y = hwy, col = class)) +
+  geom_point() +
+  geom_smooth(col = "blue",  method = "lm")
+```
+
+
+]
+
+
+.pull-right2[
+<br>
+
+> Our goal.
+
+<br>
+
+```{r, echo = FALSE, out.width = "90%", fig.width = 7, fig.height = 5}
+# Add a regression line for all classes
+
+ggplot(data = mpg, 
+       mapping = aes(x = displ, y = hwy, col = class)) +
+  geom_point(size = 3, alpha = .9) + 
+  geom_smooth(col = "blue", method = "lm")+
+  labs(x = "Engine Displacement in Liters",
+       y = "Highway miles per gallon",
+       title = "MPG data",
+       subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
+       caption = "Source: mpg data in ggplot2") + theme_bw()
+
+```
+
+]
+
+### What are we missing?
+
+
+---
+## Add labels with `labs()`
+
+.pull-left3[
+
+You can add labels to a plot with the `labs()` function
+
+### `labs()` arguments
+
+| Arguments| Description|
+|:------|:----|
+|     `title`| How should the line be generated?|
+|     `subtitle`|    Confidence|
+|     `caption`| Caption|
+| `col, size`, ...| Other plotting aesthetics|
+
+]
+
+
+.pull-right3[
+```{r, echo = TRUE, out.width = "70%", fig.width = 7, fig.height = 5}
+
+ggplot(data = mpg, 
+       mapping = aes(x = displ, y = hwy, col = class)) +
+  geom_point() + 
+  geom_smooth(col = "blue", method = "lm") +
+  labs(x = "Engine Displ...",
+       y = "Highway miles...",
+       title = "MPG data",
+       subtitle = "Cars with ...",
+       caption = "Source...")
+```
+
+]
+
+
+
+
+---
+### What's next?
+
+.pull-left2[
+
+> Where are are at
+
+
+
+```{r, fig.width = 7, fig.height = 4, out.width = "60%"}
+ggplot(data = mpg, 
+       mapping = aes(x = displ, y = hwy, col = class)) +
+  geom_point(size = 3, alpha = .9) + 
+  geom_smooth(col = "blue", method = "lm")+
+  labs(x = "Engine...",
+       y = "Highway ...",
+       title = "MPG data",
+       subtitle = "Cars with...",
+       caption = "Source:...")
+```
+
+
+]
+
+
+.pull-right2[
+<br>
+
+> Our goal.
+
+<br>
+
+```{r, echo = FALSE, out.width = "90%", fig.width = 7, fig.height = 5}
+# Add a regression line for all classes
+
+ggplot(data = mpg, 
+       mapping = aes(x = displ, y = hwy, col = class)) +
+  geom_point(size = 3, alpha = .9) + 
+  geom_smooth(col = "blue", method = "lm")+
+  labs(x = "Engine Displacement in Liters",
+       y = "Highway miles per gallon",
+       title = "MPG data",
+       subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
+       caption = "Source: mpg data in ggplot2") + 
+  theme_bw()
+
+```
+
+]
+
+### What are we missing?
+
+
+---
+## Themes with `theme_XX()`
+
+.pull-left3[
+
+A plotting *theme* controls many aspects of its overall look, from the background, to the grid lines, to the label font to the spacing between plot labels and the plotting space.
+
+
+### Common themes
+
+| Themes| 
+|:------|
+|     `theme_bw()`| 
+|     `theme_minimal()`| 
+|     `theme_classic()`|
+| `theme_light()`|
+| `theme_dark()`|
+
+
+- You can easily add a theme to a plot by including `+ theme_XX()`
+
+
+]
+
+.pull-right3[
+
+> No theme specified
+
+```{r, fig.width = 6, fig.height = 4, out.width = "90%"}
+ggplot(data = mpg,
+       mapping = aes(x = displ, y = hwy)) +
+  geom_point() + 
+  geom_smooth(method = "lm")
+```
+
+
+]
+
+
+---
+## Themes with `theme_XX()`
+
+.pull-left3[
+
+A plotting *theme* controls many aspects of its overall look, from the background, to the grid lines, to the label font to the spacing between plot labels and the plotting space.
+
+
+### Common themes
+
+| Themes| 
+|:------|
+|     `theme_bw()`| 
+|     `theme_minimal()`| 
+|     `theme_classic()`|
+| `theme_light()`|
+| `theme_dark()`|
+
+
+- You can easily add a theme to a plot by including `+ theme_XX()`
+
+
+]
+
+.pull-right3[
+
+> bw theme with `+ theme_bw()`
+
+```{r, fig.width = 6, fig.height = 4, out.width = "90%"}
+ggplot(data = mpg,
+       mapping = aes(x = displ, y = hwy)) +
+  geom_point() + 
+  theme_bw()   # Use the black and white theme
+```
+
+
+]
+
+
+
+---
+## Themes with `theme_XX()`
+
+.pull-left3[
+
+A plotting *theme* controls many aspects of its overall look, from the background, to the grid lines, to the label font to the spacing between plot labels and the plotting space.
+
+
+### Common themes
+
+| Themes| 
+|:------|
+|     `theme_bw()`| 
+|     `theme_minimal()`| 
+|     `theme_classic()`|
+| `theme_light()`|
+| `theme_dark()`|
+
+
+- You can easily add a theme to a plot by including `+ theme_XX()`
+
+
+]
+
+.pull-right3[
+
+> dark theme with `+ theme_dark()`
+
+```{r, fig.width = 6, fig.height = 4, out.width = "90%"}
+ggplot(data = mpg,
+       mapping = aes(x = displ, y = hwy)) +
+  geom_point() + 
+  theme_dark()   # Use the dark theme
+```
+
+
+]
+
+
+---
+## Themes with `theme_XX()`
+
+.pull-left3[
+
+A plotting *theme* controls many aspects of its overall look, from the background, to the grid lines, to the label font to the spacing between plot labels and the plotting space.
+
+
+### Common themes
+
+| Themes| 
+|:------|
+|     `theme_bw()`| 
+|     `theme_minimal()`| 
+|     `theme_classic()`|
+| `theme_light()`|
+| `theme_dark()`|
+
+
+- You can easily add a theme to a plot by including `+ theme_XX()`
+
+
+]
+
+.pull-right3[
+
+> light theme with `+ theme_light()`
+
+```{r, fig.width = 6, fig.height = 4, out.width = "90%"}
+ggplot(data = mpg,
+       mapping = aes(x = displ, y = hwy)) +
+  geom_point() + 
+  theme_light()   # Use the light theme
+```
+
+
+]
+
+
+---
+## Final result!
+
+
+```{r, fig.width = 7, fig.height = 4, out.width = "40%"}
+ggplot(data = mpg, 
+       mapping = aes(x = displ, y = hwy, col = class)) +
+  geom_point() + 
+  geom_smooth(col = "blue", method = "lm")+
+  labs(x = "Engine Displacement in Liters",
+       y = "Highway miles per gallon",
+       title = "MPG data",
+       subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
+       caption = "Source: mpg data in ggplot2") + 
+  theme_bw()
+
+```
+
+
+
+---
+## Facetting with `facet_wrap()`
+
+
+- *Facetting* = Create different plots for different groups
+- To facet plots, use `facet_wrap()`
+
+
+```{r, fig.width = 5, fig.height = 5, out.width = "30%", echo = TRUE}
+ggplot(data = mpg, 
+       mapping = aes(x = displ, y = hwy, color = class)) + 
+  geom_point()  +
+  facet_wrap(~ class)
+```
+
+
+---
+## Additional geoms
+
+.pull-left3[
+
+### geom_boxplot()
+
+```{r, out.width= "80%"}
+ggplot(data = mpg,
+  mapping = aes(x = class, y = hwy, fill = class)) + 
+  geom_boxplot()  + 
+  theme_bw()
+```
+
+
+]
+
+
+.pull-right3[
+
+### geom_density()
+
+```{r, out.width= "60%"}
+ggplot(data = mpg,
+  mapping = aes(x = hwy, fill = class)) + 
+  geom_density()  + 
+  theme_bw()
+```
+
+
+]
+
+
+
+---
+
+.pull-left3[
+
+### geom_bar()
+
+```{r, out.width= "60%"}
+ggplot(data = mpg,
+  mapping = aes(x = class, fill = class)) + 
+  geom_bar()  + 
+  theme_bw()
+```
+
+
+]
+
+
+.pull-right3[
+
+### geom_count()
+
+```{r, out.width= "80%"}
+ggplot(data = mpg,
+  mapping = aes(x = displ, y = hwy)) + 
+  geom_count()  + 
+  theme_bw()
+```
+
+]
+
+
+
+---
+
+.pull-left3[
+
+### geom_joy()
+
+> From the `ggjoy` package
+
+```{r, out.width= "60%", echo = FALSE}
+library(ggjoy) # Load the ggjoy package
+
+ggplot(data = midwest,
+       mapping = aes(percollege, 
+                     y = state, 
+                     fill = state)) + 
+  geom_joy(col = "white") + 
+  theme_minimal()
+```
+
+
+]
+
+
+.pull-right3[
+
+### geom_tile()
+
+```{r, out.width= "50%", echo = FALSE}
+# Read in nba data
+nba_long <- read.csv("https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_slides/data/nba_long.csv")
+
+ggplot(nba_long, 
+       mapping = aes(x = Name, y = measure, fill = value)) + 
+  geom_tile(colour = "white") + 
+  scale_fill_gradientn(colors = c("red", "white", "blue"))+ 
+  coord_flip() + 
+  theme_minimal()
+```
+
+]
+
+
+---
+## So much more
+
+- We have only touched the surface of what you can do with `ggplot`
+
+```{r, echo = FALSE, out.width="100%", fig.align = 'center'}
+knitr::include_graphics("images/plotting_books.png")
+```
+
+---
+##
+
+

@@ -41,9 +41,11 @@ library(tidyverse)         # Load tidyverse (which contains ggplot2!)
 
 mpg # Look at the mpg data
 
-
 # Just a blank space without any aesthetic mappings
 ggplot(data = mpg)
+
+# Set the overall plotting theme
+theme_set(theme_bw())   # theme_bw(), theme_minimal(), theme_classic()
 
 # Now add a mapping where engine displacement (displ) and highway miles per gallon (hwy) are mapped to the x and y aesthetics
 ggplot(data = mpg, 
@@ -52,30 +54,30 @@ ggplot(data = mpg,
 #  Add points with geom_point()
 ggplot(data = mpg, 
        mapping = aes(x = displ, y = hwy)) +
-       geom_point()                         
+       geom_point()     
+
+#  Add points with geom_count()
+ggplot(data = mpg, 
+       mapping = aes(x = displ, y = hwy)) +
+       geom_count()   
 
 # Again, but with some additional arguments
 
 ggplot(data = mpg, 
        mapping = aes(x = displ, y = hwy)) +
-       geom_point(col = "white",                # White borders
-                  fill = "red",                 # Red filling
+       geom_point(col = "red",                  # Red points
                   size = 3,                     # Larger size
-                  shape = 21,                   # Point with border shape
                   alpha = .5,                   # Transparent points
                   position = "jitter") +        # Jitter the points         
-         scale_x_continuous(limits = c(1, 10)) +  # Axis limits
+         scale_x_continuous(limits = c(1, 15)) +  # Axis limits
          scale_y_continuous(limits = c(0, 50))
 
 
-# Assign class to the fill aesthetic and add labels with labs()
+# Assign class to the color aesthetic and add labels with labs()
 
 ggplot(data = mpg, 
-  mapping = aes(x = displ, y = hwy, fill = class)) +  # Change color based on class column
-  geom_point(size = 3, 
-                  position = 'jitter',
-                  shape = 21, 
-                  col = "white") +
+  mapping = aes(x = displ, y = hwy, col = class)) +  # Change color based on class column
+  geom_point(size = 3, position = 'jitter') +
   labs(x = "Engine Displacement in Liters",
        y = "Highway miles per gallon",
        title = "MPG data",
@@ -83,36 +85,27 @@ ggplot(data = mpg,
        caption = "Source: mpg data in ggplot2")
   
 
-# Add a regression line and use the black and white theme with theme_bw()
+# Add a regression line for each class
 
 ggplot(data = mpg, 
-       mapping = aes(x = displ, y = hwy)) +
-  geom_point(size = 3, alpha = .9, mapping = aes(color = class)) + 
-  geom_smooth(col = "blue", method = "lm") + 
-  labs(x = "Engine Displacement in Liters",
-       y = "Highway miles per gallon",
-       title = "MPG data",
-       subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
-       caption = "Source: mpg data in ggplot2") + 
-  theme_bw()    # Use black and white theme
+       mapping = aes(x = displ, y = hwy, color = class)) +
+  geom_point(size = 3, alpha = .9) + 
+  geom_smooth(method = "lm")
+
+# Add a regression line for all classes
+
+ggplot(data = mpg, 
+       mapping = aes(x = displ, y = hwy, color = class)) +
+  geom_point(size = 3, alpha = .9) + 
+  geom_smooth(col = "blue", method = "lm")
+
 
 
 # Facet by class
-ggplot(data = mpg) +
-  geom_point(mapping = aes(x = displ, 
-                           y = hwy, 
-                           fill = factor(cyl)),
-                           shape = 21,
-                           col = "white", 
-                           size = 2) +
-  facet_wrap(~ class, nrow = 2, labeller = "label_both") + 
-  scale_fill_brewer(palette = "Set1") + 
-  labs(x = "Engine Displacement in Liters",
-       y = "Highway miles per gallon",
-       title = "MPG data",
-       subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
-       caption = "Source: mpg data in ggplot2") + 
-  theme_bw()        # Use the minimal theme
+ggplot(data = mpg,
+       mapping = aes(x = displ, y = hwy, color = factor(cyl))) + 
+  geom_point() +
+  facet_wrap(~ class) 
 
 
 # Another fancier example
@@ -120,7 +113,7 @@ ggplot(data = mpg) +
 ggplot(data = mpg, 
        mapping = aes(x = cty, y = hwy)) + 
        geom_count(aes(color = manufacturer)) +     # Add count geom (see ?geom_count)
-       geom_smooth(se = FALSE) +                   # smoothed line without confidence interval
+       geom_smooth() +                   # smoothed line without confidence interval
        geom_text(data = filter(mpg, cty > 25), 
                  aes(x = cty,y = hwy, 
                      label = rownames(filter(mpg, cty > 25))),
@@ -133,8 +126,7 @@ ggplot(data = mpg,
             subtitle = "Numbers indicate cars with highway mpg > 25",
             caption = "Source: mpg data in ggplot2",
             color = "Manufacturer", 
-            size = "Counts") +
-        theme_bw()
+            size = "Counts")
 ```
 
 ## Tasks
@@ -471,7 +463,6 @@ library(ggjoy)
 ggplot(data = XX,
        mapping = aes(XX, y = XX, fill = XX)) + 
   geom_joy(col = "XX") + 
-  scale_fill_cyclical(values = c("XX")) +
   labs(title = "XX",
        subtitle = "XX",
        caption = "XX",
@@ -487,7 +478,6 @@ library(ggjoy)
 ggplot(data = midwest,
        mapping = aes(percollege, y = state, fill = state)) + 
   geom_joy(col = "white") + 
-  scale_fill_cyclical(values = c("lightblue")) +
   labs(title = "College education rates",
        subtitle = "Wisconson, Ohio, Minnesota, Indiana, Illinois",
        caption = "Created with the ggjoy package",
