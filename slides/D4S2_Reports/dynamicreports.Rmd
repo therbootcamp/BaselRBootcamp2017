@@ -185,6 +185,16 @@ knitr::include_graphics("images/knitto.png")
 ```
 
 
+---
+## R Markdown Applications
+
+http://rmarkdown.rstudio.com/gallery.html
+
+<iframe src="http://rmarkdown.rstudio.com/gallery.html" width="800" height="800"></iframe>
+
+
+
+
 
 ---
 ## R Chunks in R Markdown
