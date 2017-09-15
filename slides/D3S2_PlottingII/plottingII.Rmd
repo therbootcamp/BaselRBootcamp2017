@@ -31,32 +31,17 @@ knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = TRUE, eval =
 ```
 
 ## Shiny
-.pull-left3[
 
 
-
-]
-
-
-.pull-right3[
-
-### Questions you can answer with dplyr
-
-> *Can you calculate the mean survival times for each treatment separated by gender and time?*
-
-> *I need to know the mean birth rate only for countries in Africa from 1980 to 1980.*
-
-> *What percent of female patients had adverse events to drug X during weeks 5 through 10?*
-
-]
----
-
-## Cheat Sheet!
-http://shiny.rstudio.com/images/shiny-cheatsheet.pdf
-
-```{r, echo = FALSE, out.width="600", fig.align = 'center'}
-knitr::include_graphics("images/shiny_cheatsheet.png")
+```{r, echo = FALSE, fig.align = 'center', out.width = "80%"}
+knitr::include_graphics("images/whatisshiny.png")
 ```
+
+
+---
+## This is Shiny
+
+<iframe src="https://shiny.rstudio.com/gallery/movie-explorer.html" width="1200" height="800"></iframe>
 
 
 
@@ -72,11 +57,30 @@ knitr::include_graphics("images/shiny_definition.png")
 ---
 ## What does that mean?
 
+
+.pull-left3[
+
 - Shiny allows you to easy create interactive websites to explore, analyse, and visualise data
 
 - No need to learn HTML, CSS, Javascript
 
 
+```{r, echo = FALSE, fig.align = 'center', out.width = "80%"}
+knitr::include_graphics("images/nohtml.png")
+```
+
+]
+
+
+.pull-right3[
+
+### I can easily do this all in Shiny!
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%"}
+knitr::include_graphics("images/shiny_ss.png")
+```
+
+]
 ---
 ## Histogram Example
 
@@ -102,78 +106,412 @@ Source: https://econpsychbasel.shinyapps.io/shinyfftrees/
 
 Source: http://gliovis.bioinfo.cnio.es/
 
----
-## Structure of a Shiny App
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "75%"}
-knitr::include_graphics("images/shiny_diagram.png")
+---
+## Shiny
+
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "65%", fig.cap = "http://shiny.rstudio.com"}
+knitr::include_graphics("images/whatyoucando.png")
 ```
 
 ---
-## User Interface
+## Shiny Tutorials
 
 .pull-left3[
 
-- User inputs (widgets)
+### R Studio has great tutorials for creating Shiny Apps
 
-- Overall layout
-   - Location of widgets
-   - Tabs
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "http://shiny.rstudio.com"}
+knitr::include_graphics("images/learnshiny_B.png")
+```
+
+
 ]
 
 
 .pull-right3[
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "75%"}
-knitr::include_graphics("widgetgallery_ss.png")
+
+
+### Learn by example. Tons of shiny apps online. Most code is available.
+
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "90%", fig.cap = "http://shiny.rstudio.com"}
+knitr::include_graphics("images/shinygallery.png")
 ```
+
 
 
 ]
 
 ---
-## User Inferace
+# How programming a Shiny App looks
 
-### Widget gallery
-
+```{r, echo = FALSE, fig.align = 'center', out.width = "80%"}
+knitr::include_graphics("images/shinyprogramming_ss.png")
+```
 
 ---
-## Tabs
+## Structure of a Shiny App
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "75%"}
+knitr::include_graphics("images/uiandserver.png")
+```
+
+---
+ <br>
+ <br>
+ <br>
+ 
+ # Let's explore the user interface of an app!
+ 
+ 
+ ### P.S. You'll create this app in the practical!
+
+---
+## User Interface
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "80%"}
+knitr::include_graphics("images/exampleapp_A.png")
+```
+
+---
+## User Interface
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "80%"}
+knitr::include_graphics("images/exampleapp_B.png")
+```
+
+---
+## User Interface
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "80%"}
+knitr::include_graphics("images/exampleapp_C.png")
+```
+
+---
+## User Interface
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "80%"}
+knitr::include_graphics("images/exampleapp_D.png")
+```
+
+---
+## User Interface
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "80%"}
+knitr::include_graphics("images/exampleapp_E.png")
+```
+
+---
+## User Interface
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "80%"}
+knitr::include_graphics("images/exampleapp_F.png")
+```
+
+---
+## User Interface
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "80%"}
+knitr::include_graphics("images/exampleapp_G.png")
+```
+
+---
+## User Interface
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "80%"}
+knitr::include_graphics("images/exampleapp_H.png")
+```
 
 
 ---
 ## User Interface
 
-- Can include CSS and custom HTML
+```{r, echo = FALSE, fig.align = 'center', out.width = "80%"}
+knitr::include_graphics("images/exampleapp_B.png")
+```
 
-- Can include server code that changes the user interface!
+
+---
+### The final app!
+
+<iframe src="https://econpsychbasel.shinyapps.io/histogram_app/" width="1200" height="800"></iframe>
+
+
+
+---
+## User Interface
+
+The user interface typically contains two main components: Widgets and
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "80%"}
+knitr::include_graphics("images/userinterface_description.png")
+```
+
+---
+
+## User Interface, Widgets
+
+- Widgets are simple fields added to the user interface for users to add inputs.
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "70%"}
+knitr::include_graphics("images/widgetcode_output.png")
+```
+
+
+---
+## User Interface, Layout
+
+- You can control the layouts of apps with layout functions
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "60%"}
+knitr::include_graphics("images/shinylayouts.png")
+```
+
 
 ---
 ## Server
 
-- Can run *any* R code
-    - Create plots, machine learning, statistics ...
-    - Access databases, search twitter data...
+- All R code that creates plots, does machine learning, accesses databases, searches twitter data (really anything!) goes in the `server()` function.
+
+
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "55%"}
+knitr::include_graphics("images/serverdescription.png")
+```
+
+
+
 
 ---
 ## Server
 
-Shiny is smart
+.pull-left3[
 
-- If the user changes an input, Shiny will only trigger server code that uses that input
+> ###How does the server communicate with the user interface?
+
+<br>
+<br>
+
+- To present output (e.g.; a plot), it must be *rendered* in the server using a special rendering function `renderXX()`, 
+
+
+- Once it is rendered, it is sent to the `output` and displayed in the user interface using an `xxOutput()` function.
+
+]
+
+
+.pull-right3[
+
+### To send output to the user interface, you must use a render function
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%"}
+knitr::include_graphics("images/render_example.png")
+```
+
+
+]
+
 
 
 ---
-## Publishing an app
+## Server
 
-- You can always run an app locally on your machine.
-- To get it online, you need a Shiny Server to host it.
-- Host an app for free at http://shinyapps.io
-- Can install a shiny server on your local server
+
+.pull-left3[
+
+<iframe src="https://econpsychbasel.shinyapps.io/barebones_hist/" width="800" height="800"></iframe>
+
+]
+
+.pull-right3[
+
+```{r, eval = FALSE}
+library(shiny)
+
+# User Interface:
+ui <- fluidPage(
+  mainPanel(
+    textInput("Title", "Title"),
+    plotOutput("myplot")  # Create the plot output$displot
+  )
+)
+
+server <- function(input, output) {
+
+  # Define x
+  x <- ChickWeight$weight
+
+  # Send rendered plot to output
+  output$myplot <- renderPlot({
+    hist(x, main = input$Title)
+  })
+}
+
+shinyApp(ui = ui, server = server)
+```
+
+]
+
+
+
+---
+## Rendering output
+
+The Shiny cheatsheet explains the most common functions for rendering and presenting output.
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%"}
+knitr::include_graphics("images/rendering_output.png")
+```
+
+
+
+---
+## Publishing (hosting) an app
+
+.pull-left3[
+<br>
+<br>
+- You can always run a Shiny app locally on your machine.
+- To get it online, you need to put it on a Shiny Server.
+- Publish an app (with some restrictions) at http://shinyapps.io from RStudio with one click!
+- Install a local server at your business (RStudio: $10,000 / year)
+- Other providers exist (e.g.; Amazon Web Services)
+
+]
+
+
+.pull-right3[
+
+
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "http://shiny.rstudio.com"}
+knitr::include_graphics("images/shinypublish.png")
+```
+
+]
+
+
 
 ---
 ## Practical
 
-<iframe src="https://econpsychbasel.shinyapps.io/histogram_app/" width="1200" height="800"></iframe>
+- In the practical, we will create the following app from scratch, and publish it online!
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "70%"}
+knitr::include_graphics("images/exampleapp_A.png")
+```
+
+---
+## Questions?
+
+.pull-left3[
+
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%"}
+knitr::include_graphics("images/exampleapp_A.png")
+```
+]
+
+
+.pull-right3[
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "90%", fig.cap = "http://shiny.rstudio.com"}
+knitr::include_graphics("images/shinygallery.png")
+```
+
+]
+
+
+---
+
+
+## Additional Slides
+
+
+---
+## Server
+
+.pull-left3[
+
+<iframe src="https://econpsychbasel.shinyapps.io/barebones_hist/" width="800" height="800"></iframe>
+
+
+]
+
+.pull-right3[
+
+### What you *want* to write... (but it won't work)
+```{r, eval = FALSE}
+library(shiny)
+
+# User Interface: 
+ui <- fluidPage(
+    mainPanel(
+      # Create a histogram of x in main panel
+      hist(x)
+    )
+  )
+
+server <- function(input, output) {
+  
+  # Define x
+  x <- ChickWeight$weight
+  
+}
+
+shinyApp(ui = ui, server = server)
+```
+
+
+
+]
+
+
+
+---
+## Server
+
+
+.pull-left3[
+
+<iframe src="https://econpsychbasel.shinyapps.io/barebones_hist/" width="800" height="800"></iframe>
+
+
+
+]
+
+.pull-right3[
+
+### What you *must* write...this will work!
+```{r, eval = FALSE}
+library(shiny)
+
+# User Interface:
+ui <- fluidPage(
+  mainPanel(
+    textInput("Title", "Title"),
+    plotOutput("myplot")  # Create the plot output$displot
+  )
+)
+
+server <- function(input, output) {
+
+  # Define x
+  x <- ChickWeight$weight
+
+  # Send rendered plot to output
+  output$myplot <- renderPlot({
+    hist(x, main = input$Title)
+  })
+}
+
+shinyApp(ui = ui, server = server)
+```
+
+]
+
 
 
