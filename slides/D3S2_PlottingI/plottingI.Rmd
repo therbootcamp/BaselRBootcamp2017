@@ -60,6 +60,12 @@ knitr::include_graphics("images/ggplot_cheatsheet_ss.png")
 
 
 
+
+---
+## Plotting in R
+
+
+
 ---
 
 ## Grammar of Graphics

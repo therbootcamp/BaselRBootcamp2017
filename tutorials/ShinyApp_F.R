@@ -58,6 +58,7 @@ ui <- fluidPage(
 # Define server logic required to draw a histogram
 server <- function(input, output) {
 
+
   x_reactive <- reactive({
 
     switch(input$mydata,

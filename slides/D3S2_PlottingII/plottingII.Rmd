@@ -1,0 +1,179 @@
+---
+title: "Plotting Part 2.0"
+subtitle: "Shiny"
+author: "The R Bootcamp<br/>Twitter: <a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
+date: "September 2017"
+output:
+  xaringan::moon_reader:
+    css: ["default", "my-theme.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+---
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+# see: https://github.com/yihui/xaringan
+# install.packages("xaringan")
+# see: 
+# https://github.com/yihui/xaringan/wiki
+# https://github.com/gnab/remark/wiki/Markdown
+options(width=110)
+options(digits = 4)
+```
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = TRUE, eval = TRUE, message = FALSE, warning = FALSE, fig.align = 'center')
+```
+
+## Shiny
+.pull-left3[
+
+
+
+]
+
+
+.pull-right3[
+
+### Questions you can answer with dplyr
+
+> *Can you calculate the mean survival times for each treatment separated by gender and time?*
+
+> *I need to know the mean birth rate only for countries in Africa from 1980 to 1980.*
+
+> *What percent of female patients had adverse events to drug X during weeks 5 through 10?*
+
+]
+---
+
+## Cheat Sheet!
+http://shiny.rstudio.com/images/shiny-cheatsheet.pdf
+
+```{r, echo = FALSE, out.width="600", fig.align = 'center'}
+knitr::include_graphics("images/shiny_cheatsheet.png")
+```
+
+
+
+---
+## What is Shiny?
+
+```{r, echo = FALSE, fig.align = 'center', fig.cap = 'Source: http://shiny.rstudio.com/images/shiny-cheatsheet.pdf', out.width = "95%"}
+knitr::include_graphics("images/shiny_definition.png")
+```
+
+
+
+---
+## What does that mean?
+
+- Shiny allows you to easy create interactive websites to explore, analyse, and visualise data
+
+- No need to learn HTML, CSS, Javascript
+
+
+---
+## Histogram Example
+
+<iframe src="https://econpsychbasel.shinyapps.io/geyser_app/" width="1200" height="800"></iframe>
+
+---
+## Balloon Analogue Risk Task
+
+<iframe src="https://econpsychbasel.shinyapps.io/shinypsych_bart/" width="1200" height="800"></iframe>
+
+Source: https://econpsychbasel.shinyapps.io/shinypsych_bart/
+
+---
+## FFTrees Example
+
+<iframe src="https://econpsychbasel.shinyapps.io/shinyfftrees/" width="1200" height="800"></iframe>
+
+Source: https://econpsychbasel.shinyapps.io/shinyfftrees/
+---
+## GlioVis
+
+<iframe src="http://gliovis.bioinfo.cnio.es/" width="1200" height="800"></iframe>
+
+Source: http://gliovis.bioinfo.cnio.es/
+
+---
+## Structure of a Shiny App
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "75%"}
+knitr::include_graphics("images/shiny_diagram.png")
+```
+
+---
+## User Interface
+
+.pull-left3[
+
+- User inputs (widgets)
+
+- Overall layout
+   - Location of widgets
+   - Tabs
+]
+
+
+.pull-right3[
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "75%"}
+knitr::include_graphics("widgetgallery_ss.png")
+```
+
+
+]
+
+---
+## User Inferace
+
+### Widget gallery
+
+
+---
+## Tabs
+
+
+---
+## User Interface
+
+- Can include CSS and custom HTML
+
+- Can include server code that changes the user interface!
+
+---
+## Server
+
+- Can run *any* R code
+    - Create plots, machine learning, statistics ...
+    - Access databases, search twitter data...
+
+---
+## Server
+
+Shiny is smart
+
+- If the user changes an input, Shiny will only trigger server code that uses that input
+
+
+---
+## Publishing an app
+
+- You can always run an app locally on your machine.
+- To get it online, you need a Shiny Server to host it.
+- Host an app for free at http://shinyapps.io
+- Can install a shiny server on your local server
+
+---
+## Practical
+
+<iframe src="https://econpsychbasel.shinyapps.io/histogram_app/" width="1200" height="800"></iframe>
+
+
