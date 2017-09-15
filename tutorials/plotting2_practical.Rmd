@@ -14,7 +14,7 @@ knitr::include_graphics("https://d21ii91i3y6o6h.cloudfront.net/gallery_images/fr
 
 ### Slides
 
-[Here are the introduction slides for this practical on plotting!](https://therbootcamp.github.io/_slides/D2S1_Wrangling/wrangling_lecture.html)
+[Here are the introduction slides for this practical on Plotting 2.0: Shiny!](https://therbootcamp.github.io/_slides/D3S3_PlottingII/plottingII.html#1)
 
 ### Overview
 
@@ -330,7 +330,7 @@ x_reactive <- reactive({
 })
 ```
 
-26. Now we need to make one last change. In **all** of the code that refers to `x` we need to replace `x` with `x_reactive()` (Don't forget the parentheses!!). Make this replacement for `hist()`, `summary()`, and `abline()`. Here is how you can do it:
+27. Now we need to make one last change. In **all** of the code that refers to `x` we need to replace `x` with `x_reactive()` (Don't forget the parentheses!!). Make this replacement for `hist()`, `summary()`, and `abline()`. Here is how you can do it:
 
 ```{r, echo = TRUE, eval = FALSE}
 # Change the value x to x_reactive() in seq(), hist(), abline() and summary()
@@ -363,13 +363,14 @@ output$summary <- renderPrint({
 ```
 
 
-27. Reload your app and have fun!! You're finished!
+28. Reload your app and have fun!! You're finished!
 
 ## Challenges
 
 C1. Now that you have multiple datasets, try removing the Plot title and X-axis label inputs (`input$main`, `input$xlab`), and instead have the plot automatically adjust the plot title and axis label based on the dataset the users selects. Just like we did with `x_reactive()`, you'll need to assign the main title and x label as reactive values.
    
 C2. Instead of a histogram, try creating a scatterplot as the main plotting output. Keep in mind that you'll now need to create two reactive values: `x_reactive()` for the data on the x-axis and `y_reactive()` for the y-axis. Then, as an optional argument (using a `checkboxInput`), allow the user to add a regression line to the plot.
+
 
 
 

@@ -1,0 +1,38 @@
+---
+title: "Cinical Data Analysis"
+author: "Nathaniel Phillips"
+date: "9/15/2017"
+output:
+  html_document: default
+---
+
+## Clinical Study
+
+```{r, echo = FALSE, message = FALSE}
+# Load packages
+library(tidyvserse)
+library(BayesFactor)
+library(lme4)
+```
+
+The study data is stored as a comma-separated text file called `clinical_study.csv`. 
+
+```{r, echo = FALSE}
+# Load the data from the data folder
+clinical_study <- read_csv(file = "data/clinical_study.csv")
+```
+
+### Primary Measures
+
+The primary measure was whether patient's quality of life significantly improved. The following plot shows how quality of life changed over time, separated by different treatment groups:
+
+```{r, echo = FALSE}
+# Line graph showing QOL over time
+
+ggplot(data = clinical_study,
+       mapping = aes(x = time, y = qol, col = arm)) +
+  geom_line()
+
+```
+
+

@@ -26,13 +26,37 @@ options(width=110)
 options(digits = 4)
 ```
 
-```{r, echo = FALSE}
+```{r, echo = FALSE ,message = FALSE, warning = FALSE}
 knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = TRUE, eval = TRUE, message = FALSE, warning = FALSE, fig.align = 'center')
+library(tidyverse)
+
 ```
 
-# Plotting
+# You can do amazing plots in R!
+
+- As good as R is for statistics, it's as good if not better for plots.
+
+```{r, echo = FALSE, out.width="60%", fig.align = 'center'}
+knitr::include_graphics("images/ggplotgallery.png")
+```
+
+---
+## Plotting in R
+
 .pull-left3[
 
+There are different frameworks for doing plotting in R.
+
+The classic framework is known as `base R` plotting.
+
+In Base-R plotting, there is a separate function for each 'type' of plot
+
+| Plot type| Function|
+|:------|:----|
+|     Bar plot| `barplot()`|
+|     Box plot|   `boxplot()`|
+|     Scatterplot|    `plot()`|
+|     Pirateplot|    `pirateplot()`|
 
 
 ]
@@ -40,30 +64,93 @@ knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = TRUE, eval =
 
 .pull-right3[
 
-### Questions you can answer with dplyr
+```{r, out.width = "60%", fig.width = 5, fig.height = 5}
+# Histogram in base R
 
-> *Can you calculate the mean survival times for each treatment separated by gender and time?*
-
-> *I need to know the mean birth rate only for countries in Africa from 1980 to 1980.*
-
-> *What percent of female patients had adverse events to drug X during weeks 5 through 10?*
-
-]
----
-
-# Cheat Sheet!
-https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf
-
-```{r, echo = FALSE, out.width="600", fig.align = 'center'}
-knitr::include_graphics("images/ggplot_cheatsheet_ss.png")
+hist(x = ChickWeight$weight,
+     xlab = "Weight",
+     ylab = "Frequency",
+     col = "skyblue",
+     main = "Histogram in Base R")
 ```
 
+
+]
+
+
+---
+## Plotting in R
+
+.pull-left3[
+
+There are different frameworks for doing plotting in R.
+
+The classic framework is known as `base R` plotting.
+
+In Base-R plotting, there is a separate function for each 'type' of plot
+
+| Plot type| Function|
+|:------|:----|
+|     Bar plot| `barplot()`|
+|     Box plot|   `boxplot()`|
+|     Scatterplot|    `plot()`|
+|     Pirateplot|    `pirateplot()`|
+
+
+]
+
+
+.pull-right3[
+
+```{r, out.width = "60%"}
+# Scatterplot in base R
+
+plot(x = economics$date,
+     y = economics$unemploy,
+     xlab = "Date",
+     ylab = "Unemployment rate",
+     main = "Scatterplot in Base R"
+     )
+```
+
+
+
+]
 
 
 
 ---
 ## Plotting in R
 
+.pull-left3[
+
+###Problems with base R plotting:
+
+- Complex plots can quickly require a lot of code.
+
+- There is no unifying framework between plots. Every plot is on its own.
+
+- It is difficult to parts of code in different plots.
+
+
+### Solution: Grammar of Graffics with `ggplot`
+
+]
+
+
+
+.pull-right3[
+
+### These plots would take a lot of code in base R
+
+```{r, echo = FALSE, out.width="100%", fig.align = 'center'}
+knitr::include_graphics("images/complexplot1.png")
+```
+
+```{r, echo = FALSE, out.width="100%", fig.align = 'center'}
+knitr::include_graphics("images/complexplot2.png")
+```
+]
 
 
 ---
@@ -78,8 +165,9 @@ knitr::include_graphics("images/ggplot_cheatsheet_ss.png")
 
 >###1. A plot is built of simple building blocks
 
->###2. By comining different building blocks, plots of any complexity can be created.
+>###2. By combining different building blocks, plots of any complexity can be created.
 
+>###3. Plots that look superficially different, can actually be created with very similar code
 
 
 ]
@@ -100,42 +188,42 @@ knitr::include_graphics("images/wilkonson_book.png")
 
 .pull-left3[
 
+The Grammar of graphics breaks down plots into several key pieces:
+
+
+| aesthetics| Description|
+|:------|:----|
+|     Data|    What dataframe contains the data?|
+|     Aesthetics| What does the x-axis, y-axis, color (etc) represent?|
+|     Geometries| What kind of geometric object do you want to plot?|
+|     Facets| Should there be groups of plots?|
+|     Statistics|What statistica summaries / transformations should be done?|
+|    Coordinates| What is the scale of the axes?|
+|    Theme| What should the overall plot look like?|
+
 
 ]
 
 
 .pull-right3[
-
 ```{r, echo = FALSE, out.width="100%", fig.align = 'center'}
-knitr::include_graphics("images/gg_diagram.png")
+knitr::include_graphics("images/complexplot1.png")
 ```
 
 ]
 
 
 ---
-## How??
-
-
-How do you make
-
-
-
-
-
----
 ## ggplot2
 
-
 .pull-left3[
-<br>
-<br>
 
-- ### ggplot2 is an R package written by Hadley Wickham.
+How do we make elegant, easy to program plots according to the grammar of graphics in R?
 
-- ### Makes it *easy* to create plots according to the grammar of graphics
+###Answer: ggplot2
 
-- ### By far one of the most popular R packages, used to generate most R plots.
+By far one of the most popular R packages, used to generate the vast majority of plots from R.
+
 
 
 ]
@@ -147,6 +235,45 @@ How do you make
 ```{r, echo = FALSE, out.width="70%", fig.align = 'center'}
 knitr::include_graphics("images/wickham_portrait.png")
 ```
+
+
+]
+
+
+---
+## Our goal
+
+.pull-left3[
+
+
+- In this introduction, we'll introduce the basic building blocks of creating plots with ggplot2 by creating the following plot from the ground-up:
+
+```{r, echo = FALSE, fig.width = 7, fig.height = 4}
+ggplot(data = mpg, 
+       mapping = aes(x = displ, y = hwy, col = class)) +
+  geom_point() + 
+  geom_smooth(col = "blue", method = "lm")+
+  labs(x = "Engine Displacement in Liters",
+       y = "Highway miles per gallon",
+       title = "MPG data",
+       subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
+       caption = "Source: mpg data in ggplot2") + 
+  theme_bw()
+
+```
+
+
+]
+
+
+.pull-right3[
+
+### In the practical, you will create all of these!!
+
+```{r, echo = FALSE, out.width="100%", fig.align = 'center'}
+knitr::include_graphics("images/ggplotgallery.png")
+```
+
 
 
 ]
@@ -183,6 +310,18 @@ library(ggplot2)
 ```
 
 ]
+
+
+
+---
+
+# Cheat Sheet!
+https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf
+
+```{r, echo = FALSE, out.width="600", fig.align = 'center'}
+knitr::include_graphics("images/ggplot_cheatsheet_ss.png")
+```
+
 
 
 ---
@@ -1026,7 +1165,7 @@ ggplot(data = mpg,
 
 ### geom_bar()
 
-```{r, out.width= "100%", echo = TRUE}
+```{r, out.width= "80%", echo = TRUE}
 ggplot(data = mpg,
   mapping = aes(x = class, fill = class)) + 
   geom_bar()  + 
@@ -1041,7 +1180,7 @@ ggplot(data = mpg,
 
 ### geom_count()
 
-```{r, out.width= "100%", echo = TRUE}
+```{r, out.width= "80%", echo = TRUE}
 ggplot(data = mpg,
   mapping = aes(x = displ, y = hwy)) + 
   geom_count()
@@ -1109,10 +1248,10 @@ ggplot(nba_long,
 - We have only touched the surface of what you can do with `ggplot`
 
 - http://ggplot2.tidyverse.org/index.html
-- http://r4ds.had.co.nz/data-visualisation.html
+- http://r4ds.had.co.nz/data-visualization.html
 
 
-```{r, echo = FALSE, out.width="100%", fig.align = 'center'}
+```{r, echo = FALSE, out.width="80%", fig.align = 'center'}
 knitr::include_graphics("images/plotting_books.png")
 ```
 

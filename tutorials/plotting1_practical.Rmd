@@ -14,7 +14,7 @@ knitr::include_graphics("https://d21ii91i3y6o6h.cloudfront.net/gallery_images/fr
 
 ### Slides
 
-[Here are the introduction slides for this practical on plotting!](https://therbootcamp.github.io/_slides/D2S1_Wrangling/wrangling_lecture.html)
+[Here are the introduction slides for this practical on Plotting 1.0: ggplot!](https://therbootcamp.github.io/_slides/D3S2_PlottingI/plottingI.html#1)
 
 ### Overview
 
@@ -159,14 +159,14 @@ library(FFTrees)
 diamonds
 ```
 
-Create the following blank plot
+4. Create the following blank plot
 
 ```{r, echo = FALSE, eval = TRUE, fig.width = 6, fig.height = 4}
 ggplot(data = diamonds, 
        mapping = aes(x = carat, y = price))
 ```
 
-3. Now add points showing the relationship between the number of carats in the diamonds (`carat`) and its price (`price`)
+5. Now add points showing the relationship between the number of carats in the diamonds (`carat`) and its price (`price`)
 
 ```{r, echo = FALSE, eval = TRUE, fig.width = 6, fig.height = 4}
 ggplot(data = diamonds, 
@@ -174,7 +174,7 @@ ggplot(data = diamonds,
   geom_point()
 ```
 
-3. Make the points transparent using the `alpha` argument to `geom_point()`
+6. Make the points transparent using the `alpha` argument to `geom_point()`
 
 ```{r, echo = FALSE, eval = TRUE, fig.width = 6, fig.height = 4}
 ggplot(data = diamonds, 
@@ -182,7 +182,7 @@ ggplot(data = diamonds,
   geom_point(alpha = .05)
 ```
 
-4. Color the points by their cut
+7. Color the points by their cut
 
 ```{r, echo = FALSE, eval = TRUE, fig.width = 6, fig.height = 4}
 ggplot(data = diamonds, 
@@ -190,7 +190,7 @@ ggplot(data = diamonds,
   geom_point(alpha = .05)
 ```
 
-5. Create different plots for each value of `cut` using the `facet_wrap` function:
+8. Create different plots for each value of `cut` using the `facet_wrap` function:
 
 ```{r, echo = FALSE, eval = TRUE, fig.width = 8, fig.height = 2}
 ggplot(data = diamonds, 
@@ -199,7 +199,7 @@ ggplot(data = diamonds,
   facet_wrap(~ cut, nrow = 1)
 ```
 
-4. Add a black, smoothed mean line to each plot using `geom_smooth()` (You can also try turning the line into a regression line using the `method` argument)
+9. Add a black, smoothed mean line to each plot using `geom_smooth()` (You can also try turning the line into a regression line using the `method` argument)
 
 ```{r, echo = FALSE, eval = TRUE, fig.width = 8, fig.height = 2}
 ggplot(data = diamonds, 
@@ -211,7 +211,7 @@ ggplot(data = diamonds,
 
 ### Density geom with `geom_density()`
 
-Create the following density plot of prices from the `diamonds` data using the following template:
+10. Create the following density plot of prices from the `diamonds` data using the following template:
 
    - Set the `data` argument to `diamonds`
    - Map `carat` to the x aesthetic
@@ -244,7 +244,7 @@ ggplot(data = diamonds,
        theme_minimal()
 ```
 
-Create the following densities of different facets by the diamond `cut`, and use different colors for each plot. 
+11. Create the following densities of different facets by the diamond `cut`, and use different colors for each plot. 
 
    - Map `log(price)` (the logarithm of price) to the x aesthetic and `cut` to the fill aesthetic
    - Create the density geom with `geom_density()` and add a black border color with the `color` argument
@@ -287,7 +287,7 @@ ggplot(data = diamonds,
 
 ### Boxplot geom `geom_boxplot()`
 
-Look at the help menu for `geom_boxplot()`. Then, create the following boxplot using the following template
+12. Look at the help menu for `geom_boxplot()`. Then, create the following boxplot using the following template
 
 ```{r, eval = FALSE, echo = TRUE}
 ggplot(data = XX,
@@ -318,13 +318,13 @@ ggplot(data = diamonds,
 
 ### Demographic information of midwest counties in the US
 
-Print the `midwest` dataset and look at the help menu to see what values it contains. It should look like this:
+13. Print the `midwest` dataset and look at the help menu to see what values it contains. It should look like this:
 
 ```{r, eval = TRUE}
 midwest
 ```
 
-Using the following code as a template, create the Following plot showing the relationship between college education and poverty
+14. Using the following code as a template, create the Following plot showing the relationship between college education and poverty
 
 
 ```{r, echo = TRUE, eval = FALSE, fig.width = 7, fig.height = 5}
@@ -365,7 +365,7 @@ ggplot(data = midwest,
 ```
 
 
-Create the following density plot showing the density of inhabitants with a college education in different states using the following template
+15. Create the following density plot showing the density of inhabitants with a college education in different states using the following template
 
 ```{r, echo = TRUE}
 ggplot(data = XX, 
@@ -396,7 +396,7 @@ ggplot(data = midwest,
 
 ### Heatplots with `geom_tile()`
 
-You can create heatplots using the `geom_tile()` function. Try creating the following heatplot of statistics of NBA players using the following template:
+16. You can create heatplots using the `geom_tile()` function. Try creating the following heatplot of statistics of NBA players using the following template:
 
 ```{r, echo = TRUE, eval = FALSE}
 # Read in nba data
@@ -439,7 +439,7 @@ ggplot(nba_long,
 
 ### Joyplots with `ggjoy()`
 
-The `ggjoy` package contains a new geom called `geom_joy()` that creates a [joyplot](https://eagereyes.org/blog/2017/joy-plots). Install the `ggjoy` package, load it, and then look at the introductory vignette by running `vignette(topic = "introduction", package = "ggjoy")`, 
+17. The `ggjoy` package contains a new geom called `geom_joy()` that creates a [joyplot](https://eagereyes.org/blog/2017/joy-plots). Install the `ggjoy` package, load it, and then look at the introductory vignette by running `vignette(topic = "introduction", package = "ggjoy")`, 
 
 ```{r, eval = FALSE, echo = TRUE}
 # Install the ggjoy package from CRAN
@@ -455,7 +455,7 @@ vignette(topic = "introduction", package = "ggjoy")
 vignette(topic = "gallery", package = "ggjoy")
 ```
 
-Now, create the following joyplot of college education rates from the `midwest` data using the following template:
+18. Now, create the following joyplot of college education rates from the `midwest` data using the following template:
 
 ```{r, echo = TRUE, eval = FALSE, fig.width = 7, fig.height = 4}
 library(ggjoy)
@@ -490,7 +490,7 @@ ggplot(data = midwest,
 
 ### Correlation plot with ggcorplot
 
-The `ggcorplot` package lets you make really nice plots of correlation matrices. Install the package from github with the following code:
+19. The `ggcorplot` package lets you make really nice plots of correlation matrices. Install the package from github with the following code:
 
 ```{r, echo = TRUE, eval = FALSE}
 # Install the ggcorrplot package
@@ -499,7 +499,7 @@ The `ggcorplot` package lets you make really nice plots of correlation matrices.
 devtools::install_github("kassambara/ggcorrplot")
 ```
 
-Using the following template, try to make your own correlation plot from the `midwest` data that looks like this:
+20. Using the following template, try to make your own correlation plot from the `midwest` data that looks like this:
 
    - First create a correlation matrix using all of the numeric columns in the `midwest` data seen in the plot.
    - Then, create the plot with `ggcorrplot`
@@ -550,7 +550,7 @@ ggcorrplot(cor = corr_mtx,
 
 ### Challenges
 
-Make the following plot of savings data (`psavert`) from the `economics` dataset (hint: use the `geom_line()` function and map `date` to the x aesthetic and `psavert` to the y aesthetic.)
+21. Make the following plot of savings data (`psavert`) from the `economics` dataset (hint: use the `geom_line()` function and map `date` to the x aesthetic and `psavert` to the y aesthetic.)
 
 ```{r, eval = FALSE, echo = FALSE}
 ggplot(data = XX, aes(x = XX, y = XX)) + 
@@ -577,7 +577,7 @@ ggplot(data = economics,
 ```
 
 
-Make this plot from the `diamonds` data showing the relationship between diamond cut (`cut`), color (`color`), and carats (`carat`)
+22. Make this plot from the `diamonds` data showing the relationship between diamond cut (`cut`), color (`color`), and carats (`carat`)
 
 ```{r, echo = FALSE, eval = TRUE, fig.width = 10, fig.height = 10}
 ggplot(data = diamonds, 
@@ -593,7 +593,7 @@ ggplot(data = diamonds,
   theme_bw()
 ```
 
-Make the following plot from the `ACTG175` dataset. To do this, you'll need to use both `geom_boxplot()` and `geom_point()`. To jitter the points, use the `position` argument to `geom_point()`, as well as the `position_jitter()` function to control how much to jitter the points.
+23. Make the following plot from the `ACTG175` dataset. To do this, you'll need to use both `geom_boxplot()` and `geom_point()`. To jitter the points, use the `position` argument to `geom_point()`, as well as the `position_jitter()` function to control how much to jitter the points.
 
 ```{r, eval = TRUE, echo = FALSE, fig.width = 10, fig.height = 6}
 ggplot(data = ACTG175,
@@ -613,7 +613,7 @@ ggplot(data = ACTG175,
 
 ```
 
-The `Davis` dataframe in the `car` package contains measurements of the reported and measured (i.e.; real!) heights and weights of several men and women. Create the following plot showing the relationship between people's reported, and actual heights.
+24. The `Davis` dataframe in the `car` package contains measurements of the reported and measured (i.e.; real!) heights and weights of several men and women. Create the following plot showing the relationship between people's reported, and actual heights.
 
   - Instead of using `geom_point()`, use `geom_count()` to create points whose size reflects the number of observations at that location.
   - Include an "identity line" with the `geom_abline()` function.
@@ -643,25 +643,16 @@ ggplot(data = Davis,
 
 #### `ACTG175` (From the `speff2trial` package)
 
-Create a plot showing the relationship between CD4 T cell count at 96 weeks (`cd496`), treatment arm (`arms`) and gender (`gender`).
+25. Create a plot showing the relationship between CD4 T cell count at 96 weeks (`cd496`), treatment arm (`arms`) and gender (`gender`).
 
-Create a plot showing the relationship between treatment arm (`arms`), number of days until a major negative event (`days`) and history of intravenous drug use (`drugs`).
+26. Create a plot showing the relationship between treatment arm (`arms`), number of days until a major negative event (`days`) and history of intravenous drug use (`drugs`).
 
 #### `heartdisease` (From the `FFTrees` package)
 
-Create a plot showing the relationship between `age`, `chol` and `diagnosis`
+27. Create a plot showing the relationship between `age`, `chol` and `diagnosis`
 
-Create a plot showing the relationship between `cp`, `slope`, and `diagnosis`
+28. Create a plot showing the relationship between `cp`, `slope`, and `diagnosis`
 
-
-
-### Maps
-
-```{r}
-install.packages(c("maps", "mapdata"))
-devtools::install_github("dkahle/ggmap")
-
-```
 
 
 ### References

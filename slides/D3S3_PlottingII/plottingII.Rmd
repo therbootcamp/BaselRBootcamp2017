@@ -60,7 +60,7 @@ knitr::include_graphics("images/shiny_definition.png")
 
 .pull-left3[
 
-- Shiny allows you to easy create interactive websites to explore, analyse, and visualise data
+- Shiny allows you to easy create interactive websites to explore, analyse, and visualize data
 
 - No need to learn HTML, CSS, Javascript
 
