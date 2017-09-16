@@ -1,0 +1,270 @@
+---
+title: "Welcome!"
+subtitle: ""
+author: "The R Bootcamp<br/>Twitter: <a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
+date: "September 2017"
+output:
+  xaringan::moon_reader:
+    css: ["default", "my-theme.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+---
+
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+# see: https://github.com/yihui/xaringan
+# install.packages("xaringan")
+# see: 
+# https://github.com/yihui/xaringan/wiki
+# https://github.com/gnab/remark/wiki/Markdown
+options(width=110)
+options(digits = 4)
+```
+
+
+
+# Welcome!
+
+
+.pull-left3[
+
+```{r, echo = FALSE, out.width = "100%", fig.align = 'center'}
+knitr::include_graphics("homepage.png")
+```
+
+]
+
+
+.pull-right3[
+
+
+```{r, echo = FALSE, out.width = "100%", fig.align = 'center'}
+knitr::include_graphics("basel.jpeg")
+```
+
+]
+
+
+---
+# Schedule and Course links
+
+.pull-left3[
+
+## Wifi
+
+###user: rbootcamp-17
+
+###pass: Basel2017R
+
+
+## Schedule and Links
+
+##[https://therbootcamp.github.io/_slides/schedule.html](https://therbootcamp.github.io/_slides/schedule.html)
+
+]
+
+.pull-right3[
+
+```{r, echo = FALSE, out.width = "60%", fig.align = 'center'}
+knitr::include_graphics("scheduless.png")
+```
+
+]
+
+
+
+
+---
+# Who are we
+
+```{r, echo = FALSE, out.width = "50%", fig.align = 'center'}
+knitr::include_graphics("aboutus.png")
+```
+
+
+---
+
+# Aim
+
+.pull-left3[
+
+
+<br>
+<br>
+###The aim of this workshop is enable you to thoughtfully and actively use R. We will communicate both the basics of the R language, as well as cutting-edge packages for wrangling, analyzing, and communicating statistical data.  
+
+]
+
+
+.pull-right3[
+
+```{r, echo = FALSE, out.width = "60%", fig.align = 'center'}
+knitr::include_graphics("target.png")
+```
+
+]
+
+---
+
+# Where can I learn more?
+
+
+```{r, echo = FALSE, out.width = "100%", fig.align = 'center'}
+knitr::include_graphics("rbooks.png")
+```
+
+
+---
+
+# Schedule <img src="schedule.png" height="600" align="right">
+
+
+---
+
+# Survey
+
+```{r, echo = FALSE, out.width = "100%", fig.align = 'center'}
+knitr::include_graphics("survey.png")
+```
+
+
+---
+
+# Session
+
+.pull-left3[
+
+- Each session is 2 hours
+
+- 20-40 minute introduction.
+
+- 80 - 100 minute hands-on, interactive practical.
+    - Starts easy, gets more challenging.
+    - Some elements go beyond the lecture, be bold!
+    
+]
+
+
+.pull-right3[
+
+```{r, echo = FALSE, out.width = "90%", fig.align = 'center'}
+knitr::include_graphics("interactiveprogramming.gif")
+```
+
+]
+
+
+---
+
+# Breaks & refreshments
+
+
+
+.pull-left3[
+
+- No explicit breaks during the practical, but feel free to take them!
+
+<br2>
+
+- Refreshments nearby
+
+<br2>
+
+- Coffee machine nearby (1 CHF)
+
+<br2>
+
+- Lunch time at local grocery store / restaurant
+
+
+
+]
+
+
+.pull-right3[
+
+
+<p align='center'><font size="6">Tibits</p>
+
+```{r, echo = FALSE, out.width = "60%", fig.align = 'center'}
+knitr::include_graphics("tibits.jpg")
+```
+
+]
+
+---
+
+# Questions?
+
+```{r, echo = FALSE, out.width = "80%", fig.align = 'center'}
+knitr::include_graphics("questions.jpg")
+```
+
+
+---
+
+# Introduction round
+
+.pull-left3[
+
+1. What is your name?
+
+2. Where are you from?
+
+3. What is your programming experience?
+
+4. Why do you want to learn R?
+
+]
+
+.pull-right3[
+
+
+
+```{r, echo = FALSE, out.width = "100%", fig.align = 'center'}
+knitr::include_graphics("introductions.jpg")
+```
+
+
+]
+
+---
+
+.pull-left3[
+
+# Session 1
+# What is R???
+
+```{r, echo = FALSE, out.width = "70%", fig.align = 'center'}
+knitr::include_graphics("rlogo.png")
+```
+
+
+]
+
+
+.pull-right3[
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+```{r, echo = FALSE, out.width = "100%", fig.align = 'center'}
+knitr::include_graphics("rstudio.jpg")
+
+```
+
+
+]
+
+

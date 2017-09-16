@@ -2,7 +2,7 @@
 title: "What is R?"
 subtitle: ""
 author: "The R Bootcamp<br/>Twitter: <a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
-date: "June 2017"
+date: "September 2017"
 output:
   xaringan::moon_reader:
     css: ["default", "my-theme.css"]
@@ -61,6 +61,28 @@ summary(analysis)
 ```
 ]
 
+<!--  ---
+
+# A short history on R
+
+From [Wikipedia](https://en.wikipedia.org/wiki/R_(programming_language) (emphasis added):
+
+.pull-left6[
+> R is an implementation of the **S programming language** combined with **lexical scoping** semantics [environments] inspired by Scheme. [...] There are some important differences, but much of the code written for S runs unaltered.
+
+>R was created by **Ross Ihaka and Robert Gentleman** [...] and is currently developed by the **R Development Core Team** [...]. R is named partly after the first names of the first two R authors and partly as a play on the name of S. The project was conceived in 1992, with an initial version released in 1995 and a **stable beta version in 2000**.
+]
+
+.pull-right6[
+```{r, out.height = "350px", echo = F, fig.align='center'}
+knitr::include_graphics("http://www.estatisticacomr.uff.br/wp-content/uploads/2014/11/Criadores.jpg")
+```
+<p style="font-size:20px" align="center">
+Robert Gentleman and Ross Ihaka<br>
+<font size="2" color="#F52D70">source: https://i0.wp.com/r4stats.com/</font>
+</p>
+]
+-->
 ---
 
 # R is purpose specific
@@ -96,31 +118,75 @@ knitr::include_graphics("https://i0.wp.com/r4stats.com/wp-content/uploads/2017/0
 
 ---
 
-# R has strengths and weaknesses
+# R is so popular because
 
-R has been implemented in **C, Fortran, and R**. This means that R can be fast and efficient, however, often it is not. R's strengths rather lie in its flexibility and cutting-edge development. 
+R has been implemented in **C, Fortran, and R**. This means that R can be fast and efficient, however, often it is not. R's strengths lie in its flexibility, cutting-edge development, and producitivity tools. 
 
 .pull-left5[
-### Strengths
-1. Extensibility ([CRAN](https://cran.r-project.org/), packages)
-2. User base (e.g., [stackoverflow](https://stackoverflow.com/))
-3. [Tidyverse](https://www.tidyverse.org/) (`dplyr`, `ggplot`, etc.)
-4. [RStudio](https://www.rstudio.com/)
+### Pro
+1. **It's free**
+2. Relatively easy
+3. Extensibility ([CRAN](https://cran.r-project.org/), packages)
+4. User base (e.g., [stackoverflow](https://stackoverflow.com/))
+5. [Tidyverse](https://www.tidyverse.org/) (`dplyr`, `ggplot`, etc.)
+6. [RStudio](https://www.rstudio.com/)
+7. Producitivity options: [Latex](https://www.latex-project.org/), [Markdown](https://daringfireball.net/projects/markdown/), [GitHub](https://github.com/)
 ]
 
 .pull-right5[
-### Weaknesses
+### Con
 1. Slow and wordy
 2. Limited (no iterators, pointers, etc.)
 
 $\rightarrow$ [Rcpp](http://www.rcpp.org/), [rPython](http://rpython.r-forge.r-project.org/)
 ]
 
+
 ---
 
-# The omnipotent **tidyverse**
+# RStudio: R's favorite environment
 
-Modern R contains a collection of high-performance, easy-to-use packages (libraries) for data handling know as the [tidyverse](https://www.tidyverse.org/). The tidyverse includes:
+Next to many useful packages, R users greatly benefit from R's integrated development environment [RStudio](https://www.rstudio.com/). Rstudio is a graphical user interface that allows you to (a) edit code, (b) run code, (c) access files and progress, and (d) create plots. In addition RStudio helps you with version control via [Github](https://github.com/), to write reports using [markdown](http://rmarkdown.rstudio.com/authoring_basics.html) and [knitr](https://yihui.name/knitr/), integrating C++ into R, writing clean code, and to debug code.<br><br>  
+
+
+```{r, out.width = "800px", echo = F, fig.align='center'}
+knitr::include_graphics("rstudio_plus.png")
+```
+
+---
+
+# The workflow of R
+
+```{r, out.width = "800px", echo = F, fig.align='center'}
+knitr::include_graphics("rstudio_workings.png")
+```
+
+---
+
+# Project management
+
+RStudio facilitate project management via the use of *projects*. Projects support:
+
+.pull-left5[
+1. **File management** by automatically setting the working directory (see `setwd()`)
+<br><br>
+2. **Project transitioning** by saving re-opening scripts, history, and workspace.
+<br><br>
+3. **Customization** by enabling project specific settings.
+<br><br>
+4. **Version control** by linking projects to repositories (e.g., using [GitHub](https://github.com/))
+]
+.pull-right5[
+```{r, out.width = "550px", echo = F, fig.align='center'}
+knitr::include_graphics("Projects.png")
+```
+]
+
+---
+
+# The almighty **tidyverse**
+
+Among its many packages, R contains a collection of high-performance, easy-to-use packages (libraries) designed specifically for handling data know as the [tidyverse](https://www.tidyverse.org/). The tidyverse includes:
 1. `ggplot2` -- creating graphics.
 2. `dplyr` -- data manipulation.
 3. `tidyr` -- tidying data.
@@ -140,536 +206,160 @@ knitr::include_graphics("http://d33wubrfki0l68.cloudfront.net/f55c43407ae8944b98
 
 ---
 
-# RStudio: R's favorite working place  
-
-Next to many useful packages, R users greatly benefit from R's integrated development environment [RStudio](https://www.rstudio.com/). Rstudio is a graphical user interface that allows you to (a) edit code, (b) run code, (c) access files and progress, and (d) create plots. In addition RStudio helps you with version control via [Github](https://github.com/), to write reports using [markdown](http://rmarkdown.rstudio.com/authoring_basics.html) and [knitr](https://yihui.name/knitr/), and with integrating C++ into R.<br><br>  
-
-
-```{r, out.width = "800px", echo = F, fig.align='center'}
-knitr::include_graphics("rstudio_plus.png")
-```
-
----
-
-# RStudio's structure
-
-Next ...<br><br>  
-
-
-```{r, out.width = "800px", echo = F, fig.align='center'}
-knitr::include_graphics("rstudio_workings.png")
-```
+# Essentials of the R language
 
 
 
-
-
-
----
-
-class: small
-
-# Some Example Data
-
-Data from Revelle, Wilt and Rosenthal (2009). `?sat.act`:
-> Items were collected as part of the SAPA project (http://sapa-project.org) to develop online measures of ability (Revelle, Wilt and Rosenthal, 2009). The score means are higher than national norms suggesting both self selection for people taking on line personality and ability tests and a self reporting bias in scores.
-
-```{r, message=FALSE}
-require(psych)
-data(sat.act)
-sat.act$gender <- factor(sat.act$gender, 1:2, labels = c("male", "female"))
-sat.act$education <- factor(sat.act$education)
-summary(sat.act) # alternatively: psych::describe(sat.act)
-sat.act <- na.omit(sat.act)
-```
-
----
-# Some Example Data
-
-
-```{r, fig.height=4, dev='svg'}
-par(mfrow=c(1,2))
-plot(sat.act$SATV, sat.act$ACT)
-plot(sat.act$SATQ, sat.act$ACT)
-```
-
----
-# Linear Regression Model
-
-- $\bf{y}$ = vector of ACT scores of length $n$ (*dependent variable*)
-- $\bf{x_{\mbox{SATV}}}$ = vector of SATV scores of length $n$ (*independent variable* or *covariate*)
-
-$$y_i = \beta_0x_{0,i}+\beta_{\mbox{SATV}}x_{\mbox{SATV},i}+\epsilon_i, \ \ i = 1, ..., n, \\
-\bf{\epsilon} \sim \mathcal{N}(0, \sigma^2_{\epsilon}),$$
-where $\bf{x_0}$ is a vector of 1s of length $n$.
-
-- Errors $\bf{\epsilon}$ are assumed to come from a normal distribution (i.e., uncorrelated).
-
-- $\beta_0$ and  $\beta_{\mbox{SATV}}$ are scalars (i.e., of length 1) and called *regression coefficients* or *parameters* ( $\sigma^2_{\epsilon}$ is also a parameter). $\beta_0$ is also known as the *intercept*.
-
-******
-
-In matrix form this model can be expressed as:
-$$\bf{y} = \bf{X}\bf{\beta}+\bf{\epsilon}$$
-
----
-class: small
-
-# Linear Model in R
-
-.pull-left2[
-```{r}
-m1 <- lm(ACT ~ SATQ, sat.act)
-summary(m1)
-```
-
-]
-.pull-right2[
-```{r}
-coef(m1)
-```
-
-```{r, fig.height=3.7, fig.width=4, dev='svg'}
-plot(sat.act$SATV, sat.act$ACT)
-abline(m1)
-```
-]
----
-class: small
-
-# Linear Model in R (Centered)
-
-.pull-left2[
-```{r}
-sat.act$SATQ_c <- sat.act$SATQ - mean(sat.act$SATQ, na.rm = TRUE)
-sat.act$SATV_c <- sat.act$SATV - mean(sat.act$SATV)
-m2 <- lm(ACT ~ SATQ_c, sat.act)
-summary(m2)
-```
-
-]
-.pull-right2[
-```{r}
-coef(m2)
-```
-
-```{r, fig.height=3.7, fig.width=4, dev='svg'}
-plot(sat.act$SATV_c, sat.act$ACT)
-abline(m2)
-```
-]
----
-
-class: inline-grey
-# Formula Interface for Statistical Models: `~`
-
-Allows symbolic specification of statistical model, e.g. linear models: `lm(ACT ~ SATQ, sat.act)`
-
-Everything to the left of `~` is the dependent variable:
-```r
-y ~ x # univariate model
-cbind(y1, y2, y3) ~ x # multivariate model
-~ x # one sided formula
-```
-
-Independent variables are to the right of the `~`:
-
-| Formula | &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; | Interpretation  |
-| ------------------------|---|----------------------------------|
-| `~ x` or `~1+x`         || Intercept and main effect of `x` | 
-| ` ~ x-1` or `~0 + x`    || Only main effect of `x` and no intercept (questionable) |
-| `~ x+y`                 || Main effects of `x` and `y`|
-| `~ x:y`                 || Interaction between `x` and `y` (and no main effect) |
-| `~ x*y` or `~ x+y+x:y`  || Main effects and interaction between `x` and `y` |
-
----
-class: small
-
-# How many Parameters in each Model?
-
-```{r, eval=FALSE}
-lm(ACT ~ SATQ_c + SATV_c, sat.act)   # a
-lm(ACT ~ SATQ_c : SATV_c, sat.act)   # b
-lm(ACT ~ 0 + SATQ_c:SATV_c, sat.act) # c
-lm(ACT ~ SATQ_c*SATV_c, sat.act)     # d
-lm(ACT ~ 0+SATQ_c*SATV_c, sat.act)   # e
-```
-
---
-.pull-left[
-```{r}
-coef(lm(ACT ~ SATQ_c + SATV_c, sat.act))   # a
-coef(lm(ACT ~ SATQ_c : SATV_c, sat.act))   # b
-coef(lm(ACT ~ 0 + SATQ_c:SATV_c, sat.act)) # c
-```
-
-
+.pull-left7[
+>"To understand computations in R, two slogans are helpful:
+>###(1) Everything that exists is an object and 
+>###(2) everything that happens is a function call."
 ]
 
-.pull-right[
+.pull-right7[
+<p align="center"><img src="https://statweb.stanford.edu/~jmc4/CopyPhoto.jpg" width="350" align="center"></p>
+<p align="center">John Chambers<br> <font size=2> Author of S and developer of R</font></p>
+]
+
+---
+
+# Calls, assignments, and expressions
+
+In R every action is a function call. Specifically R scripts advances by **passing on data and arguments to functions**, calling the function, and receiving its output. However, functions may however not always look like functions. The output is then stored in a new object using assignment. 
+
+.pull-left9[
 ```{r}
-coef(lm(ACT ~ SATQ_c*SATV_c, sat.act))     # d
-coef(lm(ACT ~ 0+SATQ_c*SATV_c, sat.act))   # e
+# defining a function - arithm. mean
+my_fun <- function(x, b){ x * b }
+
+# define some data
+my_data <- c(1, 5, 7, 3) 
+
+# pass on arguments and call function
+my_fun(my_data, 5) 
+
+# store output by assignment
+my_out <- my_fun(my_data, 5)
 ```
 
 ]
 
-```{r, eval=FALSE, include=FALSE}
-summary(lm(ACT ~ SATQ + SATV, sat.act))   # a
-summary(lm(ACT ~ SATQ : SATV, sat.act))   # b
-summary(lm(ACT ~ 0 + SATQ:SATV, sat.act)) # c
-summary(lm(ACT ~ SATQ*SATV, sat.act))     # d
-summary(lm(ACT ~ 0+SATQ*SATV, sat.act))   # e
-```
-
-
----
-class: center, middle, inverse
-
-# Categorical Covariates
-
----
-class: small
-# Categorical Covariates
-
-`R` modeling functions behave differently for numerical and categorical covariates. 
-
-It is important to always know of what type variables are. Use `str()` on a `data.frame` to obtain information regarding the structure, including variable types: 
-
+.pull-right9[
 ```{r}
-str(sat.act)
-```
+# a basic expression
+2 + 2
 
-- Numerical covariates are `int` or `num`.
-- Categorical covariates are `Factor` (or `character`).
+# is also a function
+'+'(2,2)
 
-**Make sure all categorical variables are factors before adding them to a statistical model!**
-
----
-class: small
-
-# Models with Categorical Covariates
-
-We might be interested in testing whether ACT differs between men and women. 
-.pull-left2[
-```{r}
-m3 <- lm(ACT ~ gender, sat.act)
-summary(m3)
-```
-
-]
---
-
-```{r, include=FALSE}
-op <- options(width = 40)
-require(dplyr)
-```
-
-.pull-right2[
-```{r}
-mean(sat.act$ACT)
-sat.act %>% group_by(gender) %>%
-  summarise(m = mean(ACT))
-```
-
-```{r}
-sat.act %>% group_by(gender) %>%
-  summarise(m = mean(ACT)) %>%
-  {.$m[2] - .$m[1]}
-```
-]
-
-```{r, include=FALSE}
-options(op)
-```
-
----
-class: small
-
-# R and Categorical Covariates
-`model.matrix()` transforms categorical covariates into numerical variables that can be used for fitting using a specific contrast function (see `?contr.sum`).
-
-.pull-left[
-```{r}
-model.matrix(ACT ~ gender, sat.act[1:5,])
 ```
 ]
 
 ---
-class: small
-# R and Categorical Covariates
 
-`model.matrix()` transforms categorical covariates into numerical variables that can be used for fitting using a specific contrast function (see `?contr.sum`).
+# Object-orientation
 
-.pull-left[
-```{r}
-model.matrix(ACT ~ gender, sat.act[1:5,])
-```
+R is an object-oriented language. This means that for R that **everything is an object** (including functions). This also means that there are several generic functions that respond to the **object's class**. Another important feature of R regarding objects is that R **always copies deep**. This is why practically everything in R is an assignment. 
+
 
 ```{r}
-afex::set_sum_contrasts()
+# creating a vector and testing its class (type of object)
+my_vector <- c(1, 5, 2)
+print(class(my_vector))
+
+# testing the class (aka object type) of an object
+print(my_vector)
+
+# Sorting 
+sort(my_vector)  
+print(my_vector) # still unsorted
+
 ```
 
-]
-
-.pull-right[
-```{r}
-model.matrix(ACT ~ gender, sat.act[1:5,])
-```
-]
 
 ---
-class: small
 
-# Models with Categorical Covariates II 
+# Syntax
 
-Same model as before, but with sum/effects contrasts.
+Every language has specific expressive style. R is characterized by the following elements.
 
-.pull-left2[
-```{r}
-m4 <- lm(ACT ~ gender, sat.act)
-summary(m4)
-```
-
+.pull-left9[
++ Comment symbol `#`
+<br2>
++ Quotations with either `""` or ''
+<br2>
++ Curly brackets `{}` enclose expressions explicitly
+<br2>
++ Parentheses `()` call functions
+<br2>
++ Semicolon `;` separates expressions
+<br2>
++ `<`,`>`,`|`,`&`,`==`, `!=` define logical statements
 ]
 
-```{r, include=FALSE}
-op <- options(width = 40)
-```
+```{r, eval = F}
+# This is a comment
 
-.pull-right2[
-```{r}
-mean(sat.act$ACT)
-sat.act %>% group_by(gender) %>%
-  summarise(m = mean(ACT))
-sat.act %>% group_by(gender) %>%
-  summarise(m = mean(ACT)) %>% 
-  summarise(mean(m))
+# Quotes are used to define strings
+"a" == 'a'
+
+# Expression and calls
+my_fun(x,y){ x  + y }
+
+# two expression in one line
+2 + 2 ; 3 + 3
+
+# are these equal/different
+2 == 2 ; 2 != 2
 
 ```
 
 ]
 
-```{r, include=FALSE}
-options(op)
-```
-
 ---
-class: small
-# Models with Categorical Covariates and Interactions
 
-```{r}
-afex::set_default_contrasts() # or set_treatment_contrasts()
-```
+.pull-left9[
+# Help
 
+An important part of using R are **help files** and **vignettes**. Help files are required documentations for every R function and package published on [**CRAN**](https://cran.r-project.org/). In the beginning the help files may appear cryptical, however, over time you will realise that they are exceptionally helpful. Vignettes are longer tutorials sometimes provided by the authors of a package.     
 
-```{r, include=FALSE}
-op <- options(width = 70)
-```
+```{r, eval = F}
+# To access help files
+help("name_of_function")
+?name_of_function
 
-.pull-left2[
-```{r}
-m5 <- lm(ACT ~ gender*education, sat.act)
-coef(m5)
+# find help files
+??name_of_function
+
+# To list and access vignettes
+vignette(package="name_of_package")
+vignette(package="name_of_vignette")
 ```
 
 ]
 
-.pull-right2[
-```{r}
-sat.act %>% 
-  group_by(gender,education) %>%
-  summarise(mean(ACT))
-```
+.pull-right9[
+<br><br><iframe src="R_ Arithmetic Mean.htm" height="540" width="800" align="center"></iframe>
 ]
 
-```{r, include=FALSE}
-options(op)
-```
-
 ---
-class: small
-# Models with Categorical Covariates and Interactions II
 
-```{r}
-afex::set_sum_contrasts() # or set_effects_contrasts() or set_deviation_contrasts()
-```
+# Packages
 
+One of the huge benefits of R is its vast and cutting-edge collection of packages. Responsible for this is the larger and active user base, but also the [**CRAN**](https://cran.r-project.org/), who examine every package, apply a rigorous quality control, and eventually host the packages on various mirrors throughout the world. When downloading one of the many packages never forget that the package must also be loaded.        
 
-```{r, include=FALSE}
-op <- options(width = 70)
-```
+```{r, eval = F}
+# To install a package
+install.packages('package_name')
 
-.pull-left2[
-```{r}
-m6 <- lm(ACT ~ gender*education, sat.act)
-coef(m6)
+# load a package
+library(package_name)
+
 ```
 
 ]
 
-.pull-right2[
-```{r}
-sat.act %>% 
-  group_by(gender,education) %>%
-  summarise(m = mean(ACT)) %>% 
-  ungroup() %>% 
-  summarise(mean(m))
-```
-]
-
-```{r, include=FALSE}
-options(op)
-```
-
----
-# Categorical Covariates and Model Matrices
-
-.pull-left3[
-```{r, eval=FALSE}
-lm(ACT ~ SATQ + SATV, sat.act)   # a: 3
-lm(ACT ~ SATQ : SATV, sat.act)   # b: 2
-lm(ACT ~ 0 + SATQ:SATV, sat.act) # c: 1
-lm(ACT ~ SATQ*SATV, sat.act)     # d: 4
-lm(ACT ~ 0+SATQ*SATV, sat.act)   # e: 3
-
-lm(ACT ~ SATQ, sat.act)          # f: 2
-lm(ACT ~ 0 + SATQ, sat.act)      # g: 1
-```
-
-]
-
---
-.pull-right3[
-```{r, eval=FALSE}
-lm(ACT ~ gender, sat.act)                  # a
-lm(ACT ~ 0+gender, sat.act)                # b
-lm(ACT ~ gender+education, sat.act)        # c
-lm(ACT ~ 0+gender+education, sat.act)      # d
-lm(ACT ~ gender:education, sat.act)        # e
-lm(ACT ~ 0+gender:education, sat.act)      # f
-lm(ACT ~ gender*education, sat.act)        # g
-lm(ACT ~ 0+gender*education, sat.act)      # h
-lm(ACT ~ gender+gender:education, sat.act) # i
-```
-
-```{r}
-levels(sat.act$gender)
-levels(sat.act$education)
-```
-
-
-]
-
-
----
-class: small
-
-# Beware of Formulas with Categorical Variables
-
-
-```{r}
-coef(lm(ACT ~ gender, sat.act))                  # a: 2
-coef(lm(ACT ~ 0+gender, sat.act))                # b: 2
-coef(lm(ACT ~ gender+education, sat.act))        # c: 7
-coef(lm(ACT ~ 0+gender+education, sat.act))      # d: 7
-```
-
----
-class: small
-
-
-```{r}
-coef(lm(ACT ~ gender:education, sat.act))        # e: 13
-coef(lm(ACT ~ 0+gender:education, sat.act))      # f: 12
-```
-
-```{r, eval = FALSE}
-coef(lm(ACT ~ gender*education, sat.act))        # g: 12
-coef(lm(ACT ~ 0+gender*education, sat.act))      # h: 12
-coef(lm(ACT ~ gender+gender:education, sat.act)) # i: 12
-```
-
-
-
----
-class: inline-grey
-# Interim Summary
-
-- The `R` `formula` interface allows symbolic specification of statistical models.
-  - `+` = main effects
-  - `:` = interaction
-  - `*` = main effects plus interaction
-  - `0+`/`-1` = no intercept
-
-- Categorical variables are transformed into numerical variables using contrast functions (via `model.matrix()`; see Cohen et al., 2002)
-  - If models include interactions, orthogonal contrasts (e.g., `contr.sum`) in which the intercept corresponds to the (unweighted) grand mean should be used: `afex::set_sum_contrasts()`
-  - Dummy/treatment contrasts (`R` default) lead to simple effects for lower order effects.
-  - **Coding only affects interpretation of parameters/tests not overall model fit.**
-
-- For models with only numerical covariates, suppressing intercept works as expected.
-- For models with categorical covariates, suppressing intercept or other lower-order effects often leads to very surprising results (and should generally be avoided).
-
----
-class: center, middle, inverse
-
-# Tests of Terms/Effects
-
----
-class: small
-
-```{r, include=FALSE}
-op <- options(width = 70)
-```
-
-.pull-left2[
-```{r, message=FALSE}
-afex::set_sum_contrasts()
-m6 <- lm(ACT ~ gender*education, sat.act)
-summary(m6)
-```
-
-]
-
-.pull-right2[
-```{r}
-sat.act %>% 
-  group_by(gender, education) %>%
-  summarise(m = mean(ACT)) %>% 
-  ungroup() %>% 
-  summarise(mean(m))
-```
-]
-
-```{r, include=FALSE}
-options(op)
-```
-
 ---
 
-# `car::Anova()` is the Solution
+# Interactive sessions
 
-```{r, message=FALSE}
-require(car) # Companion to Applied Regression (Fox & Weisberg, 2011)
-Anova(m6, type = 3)
-```
---
-
-- Type II and III tests equivalent for balanced designs (i.e., equal group sizes) and highest-order effect.
-- Type III tests require orthogonal contrasts (e.g.,`contr.sum`); recommended:
-  - For experimental designs in which imbalance is completely random and not structural,
-  - Complete cross-over interactions (i.e., main effects in presence of interaction) possible.
-- Type II are more appropriate if imbalance is structural (i.e., observational data; maybe here).
-
-
-
----
-### References Statistical Modeling:
-- John Fox and Sanford Weisberg (2011). *An R Companion to Applied Regression, Second Edition.* Thousand Oaks CA: Sage. URL: http://socserv.socsci.mcmaster.ca/jfox/Books/Companion
-- Russell V. Lenth (2016). Least-Squares Means: The R Package lsmeans. *Journal of Statistical
-  Software*, 69(1), 1-33. https://doi.org/10.18637/jss.v069.i01
-- Cohen, J., Cohen, P., West, S. G., & Aiken, L. S. (2002). *Applied Multiple Regression/Correlation Analysis for the Behavioral Sciences.* New York: Routledge Academic.
-
-### References Example Data:
-- Revelle, William, Wilt, Joshua, and Rosenthal, Allen (2009) Personality and Cognition: The Personality-Cognition Link. In Gruszka, Alexandra and Matthews, Gerald and Szymura, Blazej (Eds.) _Handbook of Individual Differences in Cognition: Attention, Memory and Executive Control_, Springer.
-- Skovgaard-Olsen, N., Singmann, H., & Klauer, K. C. (2016). The relevance effect and conditionals. *Cognition*, 150, 26-36. https://doi.org/10.1016/j.cognition.2015.12.017

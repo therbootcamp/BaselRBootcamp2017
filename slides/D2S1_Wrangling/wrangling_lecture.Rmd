@@ -113,6 +113,35 @@ data %>%           # Start with data, and THEN
 ]
 
 
+---
+### ChickWeight dataframe
+
+.pull-left3[
+
+```{r, echo = FALSE, out.width = "100%", fig.align = 'center'}
+knitr::include_graphics("http://tailandfur.com/wp-content/uploads/2016/09/40-Funny-and-Cute-Ideas-Of-Chicken-Pictures-11.jpg")
+```
+
+]
+
+.pull-right3[
+
+
+
+```{r}
+# Show me the first few rows
+head(ChickWeight)
+
+#What are the column names again?
+names(ChickWeight)
+```
+
+
+]
+
+
+
+
 
 ---
 
@@ -171,8 +200,7 @@ x
 
 
 ---
-
-#### Ex: Chick 1
+### To add a column to a dataframe, used `mutate()`
 
 *Add a column called `weight_d_time` that is weight divided by time*
 
@@ -190,8 +218,7 @@ head(x)   # Print the result
 
 
 ---
-
-#### Ex: Chick 2
+### You can create many new columns sequentially
 
 *Add a column called `weight_d_time` that is weight divided by time AND `time_d` that is time in days*
 
@@ -206,12 +233,9 @@ head(x)   # Print the result
 ```
 
 ---
-
-
-### Recoding values with case_when()
+### To recode values, use `case_when()`
 
 .pull-left3[
-Recoding values is a common data wrangling task. You can easily do this with `case_when()`:
 
 ```{r, eval = FALSE}
 data %>%
@@ -222,13 +246,11 @@ data %>%
   )
 ```
 
-
-
 For example, in a dataset, the column `sex` might be coded with 1s and 0s.
 
 You might want to create a new column `sex_new` where 1 = "female" and 0 = "male":
 
-| sex| sex_new|
+| sex_car| sex_new|
 |------:|----:|
 |    1|   "female"|
 |    0|   "male"|
@@ -247,7 +269,7 @@ To change the value of 1 to `"female"`, and 0 to `"male"`, you can use `case_whe
 
 data <- data %>% 
   mutate(
-        sex_new = case_when(
+        sex_char = case_when(
           sex == 1 ~ "female",
           sex == 0 ~ "male"
         )
@@ -257,7 +279,7 @@ data <- data %>%
 
 You can think about the code above as follows:
 
-- Create a new column `sex_new` where
+- Create a new column `sex_char` where
     - If `sex == 1`, then set the value to `"female"`
     - If `sex == 0`, then set the value to `"male"`
 
@@ -267,7 +289,16 @@ You can think about the code above as follows:
 ---
 
 .pull-left3[
-#### Ex: Chick 3
+### More `case_when()` examples
+
+
+**`ChickWeight`**
+```{r, echo = FALSE}
+set.seed(104)
+ChickWeight <- ChickWeight[sample(nrow(ChickWeight)),]
+head(ChickWeight)
+```
+
 
 *Create a new variable Diet_name which shows Diet in text format. Here is a table of the values*
 
@@ -295,7 +326,7 @@ ChickWeight <- ChickWeight %>%           # Start with the ChickWeight data
    
  )
 
-head(ChickWeight)
+head(ChickWeight)   # Print final result!
 ```
 
 
@@ -305,6 +336,45 @@ head(ChickWeight)
 
 
 
+---
+### group_by(), summarise()
+
+.pull-left3[
+
+Two of the most powerful dplyr verbs are `group_by()` and `summarise()`.
+
+When you combine these two, you can easily calculate summary statistics across groups of data
+
+> Q1: What is the average beard length of pirates on the Jolly Roger and the Slippery Seal?
+
+> Q2: How many patients were on each treatment arm, and for each arm, what was the mean success rate for the primary measure `full_recovery` and the secondary measure `feelbetter`? 
+
+]
+
+
+.pull-right3[
+
+
+```{r, eval = FALSE}
+q1 <- pirates %>%
+  group_by(ship) %>%
+  summarise(
+    beard_mean = mean(beardlength)
+  )
+
+
+q2 <- pirates %>%
+  group_by(arm) %>%
+  summarise(
+    N = n(),
+    primary_success = mean(full_recovery),
+    secondary_success = mean(feelbetter)
+  )
+```
+
+
+
+]
 
 ---
 
@@ -321,12 +391,8 @@ ChickWeight %>%           # Start with the ChickWeight data
 ```
 
 
-
-
-
 ---
-
-#### Ex: Chick 4
+### You can easily filter data before grouping and summarising
 
 *For each time period less than 10, calculate the mean weight*
 
@@ -344,7 +410,7 @@ ChickWeight %>%                # Start with the ChickWeight data
 
 
 ---
-#### Ex: Chick 5:
+### You can calculate as many summary columns as you want!
 
 *For each Diet, calculate the mean weight, maximum time, and the number of chicks on each diet*:
 
@@ -362,8 +428,6 @@ ChickWeight %>%           # Start with the ChickWeight data
 
 
 ---
-
-
 # Other dplyr verbs
 
 
@@ -373,11 +437,8 @@ ChickWeight %>%           # Start with the ChickWeight data
 |     `sample_frac()`|    Select a random fraction of rows| `sample_frac(.20)`|
 |     `first(), last()`|    Give the first (or last) observation| `first(), last()`|
 
-
-
 ---
-
-#### Ex: Chick 6:
+### Getting random values from a dataframe with `sample_n()`
 
 *Give me a random sample of 10 rows from the ChickWeight dataframe, but only show me the values for Chick and weight*
 
@@ -398,7 +459,7 @@ ChickWeight %>%
 dplyr operations (almost) always return a dataframe which you can assign to a new object:
 
 
-> *Create a dataframe with the average weight for each time period and nothing else!!*
+> *Send me a text file with the average weight for each time period and nothing else!!*
 
 ]
 
@@ -413,7 +474,10 @@ time_agg <- ChickWeight %>%
     weight.mean = mean(weight)
   )
 
-head(time_agg)
+head(time_agg) # Make sure it looks good
+
+# save the aggregated data as a .csv file for my colleague
+#write_csv(time_agg, path = "data/time_agg.csv")
 ```
 
 

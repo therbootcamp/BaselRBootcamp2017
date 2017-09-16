@@ -436,12 +436,12 @@ glm(formula = y ~.,     # Formula
     family, ...)        # Optional arguments
 
 # Train glm model
-loan_glm_model <- glm(formula = risk ~ ., 
-                      data = data_train)
+glm_mod <- glm(formula = risk ~ ., 
+               data = data_train)
 
 # Predict new data with glm model
-loan_glm_pred <- predict(loan_glm_model,
-                         newdata = data_test)
+glm_pred <- predict(glm_mod,
+                    newdata = data_test)
 ```
 
 
@@ -450,7 +450,7 @@ loan_glm_pred <- predict(loan_glm_model,
 
 
 ---
-# Decision Trees with `rpart::rpart()`
+# Fast-and-Frugal Trees with `FFTrees()`
 
 .pull-left3[
 
@@ -458,8 +458,8 @@ In decision trees, the criterion is modeled as a sequence of logical Yes or No q
 
 ### Example: Default on a loan
 
-```{r, echo = FALSE, eval = TRUE}
-knitr::include_graphics("images/defaulttree.png")
+```{r, echo = FALSE, eval = TRUE, out.width = "70%", fig.align = 'center'}
+knitr::include_graphics("images/defaultfft.png")
 ```
 
 
@@ -467,25 +467,27 @@ knitr::include_graphics("images/defaulttree.png")
 
 .pull-right3[
 
-Create decision trees using the `rpart` package
+Create decision trees using the `FFTrees` package
 
 ```{r, eval = FALSE}
-# Load the rpart package
-library(rpart)
+# Load the FFTrees package
+library(FFTrees)
 
-# Calculating a decision tree in R
-rpart(formula = y ~.,       # Formula 
-      data = data_train,    # Training data
-      method, parms, cost)  # Optional arguments
+# Main Function
+FFTrees(formula = y ~ .,
+        data, ...)
 
-# Train rpart model
-loan_rpart_model <- rpart(formula = risk ~ ., 
-                          data = loan_data,
-                          method = "anova")
+# Train FFTrees model
+FFTrees_mod <- FFTrees(formula = default ~ ., 
+                       data = loan_data,
+                       main = "Default Risk")
 
-# Predict new data with rpart model
-loan_rpart_pred <- predict(loan_rpart_model,
-                          newdata = data_test)
+# Plot the tree
+plot(FFTrees_mod)
+
+# Predict new data with FFTrees model
+FFTrees_loan_pred <- predict(FFTrees_mod,
+                        data = data_test)
 ```
 
 
@@ -507,9 +509,10 @@ knitr::include_graphics("images/supportvectormachine.png")
 # Creating support vector machine model
 library(e1071)
 
-svm_model <- svm(formula = risk ~ .,
-                 data = loan_data,
-                 ...)
+svm_mod <- svm(formula = risk ~ .,
+               data = loan_data,
+               kernel, degree, gamma, 
+               ...)
 ```
 
 
@@ -530,9 +533,10 @@ knitr::include_graphics("images/randomforest.png")
 # Creating random forest model
 library(randomForest)
 
-rf_model <- randomForest(formula = risk ~ .,
-                         data = loan_data,
-                         ...)
+rf_mod <- randomForest(formula = risk ~ .,
+                       data = loan_data,
+                       mtry, cutoff, sampsize, 
+                       ...)
 ```
 
 ]

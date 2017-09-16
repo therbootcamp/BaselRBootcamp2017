@@ -38,7 +38,6 @@ options(digits = 4)
 - How to conduct hypothesis tests and how to work with `htest` objects
     - `t.test()`, `cor.test()`, `aov()`, ...
 
-
 ]
 
 

@@ -1,0 +1,413 @@
+---
+title: "R's (basic) data objects"
+subtitle: ""
+author: "The R Bootcamp<br/>Twitter: <a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
+date: "September 2017"
+output:
+  xaringan::moon_reader:
+    css: ["default", "my-theme.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+---
+
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+# see: https://github.com/yihui/xaringan
+# install.packages("xaringan")
+# see: 
+# https://github.com/yihui/xaringan/wiki
+# https://github.com/gnab/remark/wiki/Markdown
+options(width=110)
+options(digits = 4)
+```
+
+
+.pull-left8[
+# Objects
+>###"Everything in R is an object"<br> 
+><p align="right">*John Chambers*<p>
+
+<br><br>
++ R's objects are have content and attributes.
+<br2>
++ The content can be anything from numbers or strings to functions or complex data structures. 
+<br2>
++ Attributes often encompass names, dimensions, and the class or type of the object, but other attributes are possible. 
+<br2>
++ Practically all data objects are equipped with those three essential attributes.
+
+]
+.pull-right8[
+<br><br>
+<img src="objects.png" align="center" width="579" height="560">
+]
+
+---
+
+.pull-left10[
+# Data objects
+<br>
++ Objects either contain elements of the **same type** (homogeneous) or **different types** (heterogeneous). 
+<br2>
++ Homogeneous objects are always **flat**, i.e., contain no nested structure.
+<br2>
++ Lists can contain anything, even lists (**recursive**), whereas data frames underly certain restrictions in terms of type and dimensions.  
+
+]
+
+
+.pull-right10[
+<br><br><br><br><br>
+<img src="objects_types.png" align="left" width="629" height="374">
+]
+
+
+---
+
+# Vectors
+
+R's most basic (and smallest) data format - even single values are implmented as vectors. 
+
+.pull-left11[
+```{r, eval = F}
+# creating a vector (incl. names)
+my_vec <- c(t_1 = 1.343, t_2 = 5.232)
+
+# vectors are always flat
+my_vec <- c(1.343, c(5.232, 2.762))
+
+# naming vectors
+my_vec <- c(t_1 = 1.343, t_2 = 5.232)
+names(my_vec) = c("t_1","t_2")
+
+# evaluting inherent attributes
+names(my_vec)
+length(my_vec)
+typeof(my_vec)
+
+```
+]
+
+.pull-right11[
+<p align="left"><img src="vector.png" width="628px" height="190px"></p>
+]
+
+
+---
+
+# Types
+
+A vector contains elements of one of four basic types: `integer`, `double`, `numeric`, and `character`. You can test the type using `typeof()` or the type-specific `is.*()`, e.g., `is.integer()`.
+
+
+.pull-left8[
+```{r}
+# numeric vectors
+my_vec <- c(1.343, 5.232)
+typeof(my_vec) ; is.integer(my_vec)
+
+# integer vectors (overruled by R)
+my_vec <- c(1, 7, 2)
+typeof(my_vec) ; is.integer(my_vec)
+
+```
+]
+
+.pull-right8[
+```{r}
+# logical vectors
+my_vec <- c(TRUE, FALSE)
+typeof(my_vec) ; is.logical(my_vec)
+```
+
+```{r}
+# character vectors
+my_vec <- c('a', 'hello', 'world')
+typeof(my_vec) ; is.character(my_vec)
+```
+]
+
+---
+
+# Coercion
+
+R allows you to **flexibly change types** into another using `as.*()`, which however lead to a **loss of information**! Often **coercion occurs automatically**. Mathematical functions (+, log, abs, etc.) will coerce to a double or integer, logical operations (&, |, any, etc) will coerce to a logical.  
+
+.pull-left8[
+```{r}
+# double to integer
+my_vec <- as.integer(c(1, 7, 2))
+is.integer(my_vec)
+```
+
+```{r}
+# double to logical (and back - > info loss)
+my_vec <- as.logical(c(1.21, 7.24, 0))
+as.logical(my_vec) ; as.numeric(as.logical(my_vec))
+```
+]
+
+
+.pull-right8[
+```{r}
+# logical operation -> logical type
+c(1, 7, 2) > 3
+```
+
+```{r}
+# mathematical operation -> numeric type 
+c(TRUE, FALSE, TRUE) + 3 
+```
+
+```{r}
+# anything can be coerced to character 
+as.character(c(TRUE, FALSE, 0)) 
+```
+]
+
+
+---
+
+# Factors
+
+Factors are a special case of vector that can contain only predifined values defined in the attribute `levels`. Factors are rarely useful and sometimes dangerous, yet several R functions will coerce `character` vectors to `factor`.  
+
+.pull-left8[
+
+```{r}
+# create a factor
+my_fact <- factor(c('A','B','C'))
+levels(my_fact)
+
+# test type
+typeof(my_fact)
+  
+# add value at 4th position
+my_fact[4] <- 'A'
+# my_fact[4] <- 'D' # leads to error
+```
+
+]
+
+.pull-right8[
+```{r}
+# dangerous behavior of factors pt. 1
+my_fact <- factor(c('A','B','C'))
+mean(as.integer(my_fact))
+
+# dangerous behavior of factors pt. 2
+my_fact <- factor(c(1.32,4.52,.23))
+as.double(my_fact) # ranks
+```
+]
+
+---
+
+# Matrices & Arrays
+
+Matrices and arrays are **straightforward extensions** of vectors with 2 (matrix) or *n* dimensions. Both are **atomic** (carry only one type), have names (col-, row-, and dimnames) and dimensions arguments. Compared to vectors, lists, and data frames, **they usually play a lesser role in most applications**.
+
+
+<p align="center"><br><img src="matrix and array.png" width="682px" height="381px"></p>
+
+
+---
+
+# `list`s
+
+.pull-left10[
+
++ Lists are R's swiss army knife. They often are used for outputs of statistical functions e.g., `lm()`.
+
++ Lists have **non-flat** structures that take **any object type**, inluding lists, which renders lists **recursive**.
+
++ Intuitively lists can be understood as a meta-vector that on top of its content contains an overarching **organizational layer**. 
+
++ To create a list use `list()` or `as.list()`
+]
+
+.pull-right10[
+<p align="center"><img src="list.png" width="581px" height="307px"></p>
+]
+
+---
+
+# `data.frame`s
+
+.pull-left11[
+
+* Data frames have been **R's main data format** for data representation. 
+
+* **Data frames are lists** with specific **requirements**:
+
+  + Every element must be a vector.
+
+  + The lengths of the vectors must be equal of multiples of another.  
+
+* To create a data frame use `data.frame()` and `as.data.frame`.
+]
+
+.pull-right11[
+<p align="center"><img src="data.frame.png" width="409px" height="266px"></p>
+]
+
+
+---
+
+# Accessing & changing **atomic** objects pt. 1 
+
+To access and change atomic data objects use **brackets** `[` or **names**. When using `[` be sure to use as many indices as there are dimensions, e.g., `[3]` for vectors and `[1,3]` for matrices. Omittence of an index means for all elements. 
+
+.pull-left8[
+```{r}
+# retrieve second element from vector
+my_vec <- c('A','B','C')
+my_vec[2] 
+
+# change the second element 
+my_vec[2] <- 'D' ; my_vec
+  
+# change beyond length(my_vec) 
+my_vec[7] <- 1 ; my_vec
+
+```
+
+]
+
+.pull-right8[
+```{r}
+# create matrix
+my_mat <- matrix(c(1:6), nrow=2)
+my_mat
+
+# retrieve second row from matrix
+my_mat[2, ] ; my_mat[2, 1]
+
+```
+]
+
+---
+
+# Accessing & changing **atomic** objects pt. 2 
+
+Provided the object is equipped with an name attribute, indexing can also be accomplished using the elements name. 
+
+.pull-left8[
+```{r}
+# retrieve element 'a' from vector
+my_vec <- c(a = 1, b = 4, c = 5)
+my_vec['a'] 
+
+# change the element 
+my_vec['c'] <- 'D' 
+  
+# change beyond length(my_vec) 
+my_vec['d'] <- 1 ; my_vec
+
+```
+
+]
+
+.pull-right8[
+```{r}
+# create matrix
+my_mat <- matrix(c(1:6), nrow=2)
+colnames(my_mat) <- c('v_1','v_2','v_3')
+rownames(my_mat) <- c('c_1','c_2')
+
+# retrieve second row from matrix
+my_mat['c_1', ] ; my_mat['c_1', 'v_2']
+
+```
+]
+
+---
+
+# Accessing & changing **complex** objects pt. 1
+
+To access and change complex objects the added organizational `list` layer needs to be taken into account. This means that single brackets `[` will select an element within the list, not the object behind that element. To select the element use **double brackets** '[['. Additional, complex objects can be conveniently accessed using the dollor operator `$`. In order to further descend into the objects structur repeat the select operators, e.g., `my_list[[1]][[2]]`. 
+
+.pull-left8[
+```{r}
+# retrieve elements from list
+my_list <- list('A'=c('A','B'), 
+                'B'=list(c(1,2,3),
+                         c(TRUE,FALSE,TRUE)))
+my_list[1] ; my_list[[1]] ; my_list[['A']]
+```
+
+]
+
+.pull-right8[
+```{r}
+# retrieve deep elements in list
+my_list <- list('A'=c('A','B'), 
+                'B'=list(c(1,2,3),
+                         c(TRUE,FALSE,TRUE)))
+my_list[[2]][1] ; my_list[[2]][[1]] ;my_list[['B']][[1]]
+```
+]
+
+---
+
+# Accessing & changing **complex** objects pt. 2
+
+Data frames can be accessed **exactly like lists**. In addition, data frames allow for a matrix-like access using **single bracket** `[`. Note however that selecting rows using single bracket returns a data frame, whereas for selecting columns returns a vector.
+
+.pull-left8[
+```{r}
+# retrieve elements from list
+my_df <- data.frame('v_1'=c('A','B','C'), 
+                    'v_2'=c(1,2,3))
+my_df[1] ; my_df[[1]] ; my_df[['v_1']]
+```
+]
+
+.pull-right8[
+```{r}
+# retrieve elements from list
+my_df <- data.frame('v_1'=c('A','B','C'), 
+                    'v_2'=c(1,2,3))
+my_df[1,] ; my_df[,1] ; my_df[1,2]
+```
+]
+
+---
+
+# Object algebra
+
+R provides most most operations of vector and matrix algebra. As R is generally a slow language it is often desirable to make use of it.    
+
+.pull-left8[
+```{r}
+# create objects
+my_mat <- matrix(1:9, ncol=3)
+my_vec <- c(1:3)
+
+# object times scale (also a vector)
+my_mat * 5 ; my_vec * 5
+```
+]
+
+.pull-right8[
+```{r}
+# create objects
+my_mat <- matrix(1:9, ncol=3)
+my_vec <- c(1:3)
+
+# matrix multiplication
+my_vec %*% my_mat
+```
+]
+
+
+---
+
+# Practical
+
