@@ -1,0 +1,54 @@
+---
+title: "test"
+author: "The R Bootcamp"
+date: "9/16/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+<br>
+<br>
+<br>
+
+
+## Study
+
+ACTG175 was a randomized clinical trial to compare monotherapy with *zidovudine* or *didanosine* with combination therapy with zidovudine and didanosine or zidovudine and *zalcitabine* in adults infected with the human immunodeficiency virus type I whose CD4 T cell counts were between 200 and 500 per cubic millimeter.
+
+## Data
+
+In R, the data is stored as ACTG175. The data originally come from the `speff2trial` package. However, for demonstration purposes, the analyses in this document are conducted from a copy of the dataset saved as text file ACTG175.csv on http://therbootcamp.github.io. The analyses in this document are based on this text file.
+
+
+
+
+
+
+<br>
+<br>
+
+
+
+
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

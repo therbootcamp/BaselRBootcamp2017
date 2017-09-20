@@ -197,7 +197,7 @@ The Grammar of graphics breaks down plots into several key pieces:
 |     Aesthetics| What does the x-axis, y-axis, color (etc) represent?|
 |     Geometries| What kind of geometric object do you want to plot?|
 |     Facets| Should there be groups of plots?|
-|     Statistics|What statistica summaries / transformations should be done?|
+|     Statistics|What statistic summaries / transformations should be done?|
 |    Coordinates| What is the scale of the axes?|
 |    Theme| What should the overall plot look like?|
 
@@ -470,6 +470,41 @@ ggplot(data = mpg,
 ]
 
 
+---
+## Adding elements to plots with '+'
+
+.pull-left2[
+
+- Once you have specified data with `data` argument, and global aesthetics with `mapping = aes()`, you can add additional elements to the plot with `+`
+
+- The `+` sign works just like the pipe `%>%` in dplyr. It just means "and then..."
+
+
+```{r, eval = FALSE}
+ggplot(data = mpg,
+       mapping = aes(x = displ, y = hwy)) +  # and then...
+       # MORE    + (and then...)
+       # MORE    + (and then...)
+```
+
+
+]
+
+
+.pull-right2[
+
+### ggplot uses `+` to add additional elements to a plot
+
+
+```{r, echo = FALSE, fig.width = 5, fig.height = 4, out.width = "90%"}
+ggplot(data = mpg,
+       mapping = aes(x = displ, y = hwy)) + 
+  geom_point()
+```
+
+
+]
+
 
 ---
 ## Geometric objects (geoms)
@@ -478,7 +513,7 @@ ggplot(data = mpg,
 .pull-left3[
 
 - A **geom** is a geometric object in a plot that represents data
-
+- To add a geom to a plot, just include ` + geom_X()` where X is the type of geom.
 
 ### Common geoms
 
@@ -486,20 +521,20 @@ ggplot(data = mpg,
 |:------|:----|
 |     `geom_point()`|    Scatterplot|
 |     `geom_bar()`|    barplot|
+|     `geom_boxplot()`| A boxplot
+|     `geom_count()`| Points representing counts|
 |     `geom_smooth()`|    Regression line|
 
 
-- To add a geom to a plot, just include ` + geom_X()` where X is the type of geom.
-- `ggplot()` will automatically apply that geom to the aesthetics.
 
 ]
 
 
 .pull-right3[
 
-> Add a point geom with `geom_point()`
+### Add a point geom with `geom_point()`
 
-```{r, out.width = "70%", fig.width = 4, fig.height = 4}
+```{r, out.width = "60%", fig.width = 4, fig.height = 4}
 ggplot(data = mpg,
        mapping = aes(x = displ, y = hwy)) + 
   geom_point()
@@ -507,6 +542,125 @@ ggplot(data = mpg,
 
 
 ]
+
+
+
+---
+## Additional geoms
+
+.pull-left3[
+
+### geom_boxplot()
+
+```{r, out.width= "80%"}
+ggplot(data = mpg,
+  mapping = aes(x = class, y = hwy, fill = class)) + 
+  geom_boxplot()  + 
+  theme_bw()
+```
+
+
+]
+
+
+.pull-right3[
+
+### geom_density()
+
+```{r, out.width= "60%"}
+ggplot(data = mpg,
+  mapping = aes(x = hwy, fill = class)) + 
+  geom_density()  + 
+  theme_bw()
+```
+
+
+]
+
+
+
+---
+
+.pull-left3[
+
+### geom_bar()
+
+```{r, out.width= "80%", echo = TRUE}
+ggplot(data = mpg,
+  mapping = aes(x = class, fill = class)) + 
+  geom_bar()  + 
+  theme_bw()
+```
+
+
+]
+
+
+.pull-right3[
+
+### geom_count()
+
+```{r, out.width= "80%", echo = TRUE}
+ggplot(data = mpg,
+  mapping = aes(x = displ, y = hwy)) + 
+  geom_count()
+```
+
+]
+
+
+
+---
+
+.pull-left3[
+
+### geom_joy()
+
+> From the `ggjoy` package
+
+```{r, out.width= "60%", echo = TRUE}
+library(ggjoy) # Load the ggjoy package
+
+ggplot(data = midwest,
+       mapping = aes(percollege, 
+                     y = state, 
+                     fill = state)) + 
+  geom_joy(col = "white")
+```
+
+
+]
+
+
+.pull-right3[
+
+### geom_tile()
+
+```{r, out.width= "60%", echo = TRUE, eval = FALSE}
+ggplot(nba_long, 
+       mapping = aes(x = Name, 
+                     y = measure, 
+                     fill = value)) + 
+  geom_tile(col = "white") + 
+  scale_fill_gradientn(colors = c("red", 
+                                  "white", 
+                                  "blue")) + 
+  coord_flip()
+```
+
+```{r, out.width= "50%", echo = FALSE}
+# Read in nba data
+nba_long <- read.csv("https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_slides/data/nba_long.csv")
+
+ggplot(nba_long, 
+       mapping = aes(x = Name, y = measure, fill = value)) + 
+  geom_tile(col = "white") + 
+  scale_fill_gradientn(colors = c("red", "white", "blue"))+ 
+  coord_flip()
+```
+
+]
+
 
 
 
@@ -688,42 +842,7 @@ ggplot(data = mpg,
 
 
 ---
-
-## Why are these two different?
-
-.pull-leftEven[
-
-### Plot A
-
-```{r, fig.width = 7, fig.height = 4, out.width = "90%"}
-ggplot(data = mpg, 
-       mapping = aes(x = displ, y = hwy, 
-                     col = class)) +
-  geom_point() + 
-  geom_smooth(col = "blue")
-```
-
-]
-
-
-.pull-rightEven[
-
-### Plot B
-
-```{r, fig.width = 7, fig.height = 4, out.width = "90%"}
-ggplot(data = mpg, 
-       mapping = aes(x = displ, y = hwy, 
-                     col = class)) +
-  geom_point() + 
-  geom_smooth()
-```
-
-]
-
-
-
----
-## Overrriding aesthetics
+## Overriding aesthetics
 
 
 - You can include additional aesthetics, like color, shape, and size, in *any* geom.
@@ -755,8 +874,8 @@ ggplot(data = mpg,
 ```{r, fig.width = 7, fig.height = 4, out.width = "60%"}
 ggplot(data = mpg, 
        mapping = aes(x = displ, y = hwy, col = class)) +
-  geom_point() +            # geom_point RESPECTS global col aesthetic (class)
-  geom_smooth(col = "blue") # geom_smooth IGNORES global col aesthetic (class)
+  geom_point() +            # 
+  geom_smooth(col = "blue") # Overrides global col aesthetic (class)
 ```
 
 ---
@@ -765,8 +884,8 @@ ggplot(data = mpg,
 ```{r, fig.width = 7, fig.height = 4, out.width = "60%"}
 ggplot(data = mpg, 
        mapping = aes(x = displ, y = hwy, col = class)) +
-  geom_point(col = "pink") + # geom_point IGNORES global col aesthetic (class)
-  geom_smooth(col = "blue")  # geom_smooth IGNORES global col aesthetic (class)
+  geom_point(col = "pink") + # Overrides global col aesthetic (class)
+  geom_smooth(col = "blue")  # Overrides global col aesthetic (class)
 ```
 
 ---
@@ -775,8 +894,8 @@ ggplot(data = mpg,
 ```{r, fig.width = 7, fig.height = 4, out.width = "60%"}
 ggplot(data = mpg, 
        mapping = aes(x = displ, y = hwy, col = class)) +
-  geom_point(col = "pink") + # geom_point IGNORES global col aesthetic (class)
-  geom_smooth()              # geom_smooth RESPECTS global col aesthetic (class)
+  geom_point(col = "pink") + # Overrides global col aesthetic (class)
+  geom_smooth()              #
 ```
 
 
@@ -788,7 +907,7 @@ ggplot(data = mpg,
 ggplot(data = mpg, 
        mapping = aes(x = displ, y = hwy, col = class)) +
   geom_point() +
-  geom_smooth(col = "blue",  # geom_smooth RESPECTS global col aesthetic (class)
+  geom_smooth(col = "blue",  # Overrides global col aesthetic (class)
               method = "lm") # Use lm (linear model) smoothing line
 ```
 
@@ -1126,123 +1245,6 @@ ggplot(data = mpg,
 
 
 ---
-## Additional geoms
-
-.pull-left3[
-
-### geom_boxplot()
-
-```{r, out.width= "80%"}
-ggplot(data = mpg,
-  mapping = aes(x = class, y = hwy, fill = class)) + 
-  geom_boxplot()  + 
-  theme_bw()
-```
-
-
-]
-
-
-.pull-right3[
-
-### geom_density()
-
-```{r, out.width= "60%"}
-ggplot(data = mpg,
-  mapping = aes(x = hwy, fill = class)) + 
-  geom_density()  + 
-  theme_bw()
-```
-
-
-]
-
-
-
----
-
-.pull-left3[
-
-### geom_bar()
-
-```{r, out.width= "80%", echo = TRUE}
-ggplot(data = mpg,
-  mapping = aes(x = class, fill = class)) + 
-  geom_bar()  + 
-  theme_bw()
-```
-
-
-]
-
-
-.pull-right3[
-
-### geom_count()
-
-```{r, out.width= "80%", echo = TRUE}
-ggplot(data = mpg,
-  mapping = aes(x = displ, y = hwy)) + 
-  geom_count()
-```
-
-]
-
-
-
----
-
-.pull-left3[
-
-### geom_joy()
-
-> From the `ggjoy` package
-
-```{r, out.width= "60%", echo = TRUE}
-library(ggjoy) # Load the ggjoy package
-
-ggplot(data = midwest,
-       mapping = aes(percollege, 
-                     y = state, 
-                     fill = state)) + 
-  geom_joy(col = "white")
-```
-
-
-]
-
-
-.pull-right3[
-
-### geom_tile()
-
-```{r, out.width= "60%", echo = TRUE, eval = FALSE}
-ggplot(nba_long, 
-       mapping = aes(x = Name, 
-                     y = measure, 
-                     fill = value)) + 
-  geom_tile(col = "white") + 
-  scale_fill_gradientn(colors = c("red", 
-                                  "white", 
-                                  "blue")) + 
-  coord_flip()
-```
-
-```{r, out.width= "50%", echo = FALSE}
-# Read in nba data
-nba_long <- read.csv("https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_slides/data/nba_long.csv")
-
-ggplot(nba_long, 
-       mapping = aes(x = Name, y = measure, fill = value)) + 
-  geom_tile(col = "white") + 
-  scale_fill_gradientn(colors = c("red", "white", "blue"))+ 
-  coord_flip()
-```
-
-]
-
-
----
 ## So much more
 
 - We have only touched the surface of what you can do with `ggplot`
@@ -1257,5 +1259,46 @@ knitr::include_graphics("images/plotting_books.png")
 
 ---
 ## Questions?
+
+
+---
+## Extra slides
+
+
+---
+
+## Why are these two different?
+
+.pull-leftEven[
+
+### Plot A
+
+```{r, fig.width = 7, fig.height = 4, out.width = "90%"}
+ggplot(data = mpg, 
+       mapping = aes(x = displ, y = hwy, 
+                     col = class)) +
+  geom_point() + 
+  geom_smooth(col = "blue")
+```
+
+]
+
+
+.pull-rightEven[
+
+### Plot B
+
+```{r, fig.width = 7, fig.height = 4, out.width = "90%"}
+ggplot(data = mpg, 
+       mapping = aes(x = displ, y = hwy, 
+                     col = class)) +
+  geom_point() + 
+  geom_smooth()
+```
+
+]
+
+
+
 
 

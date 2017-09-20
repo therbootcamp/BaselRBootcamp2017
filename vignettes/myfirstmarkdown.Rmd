@@ -1,38 +1,149 @@
 ---
-title: "Cinical Data Analysis"
-author: "Nathaniel Phillips"
-date: "9/15/2017"
-output:
-  html_document: default
+title: "My First R Markdown!"
+author: "The R Bootcamp"
+date: "9/16/2017"
+output: html_document
 ---
 
-## Clinical Study
-
-```{r, echo = FALSE, message = FALSE}
-# Load packages
-library(tidyvserse)
-library(BayesFactor)
-library(lme4)
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(speff2trial)
+library(tidyverse)
+options(digits=2)
 ```
 
-The study data is stored as a comma-separated text file called `clinical_study.csv`. 
+```{r}
+study_df <- data.frame(age = sample(18:50, size = 100, replace = TRUE),
+                       sex = sample(c("m", "f"), size = 100, replace = TRUE),
+                       success = sample(c(0, 1), size = 100, replace = TRUE, prob = c(.8, .2)))
+
+
+nba <- read_csv("../nba_long.csv")
+
+```
+
+
+```{r}
+head(nba)
+```
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+<br>
+<br>
+<br>
+
+
+
+Patients were given treatment 1 day a week for 10 weeks. 
+
+```{r}
+knitr::include_graphics("images/.D")
+```
+
+
+
+
+
+## Key Results
+
+There were `r nrow(study_df)` patients in the clinical trial. Of these, `r sum(study_df$sex == "f")` were female. The median age of the patients was `r median(study_df$age)` and the standard deviation was `r round(sd(study_df$age), 2)`.
+
+The primary measure of treatment success was defined as patients who indicated that their quality of life had significantly improved as a result of treatment. Across all conditions, `r sum(study_df$success)` patients were successes.
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+## Analyses
+
+The full dataset contains data from `r nrow(ACTG175)` patients. For each patient, there are `r ncol(ACTG175) - 1` observations (i.e., columns in the data). Table 1 shows the first 5 rows, and first 5 colums of the full dataset.
 
 ```{r, echo = FALSE}
-# Load the data from the data folder
-clinical_study <- read_csv(file = "data/clinical_study.csv")
+knitr::kable(ACTG175[1:5, 1:5], caption = "Table 1: First 5 rows and 5 columns of the full ACTG175 dataset")
 ```
 
-### Primary Measures
 
-The primary measure was whether patient's quality of life significantly improved. The following plot shows how quality of life changed over time, separated by different treatment groups:
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+One of the primary measures was the number of days until a major negative event. Across all patients, the median number of days was `r mean(ACTG175$days)`. However, the results did differ between treatment arms. Summary statistics of the number of days, separated by each treatment arm, are presented in Table 2:
 
 ```{r, echo = FALSE}
-# Line graph showing QOL over time
+tbl2 <- ACTG175 %>% 
+  group_by(arms) %>% 
+  summarise(
+    N = n(),
+    Mean = mean(days),
+    Median = median(days),
+    SD = sd(days),
+    Max = max(days)
+)
 
-ggplot(data = clinical_study,
-       mapping = aes(x = time, y = qol, col = arm)) +
-  geom_line()
-
+knitr::kable(tbl2, caption = "Summary statistics of the number of days until a major negative event for different treatment arms.")
 ```
 
 
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+A plot showing the relationship between treatment arm and number of days until a major negative event are presented in Figure 2:
+
+```{r, echo = FALSE, eval = TRUE, fig.cap = "Figure 2: Number of days until a major negative event separted by treatment arm"}
+ggplot(data = ACTG175, mapping = aes(x = factor(arms), y = days)) +
+  geom_boxplot() + 
+  labs(x = "Treatment Arm",
+       y = "Number of days until a major negative event",
+       title = "ACTG175",
+       subtitle = "Created within an RMarkdown Document!",
+       caption = "Source: speff2trial R package") + 
+  theme_bw()
+```
+
+
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

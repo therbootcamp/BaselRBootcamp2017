@@ -371,9 +371,7 @@ C1. Now that you have multiple datasets, try removing the Plot title and X-axis 
    
 C2. Instead of a histogram, try creating a scatterplot as the main plotting output. Keep in mind that you'll now need to create two reactive values: `x_reactive()` for the data on the x-axis and `y_reactive()` for the y-axis. Then, as an optional argument (using a `checkboxInput`), allow the user to add a regression line to the plot.
 
-
-
-
+C3. Check out the [RStudio Shiny Gallery](https://shiny.rstudio.com/gallery/) at [https://shiny.rstudio.com/gallery/](https://shiny.rstudio.com/gallery/) and look for a Shiny app you really like. Find the code, copy it, and paste it into a new app in RStudio. See if you can get the app to run. Then, customise it!
 
 
 ### References
